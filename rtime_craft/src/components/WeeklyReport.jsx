@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../weekly.css";
+// import "../weekly.css";
 
 export default function WeeklyReport({ userId, assignUser }) {
   const [formData, setFormData] = useState({

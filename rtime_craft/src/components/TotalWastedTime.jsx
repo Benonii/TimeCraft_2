@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../twt.css";
+// import "../twt.css";
 
 export default function TotalWastedTime({ userId, assignUser }) {
   const [formData, setFormData] = useState({

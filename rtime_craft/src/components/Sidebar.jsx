@@ -1,12 +1,12 @@
 import React from "react";
-import "../sidebar.css";
+// import "../sidebar.css";
 import logo from "../images/tc-logo_3.jpg";
 
 export default function Sidebar(props){
     return (
         <section className="pane sidebar">
             <div className="sidebar--header">
-                <img src={logo} alt="logo" />
+                <img src={logo} className="w-10" alt="logo" />
             </div>
             <div className="sidebar--actions">
                 <button className="primary_btn"
