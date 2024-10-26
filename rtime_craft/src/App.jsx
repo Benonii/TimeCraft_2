@@ -7,6 +7,7 @@ import NewUser from "./pages/NewUser"
 import NewTask from "./pages/NewTask"
 import NewLog from "./pages/NewLog"
 import DailyReport from "./pages/DailyReport"
+import WeeklyReport from "./pages/WeelyReport"
 // import "./style.css"
 
 
@@ -19,7 +20,7 @@ export default function App() {
 
 	return (
         <main>
-			<DailyReport />
+			<WeeklyReport />
         </main>
     )
 }		
