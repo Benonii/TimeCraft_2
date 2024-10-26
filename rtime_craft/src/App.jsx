@@ -9,6 +9,8 @@ import NewLog from "./pages/NewLog"
 import DailyReport from "./pages/DailyReport"
 import WeeklyReport from "./pages/WeelyReport"
 import MonthlyReport from "./pages/MonthlyReport"
+import TotalProductiveTime from "./pages/TotalProductiveTime"
+import TotalWastedTime from "./pages/TotalWastedTime"
 // import "./style.css"
 
 
@@ -21,7 +23,7 @@ export default function App() {
 
 	return (
         <main>
-			<MonthlyReport />
+			<TotalWastedTime />
         </main>
     )
 }		
