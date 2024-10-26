@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -78,4 +79,19 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+@font-face {
+    font-family: 'Jacquard 24';
+    src: url('../public/fonts/Jacquard_24/Jacquard24-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Monomaniac One';
+    src: url('../public/fonts/Monomaniac_One/MonomaniacOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Monofett';
+    src: url('../public/fonts/Monofett/Monofett-Regular.ttf') format('truetype');
 }

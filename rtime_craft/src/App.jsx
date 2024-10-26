@@ -2,6 +2,7 @@ import React from "react"
 import Sidebar from "./components/Sidebar"
 import Main from "./components/Main"
 import Split from "react-split"
+import Home from "./pages/Home"
 // import "./style.css"
 
 
@@ -14,17 +15,7 @@ export default function App() {
 
 	return (
         <main>
-	    <Split
-		sizes={[30, 70]}
-                direction="horizontal"
-                className="split"
-            >
-		<Sidebar
-	    	    onClick={onActionClick}
-		/>
-                <Main actionId={action} />
-              
-            </Split>
+			<Home />
         </main>
     )
 }		

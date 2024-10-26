@@ -47,6 +47,7 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        orange1: '#CC8C0C',
       },
       borderRadius: {
         lg: `var(--radius)`,
@@ -55,6 +56,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        jacquard: ['"Jacquard 24"', 'sans-serif'],
+        monomaniac: ['"Monomaniac One"', 'sans-serif'],
+        monofett: ['"Monofett"', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {
