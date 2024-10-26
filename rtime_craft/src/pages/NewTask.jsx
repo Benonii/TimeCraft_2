@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import { Button } from '../components/Button';
 
-export default function NewUser() {
+export default function NewTask() {
   return (
     <div className=''>
       <Header />
