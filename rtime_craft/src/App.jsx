@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import NewUser from "./pages/NewUser"
 import NewTask from "./pages/NewTask"
 import NewLog from "./pages/NewLog"
+import DailyReport from "./pages/DailyReport"
 // import "./style.css"
 
 
@@ -18,7 +19,7 @@ export default function App() {
 
 	return (
         <main>
-			<NewLog />
+			<DailyReport />
         </main>
     )
 }		
