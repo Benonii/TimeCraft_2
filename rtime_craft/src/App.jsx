@@ -11,6 +11,7 @@ import WeeklyReport from "./pages/WeelyReport"
 import MonthlyReport from "./pages/MonthlyReport"
 import TotalProductiveTime from "./pages/TotalProductiveTime"
 import TotalWastedTime from "./pages/TotalWastedTime"
+import TotalTimeOnTask from "./pages/TotalTimeOnTask"
 // import "./style.css"
 
 
@@ -23,7 +24,7 @@ export default function App() {
 
 	return (
         <main>
-			<TotalWastedTime />
+			<TotalTimeOnTask />
         </main>
     )
 }		
