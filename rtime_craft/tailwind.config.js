@@ -48,6 +48,8 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         orange1: '#CC8C0C',
+        orange2: '#996703',
+        yellow1: '#CCBC0C',
       },
       borderRadius: {
         lg: `var(--radius)`,
