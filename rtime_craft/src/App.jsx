@@ -16,7 +16,7 @@ export default function App() {
 
 	return (
         <main>
-			<NewUser />
+			<Home />
         </main>
     )
 }		
