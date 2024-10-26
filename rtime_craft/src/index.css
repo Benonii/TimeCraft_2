@@ -95,3 +95,8 @@
     font-family: 'Monofett';
     src: url('../public/fonts/Monofett/Monofett-Regular.ttf') format('truetype');
 }
+
+@font-face {
+  font-family: 'Madimi One';
+  src: url('../public/fonts/Madimi_One/MadimiOne-Regular.ttf') format('truetype');
+}
