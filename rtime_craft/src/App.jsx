@@ -4,6 +4,7 @@ import Main from "./components/Main"
 import Split from "react-split"
 import Home from "./pages/Home"
 import NewUser from "./pages/NewUser"
+import NewTask from "./pages/NewTask"
 // import "./style.css"
 
 
@@ -16,7 +17,7 @@ export default function App() {
 
 	return (
         <main>
-			<Home />
+			<NewTask />
         </main>
     )
 }		
