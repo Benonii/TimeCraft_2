@@ -2,7 +2,7 @@ import React from "react"
 import Sidebar from "./components/Sidebar"
 import Main from "./components/Main"
 import Split from "react-split"
-import "./style.css"
+// import "./style.css"
 
 
 export default function App() {

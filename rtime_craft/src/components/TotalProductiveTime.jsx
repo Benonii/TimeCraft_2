@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../tpt.css";
+// import "../tpt.css";
 
 export default function TotalProductiveTime({ userId, assignUser }) {
   const [formData, setFormData] = useState({

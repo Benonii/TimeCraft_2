@@ -1,5 +1,5 @@
 import React from "react"
-import "../style.css"
+// import "../style.css"
 import Description from "./Description"
 import NewUser from "./NewUser"
 import NewTask from "./NewTask"
@@ -59,7 +59,7 @@ export default function Main({actionId}) {
 						})
 			if (response.ok) {
 				const responseJson = await response.json();
-				if (responseJson !== {}) {
+				if (responseJson.length !== 0) {
 				  setUserId(userID);
 				  return ({'name': responseJson.name});
 				} else {

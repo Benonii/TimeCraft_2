@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../newuser.css';
+// import '../newuser.css';
 
 export default function NewUser ({ assignUser }) {
   const [formData, setFormData] = useState({
@@ -89,7 +89,7 @@ export default function NewUser ({ assignUser }) {
 
       if (response.ok) {
         const responseJSON = await response.json();
-	if (responseJSON !== {}) {
+	if (responseJSON.length !== 0) {
 	  console.log("Form submitted successfully");
 	  setMessage((
 		  <p>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../newlog.css";
+// import "../newlog.css";
 
 export default function NewLog() {
   const [formData, setFormData] = useState({
