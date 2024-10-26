@@ -61,6 +61,7 @@ module.exports = {
         jacquard: ['"Jacquard 24"', 'sans-serif'],
         monomaniac: ['"Monomaniac One"', 'sans-serif'],
         monofett: ['"Monofett"', 'sans-serif'],
+        madmimi: ['"Madimi One"', 'Regular']
       },
       keyframes: {
         "accordion-down": {
