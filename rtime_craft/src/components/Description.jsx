@@ -3,8 +3,8 @@ import React from "react"
 
 export default function Description() {
 	return (
-	    <main className="description-container">
-	        <h1 className="title">Welcome to <span className="tiempo"> TimeCraft</span>!</h1>
+	    <main className="flex flex-col">
+	        <h1 className="font-monomaniac">Welcome to <span className="tiempo"> TimeCraft</span>!</h1>
 	<p className="intro">
 		    This app will help you find all those
                     hours that seem to be misteriously disappearing.
