@@ -21,7 +21,7 @@ import Trackers from "./pages/Trackers";
 export default function App() {
 	return (
         <main>
-			<Trackers />
+			<Home />
         </main>
     )
 }		

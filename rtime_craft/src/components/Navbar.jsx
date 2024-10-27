@@ -90,7 +90,7 @@ export default function Navbar() {
               </MenubarMenu>
     
               <MenubarMenu>
-                <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl mt-20'><Cog className='w-10 h-10'/></MenubarTrigger>
+                <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl mt-14'><Cog className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-20 mt-[-60px]'>
                   <MenubarItem>
                     New Tab <MenubarShortcut>⌘T</MenubarShortcut>
