@@ -49,6 +49,7 @@ module.exports = {
         },
         orange1: '#CC8C0C',
         orange2: '#996703',
+        orange3: '#B27907',
         yellow1: '#CCBC0C',
       },
       borderRadius: {

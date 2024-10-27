@@ -12,6 +12,7 @@ import MonthlyReport from "./pages/MonthlyReport"
 import TotalProductiveTime from "./pages/TotalProductiveTime"
 import TotalWastedTime from "./pages/TotalWastedTime"
 import TotalTimeOnTask from "./pages/TotalTimeOnTask"
+import Profile from "./pages/Profile"
 // import "./style.css"
 
 
@@ -24,7 +25,7 @@ export default function App() {
 
 	return (
         <main>
-			<TotalTimeOnTask />
+			<Profile />
         </main>
     )
 }		

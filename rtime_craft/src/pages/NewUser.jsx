@@ -27,7 +27,7 @@ export default function NewUser() {
             className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 h-fit'>
             Sign up instead
           </Button>
-      </div>
+        </div>
       </div>
     </div>
   )
