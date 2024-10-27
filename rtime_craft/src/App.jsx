@@ -14,13 +14,14 @@ import TotalWastedTime from "./pages/TotalWastedTime"
 import TotalTimeOnTask from "./pages/TotalTimeOnTask"
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings"
+import Trackers from "./pages/Trackers";
 // import "./style.css"
 
 
 export default function App() {
 	return (
         <main>
-			<Settings />
+			<Trackers />
         </main>
     )
 }		
