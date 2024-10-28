@@ -13,7 +13,7 @@ function TaskPicker() {
     <div>
         <Select>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a project..."/>
+              <SelectValue placeholder="Select a task..."/>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="projects">Projects</SelectItem>
