@@ -17,7 +17,7 @@ import { User, Plus, ChartNoAxesCombined, Clock3, Cog } from 'lucide-react';
 
 export default function Navbar() {
     const [ isOpen, setIsOpen ] = useState(false)
-    console.log("Is open:", isOpen);
+    // console.log("Is open:", isOpen);
 
   return (
     <div className='mt-3'>
