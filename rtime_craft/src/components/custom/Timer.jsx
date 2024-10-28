@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from './Button';
-import { Card, CardContent } from './Card';
+import { Button } from '../shadcn/Button';
+import { Card, CardContent } from '../shadcn/Card';
 
 
 function Timer() {

@@ -5,7 +5,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "./Select";
+  } from "../shadcn/Select";
   
 
 function TaskPicker() {

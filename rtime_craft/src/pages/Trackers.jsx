@@ -1,9 +1,9 @@
 import React from 'react';
-import Timer from '../components/Timer';
-import Header from '../components/Header';
-import Navbar from '../components/Navbar';
-import StopWatch from "../components/Stopwatch";
-import TaskPicker from '../components/TaskPicker';
+import Timer from '../components/custom/Timer';
+import Header from '../components/custom/Header';
+import Navbar from '../components/custom/Navbar';
+import StopWatch from "../components/custom/Stopwatch";
+import TaskPicker from '../components/custom/TaskPicker';
 
 
 function Trackers() {

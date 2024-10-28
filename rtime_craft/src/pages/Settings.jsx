@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../components/Header';
-import Navbar from '../components/Navbar';
+import Header from '../components/custom/Header';
+import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/Button';
 import { Switch } from '../components/Switch';
 

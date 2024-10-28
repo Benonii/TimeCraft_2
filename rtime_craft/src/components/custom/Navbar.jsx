@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import CloseMenu from './CloseMenu'; 
-import  OpenMenu  from './OpenMenu';
+import CloseMenu from '../custom/CloseMenu'; 
+import  OpenMenu  from '../custom/OpenMenu';
 import {
   Menubar,
   MenubarContent,
@@ -9,7 +9,7 @@ import {
   MenubarSeparator,
   MenubarShortcut,
   MenubarTrigger,
-} from "./MenuBar";
+} from "../shadcn/MenuBar";
 
 import { User, Plus, ChartNoAxesCombined, Clock3, Cog } from 'lucide-react';
 
