@@ -25,7 +25,7 @@ import { Route as TWTImport } from './routes/reports/twt'
 import { Route as TTOTImport } from './routes/reports/ttot'
 // import { Route as AssignUserImport } from './routes/user/assignUser'
 import { Route as LoginImport } from './routes/user/login'
-// import { Route as SignupImport } from './routes/user/signup'
+import { Route as SignupImport } from './routes/user/signup'
 
 // Create/Update Routes
 
@@ -99,10 +99,10 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-// const SignupRoute = SignupImport.update({
-//   path: '/user/signup',
-//   getParentRoute: () => rootRoute,
-// } as any)
+const SignupRoute = SignupImport.update({
+  path: '/user/signup',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -206,13 +206,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    // '/user/signup': {
-    //   id: '/user/signup'
-    //   path: '/user/signup'
-    //   fullPath: '/user/signup'
-    //   preLoaderRoute: typeof SignupImport
-    //   parentRoute: typeof rootRoute
-    // }
+    '/user/signup': {
+      id: '/user/signup'
+      path: '/user/signup'
+      fullPath: '/user/signup'
+      preLoaderRoute: typeof SignupImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -252,7 +252,7 @@ export const routeTree = rootRoute
     TTOTRoute,
     // AssignUserRoute,
     LoginRoute,
-    // SignupRoute
+    SignupRoute
   })
   ._addFileTypes<FileRouteTypes>()
 

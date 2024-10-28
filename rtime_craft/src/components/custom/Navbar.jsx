@@ -38,7 +38,7 @@ export default function Navbar() {
                 <MenubarTrigger className='py-5 text-white'><User className='w-10 h-10'/></MenubarTrigger>
                   <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
                     <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                      <Link to="#">Login/Signup</Link>
+                      <Link to="/user/login">Login/Signup</Link>
                     </MenubarItem>
                     <hr className='mx-2 mt-1'/>
                     <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>Assign user</MenubarItem>  
