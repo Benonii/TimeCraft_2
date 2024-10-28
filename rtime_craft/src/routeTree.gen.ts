@@ -23,6 +23,7 @@ import { Route as MonthlyReportImport } from './routes/reports/monthlyReport'
 import { Route as TPTImport } from './routes/reports/tpt'
 import { Route as TWTImport } from './routes/reports/twt'
 import { Route as TTOTImport } from './routes/reports/ttot'
+import { Route as ProfileImport } from './routes/user/profile'
 // import { Route as AssignUserImport } from './routes/user/assignUser'
 import { Route as LoginImport } from './routes/user/login'
 import { Route as SignupImport } from './routes/user/signup'
@@ -38,6 +39,11 @@ const TrackersRoute = TrackersImport.update({
   path: '/trackers',
   getParentRoute: () => rootRoute,
 } as any)
+
+const SettingsRoute = SettingsImport.update({
+    path: '/settings',
+    getParentRoute: () => rootRoute,
+} as any);
 
 const NewTaskRoute = NewTaskImport.update({
   path: '/new/task',
@@ -84,10 +90,10 @@ const TTOTRoute = TTOTImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SettingsRoute = SettingsImport.update({
-    path: '/settings',
+const ProfileRoute = ProfileImport.update({
+    path:'/user/profile',
     getParentRoute: () => rootRoute,
-} as any);
+} as any)
 
 // const AssignUserRoute = AssignUserImport.update({
 //   path: '/user/assign',
@@ -192,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TTOTRoute
       parentRoute: typeof rootRoute
     }
+    '/user/profile': {
+        id: '/user/profile'
+        path: '/user/profile'
+        fullPath: '/user/profile'
+        preLoaderRoute: typeof ProfileRoute
+        parentRoute: typeof rootRoute
+    }
     // '/user/assign': {
     //   id: '/user/assign'
     //   path: '/user/assign'
@@ -231,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/reports/tpt': typeof TPTRoute
   '/reports/twt': typeof TWTRoute
   '/reports/ttot': typeof TTOTRoute
+  '/user/profile': typeof ProfileRoute
   '/user/assign': typeof AssignUserRoute
   '/user/login': typeof LoginRoute
   '/user/signup': typeof SignupRoute
@@ -250,6 +264,7 @@ export const routeTree = rootRoute
     TPTRoute,
     TWTRoute,
     TTOTRoute,
+    ProfileRoute,
     // AssignUserRoute,
     LoginRoute,
     SignupRoute
