@@ -10,6 +10,7 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "../shadcn/MenuBar";
+import { Link, useMatchRoute } from "@tanstack/react-router";
 
 import { User, Plus, ChartNoAxesCombined, Clock3, Cog } from 'lucide-react';
 
@@ -35,57 +36,67 @@ export default function Navbar() {
               <h2 className='mt-5 text-orange2 font-monofett text-2xl'>Menu</h2>
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white'><User className='w-10 h-10'/></MenubarTrigger>
-                  <MenubarContent className='ml-20 mt-[-60px]'>
-                    <MenubarItem>
-                      New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                  <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                      <Link to="#">Login/Signup</Link>
                     </MenubarItem>
-                    <MenubarItem>New Window</MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>Share</MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem>Print</MenubarItem>
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>Assign user</MenubarItem>  
                   </MenubarContent>
               </MenubarMenu>
         
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Plus className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-20 mt-[-60px]'>
-                  <MenubarItem>
-                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem>New Window</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Share</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Print</MenubarItem>
-                </MenubarContent>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                     <Link to="/new/user">New user</Link>
+                    </MenubarItem>
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/new/task">New task</Link>
+                    </MenubarItem>  
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                    <Link to="/new/log">New log</Link>
+                    </MenubarItem> 
+                  </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><ChartNoAxesCombined className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-20 mt-[-60px]'>
-                  <MenubarItem>
-                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem>New Window</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Share</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Print</MenubarItem>
-                </MenubarContent>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                      <Link to="/reports/daily">Daily report</Link>
+                    </MenubarItem>
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/reports/weekly">Weekly report</Link>
+                    </MenubarItem>  
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/reports/monthly">Monthly report</Link>
+                    </MenubarItem>
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/reports/tpt">Total productive time</Link>
+                    </MenubarItem>
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/reports/twt">Total wasted time</Link>
+                    </MenubarItem> 
+                    <hr className='mx-2 mt-1'/>
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      <Link to="/reports/ttot">Total time on task</Link>
+                    </MenubarItem> 
+                  </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Clock3 className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-20 mt-[-60px]'>
-                  <MenubarItem>
-                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem>New Window</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Share</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Print</MenubarItem>
+                <MenubarContent className='ml-16 mt-[-60px]'>
+                  <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
+                    <Link to="/trackers/">Trackers</Link>
+                  </MenubarItem> 
                 </MenubarContent>
               </MenubarMenu>
     
