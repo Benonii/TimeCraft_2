@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
+import { Link } from '@tanstack/react-router';
+import CreateTask from '../components/custom/popups/CreateTask'
 
 export default function NewTask() {
+  const user = localStorage.getItem('user');
   return (
     <div className=''>
       <Header />
@@ -11,6 +14,11 @@ export default function NewTask() {
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
           <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>New Task</h2>
+          {!user && (
+            <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
+              Note: <Link to='/user/signup' className='hover:underline'>Sign up </Link>for the best experience
+            </p>
+          )}
           <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
             You can create a new Task and the app will record time spent on that task separately. <br /><br />
             Typically, a task would be a repeating activity. (Exercise, study, code, read). <br /><br />
@@ -23,10 +31,7 @@ export default function NewTask() {
             className=' px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi border border-gray-500 text-gray-500 hover:text-black hover:border-black md:text-3xl md:px-7 h-fit'>
             Create task
           </Button> */}
-          <Button variant='default' 
-            className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 h-fit'>
-            Create task
-          </Button>
+          <CreateTask />
       </div>
       </div>
     </div>
