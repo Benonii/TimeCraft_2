@@ -80,17 +80,15 @@ def login():
         return jsonify({ 'message': "Incorrect email or password" }), 405
 
     returning_user = {
-        'user': {
-            'email': user.email,
-            'username': user.username,
-            'id': user.id,
-            'tpt': user.total_productive_time,
-            'twt': user.total_wasted_time,
-        }
+        'email': user.email,
+        'username': user.username,
+        'id': user.id,
+        'tpt': user.total_productive_time,
+        'twt': user.total_wasted_time,
     }
 
     token = create_access_token(user.email, user.id ,timedelta(minutes=20))
-    return { 'message': 'Login successful', 'data': {'token': token, 'user': returning_user} }, 201
+    return jsonify({ 'message': 'Login successful', 'data': {'token': token, 'user': returning_user} }), 201
 
 
 def create_access_token(email, id, expires_delta):
