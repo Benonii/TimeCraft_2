@@ -15,21 +15,22 @@ import { useForm } from "react-hook-form";
 import { Input } from '../components/shadcn/Input';
 
 function Login () {
+    const api = process.env.REACT_APP_API_URL;
     const loginSchema = z.object({
-        username: z.string().min(2, 'Username must be at least 2 characters'),
+        email: z.string().email(),
         password: z.string().min(8, 'Password must be at least 8 characters'),
     })
 
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
-            username: "",
+            email: "",
             password: "",
         }
     })
 
     type User = {
-        name: string,
+        username: string,
         id: string,
         email: string,
         weekly_work_hours_goal: number,
@@ -39,25 +40,28 @@ function Login () {
     }
 
     type FormData = {
-        username: string,
+        email: string,
         password: string,
     }
 
     type ResponseData = {
         message: string,
-        data: {jwt: string, user: User};
+        data: {token: string, user: User};
     }
 
     const router = useRouter();
 
     const mutation = useMutation({
         mutationFn: async (formData: FormData) => {
-            const response = await fetch(`/api/login`, {
+            const params = new URLSearchParams();
+            params.append('email', formData.email);
+            params.append('password', formData.password);
+            const response = await fetch(`${api}/login`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'applciation/json'
+                    'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: JSON.stringify(formData)
+                body: params.toString(),
             })
 
             if (!response.ok) {
@@ -68,7 +72,7 @@ function Login () {
         },
         onSuccess: (response: ResponseData) => {
             console.log('Login successful', response);
-            localStorage.setItem('token', response.data.jwt);
+            localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             router.navigate({ to: '/' })
         },
@@ -78,12 +82,12 @@ function Login () {
     });
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(form);
-        // try {
-        //     mutation.mutate(values);
-        // } catch(error) {
-        //     console.error('Error submitting form:', error);
-        // }
+        console.log(values);
+        try {
+            mutation.mutate(values);
+        } catch(error) {
+            console.error('Error submitting form:', error);
+        }
     }
 
     return (
@@ -101,10 +105,10 @@ function Login () {
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField
                         control={form.control}
-                        name="username"
+                        name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='font-monomaniac text-xl'>Username</FormLabel>
+                                <FormLabel className='font-monomaniac text-xl'>Email</FormLabel>
                                 <FormControl>
                                     <Input id='username' placeholder='username@123' className='text-lg' {...field} />
                                 </FormControl>

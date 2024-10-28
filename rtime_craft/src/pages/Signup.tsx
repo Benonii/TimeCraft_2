@@ -108,7 +108,7 @@ function Signup () {
             weekly_hours: Number(values.weekly_hours),
             work_days: Number(values.work_days),
         };
-        console.log('Data:', transformedValues)
+        // console.log('Data:', transformedValues)
         try {
             mutation.mutate(transformedValues);
         } catch(error) {
