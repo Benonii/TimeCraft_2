@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, Link } from '@tanstack/react-router'
 import { Button } from '../components/shadcn/Button';
 import { 
     Form,
@@ -78,34 +78,35 @@ function Login () {
     });
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
-        try {
-            mutation.mutate(values);
-        } catch(error) {
-            console.error('Error submitting form:', error);
-        }
+        console.log(form);
+        // try {
+        //     mutation.mutate(values);
+        // } catch(error) {
+        //     console.error('Error submitting form:', error);
+        // }
     }
 
     return (
-        <div className="flex flex-col justify-center max-w-xl min-h-full mx-auto mt-48 rounded-md shadow-lg min-w-56">
-            <h2 className="mt-10 text-center font-bold text-4xl">
+        <div className="flex flex-col justify-center max-w-[600px] min-h-full mx-auto mt-48 rounded-md shadow-lg min-w-56">
+            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl">
                 Log in
             </h2>
 
             <hr className='mt-5' />
 
-            <h3 className='text-center text-2xl mt-10 mb-5 font-semibold'>
+            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
                 Welcome back!
             </h3>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mb-24 '>
+                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField
                         control={form.control}
                         name="username"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Username</FormLabel>
+                                <FormLabel className='font-monomaniac text-xl'>Username</FormLabel>
                                 <FormControl>
-                                    <Input id='username' placeholder='username@123' {...field} />
+                                    <Input id='username' placeholder='username@123' className='text-lg' {...field} />
                                 </FormControl>
                                 <FormMessage className='text-xs text-redd-500' />
                             </FormItem>
@@ -116,19 +117,24 @@ function Login () {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel>
+                                  <FormLabel className='font font-monomaniac text-xl'>
                                       Password
                                   </FormLabel>
                                   <FormControl>
-                                    <Input id='password' type='password' {...field} />
+                                    <Input id='password' type='password' className='text-lg' {...field} />
                                   </FormControl>
                                   <FormMessage className='text-xs text-red-600 '/>
                               </FormItem>
                         )}
                     />
-                    <Button type="submit" className='bg-yellow1 text-white'>Log in</Button>
+                    <div className="flex justify-center w-full">
+                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
+                            Login
+                        </Button>
+                    </div>
                 </form>
             </Form>
+            <p className='text-center font-monomaniac text-xl mt-5 mb-24'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
         </div>
     )
 }
