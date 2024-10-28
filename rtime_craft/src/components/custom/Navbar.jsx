@@ -93,7 +93,7 @@ export default function Navbar() {
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Clock3 className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-16 mt-[-60px]'>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white'>
                   <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
                     <Link to="/trackers/">Trackers</Link>
                   </MenubarItem> 
@@ -102,15 +102,10 @@ export default function Navbar() {
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl mt-14'><Cog className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-20 mt-[-60px]'>
-                  <MenubarItem>
-                    New Tab <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem>New Window</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Share</MenubarItem>
-                  <MenubarSeparator />
-                  <MenubarItem>Print</MenubarItem>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white'>
+                <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
+                    <Link to="/settings">Settings</Link>
+                  </MenubarItem> 
                 </MenubarContent>
               </MenubarMenu>
           </Menubar>
