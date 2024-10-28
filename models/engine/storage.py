@@ -75,6 +75,9 @@ class Storage:
 
         # If no User Id given, return all User objects(for internal usage)
         return users
+    
+    def get_user_by_email(self, email):
+        return self.__session.query(User).filter(User.email == email).first()
 
     def get_task(self, task_id=None):
         """ Get a task(or all tasks) from the list of tasks """

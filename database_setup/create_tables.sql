@@ -3,6 +3,8 @@
 -- Creates a table for users
 CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(128) NOT NULL,
+    email VARCHAR(128),
+    password VARCHAR(255),
     weekly_work_hours_goal FLOAT NOT NULL,
     number_of_work_days INT NOT NULL,
     id VARCHAR(60) PRIMARY KEY,
