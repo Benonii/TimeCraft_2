@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
+import { Link } from '@tanstack/react-router';
 
 export default function DailyReport() {
+  const user = localStorage.getItem('user');
   return (
     <div className=''>
       <Header />
@@ -11,6 +13,11 @@ export default function DailyReport() {
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
           <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>Daily Report</h2>
+          {!user && (
+            <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
+              Note: <Link to='/user/signup' className='hover:underline'>Sign up </Link>for the best experience
+            </p>
+          )}
           <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
             If you want to find out how you spent your hours in a day, you can get a daily report. <br /><br />
             All you need to do is pick the date(and your user Id if you are not signed in). <br /><br />

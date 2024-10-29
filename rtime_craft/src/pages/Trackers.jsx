@@ -4,9 +4,11 @@ import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import StopWatch from "../components/custom/Stopwatch";
 import TaskPicker from '../components/custom/TaskPicker';
+import { Link } from '@tanstack/react-router';
 
 
 function Trackers() {
+    const user = localStorage.getItem('user');
     return (
         <div className=''>
             <Header />
@@ -14,6 +16,11 @@ function Trackers() {
                 <Navbar className=''/>
                 <div className='absolute top-3 left-24'>
                     <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>Timers</h2>
+                    {!user && (
+                        <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
+                          Note: <Link to='/user/signup' className='hover:underline'>Sign up </Link>for the best experience
+                        </p>
+                    )}
                     <p className='ml-5 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
                         You can use the built in timers below to track productive nad wasted time. <br /><br />
                         The “worked” timer is a timer. That means you can set it to how ever long you would like to work and it counts down. <br /><br />

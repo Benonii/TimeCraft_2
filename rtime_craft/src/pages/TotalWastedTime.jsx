@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
+import { Link } from '@tanstack/react-router';
 
 export default function TotalWastedTime() {
+  const user = localStorage.getItem('user');
   return (
     <div className=''>
       <Header />
@@ -11,6 +13,11 @@ export default function TotalWastedTime() {
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
           <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>Total Wasted Time</h2>
+          {!user && (
+            <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
+              Note: <Link to='/user/signup' className='hover:underline'>Sign up </Link>for the best experience
+            </p>
+          )}
           <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
             You can get the total wasted time you’ve logged on this app. <br /><br />
             This is the sum of all the wasted(unproductive) hours you’ve logged across all your tasks.<br /><br />
