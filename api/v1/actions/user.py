@@ -18,7 +18,7 @@ AlGORITHM = 'HS256'
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
 
-@app_actions.route('/new_user', methods=['POST'], strict_slashes=False)
+@app_actions.route('/user/create', methods=['POST'], strict_slashes=False)
 def new_user():
     """ Creates a new user """
     # Empty Dictionary
@@ -31,7 +31,7 @@ def new_user():
     work_days = request.form.get('work_days')
 
     # Save the data ina dictionary
-    user_dict['name'] = name
+    user_dict['username'] = name
     user_dict['weekly_work_hours_goal'] = float(wwg)
     user_dict['number_of_work_days'] = int(work_days)
 
@@ -40,7 +40,7 @@ def new_user():
     storage.new(new_user)
     storage.save()
 
-    return jsonify({'user_id': new_user.id})
+    return jsonify({'user_id': new_user.id}), 201
 
 
 @app_actions.route('/signup', methods=['POST'], strict_slashes=False)

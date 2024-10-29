@@ -20,17 +20,22 @@ def new_log():
 
     # Save all the form data in variables
     task_id = request.form.get('taskId')
+    task_name = request.form.get('taskName')
+    user_id = request.form.get('userId');
+    # print("User ID:", user_id)
+    # print("Task name:", task_name, "Task ID:", task_id)
+
     if not task_id:
-        task_name = request.form.get('task_name')
         task_id = storage.get_task_id_by_task_name(task_name)
-    # print(task_id)
+        # print("Task Id by task name:", task_id)
+
     log_dict['task_id'] = task_id
     task = storage.get_task(task_id)
-    if task is None:
-        print("No task with that ID")
-        return jsonify({})
+    if not task:
+        return jsonify({"Error": "Couldn't find a task with that name/ID"}), 404
 
-    user = storage.get_user(task.user_id)
+    # print("Task:", task)
+    user = storage.get_user(user_id)
     tot = float(request.form.get('timeOnTask'))
     tw = float(request.form.get('timeWasted'))
 
@@ -49,9 +54,9 @@ def new_log():
     log_dict['time_wasted'] = tw
 
     # Update metrics that need to be changed on User and Task objects
-    task.total_time_on_task += tot
-    user.total_productive_time += tot
-    user.total_wasted_time += tw
+    task['total_time_on_task'] += tot
+    user['total_productive_time'] += tot
+    user['total_wasted_time'] += tw
 
     # Creates a new log object and saves it
     new_log = DailyLog(**log_dict)
