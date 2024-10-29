@@ -30,7 +30,7 @@ export default function NewUser() {
           <CreateUser />
           <Link to ='/user/signup'>
             <Button variant='default' 
-              className='ml-2 bg-yellow1 px-4 py-4 md:py-6 rounded-md text-lg shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-400'
+              className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md text-lg shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-400'
             >
               Sign up
             </Button>
