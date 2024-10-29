@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import {
     Select,
     SelectContent,
@@ -11,7 +11,6 @@ import {
 
 function TaskPicker({ userId, onSelect }) {
   const api = process.env.REACT_APP_API_URL;
-  const [tasks, setTasks ] = useState([]);
 
   const params = new URLSearchParams();
   params.append('userId', userId);

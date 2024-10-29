@@ -12,11 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../shadcn/Popover";
+
 import {
   Dialog,
   DialogContent,
@@ -24,7 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
 } from "../../shadcn/Dialog";
 
 
