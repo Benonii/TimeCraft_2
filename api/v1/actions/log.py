@@ -20,7 +20,10 @@ def new_log():
 
     # Save all the form data in variables
     task_id = request.form.get('taskId')
-    print(task_id)
+    if not task_id:
+        task_name = request.form.get('task_name')
+        task_id = storage.get_task_id_by_task_name(task_name)
+    # print(task_id)
     log_dict['task_id'] = task_id
     task = storage.get_task(task_id)
     if task is None:
