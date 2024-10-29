@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
-import { Button } from '../components/shadcn/Button';
 import { Link } from '@tanstack/react-router';
-import CreateTask from '../components/custom/popups/CreateTask'
+import CreateTask from '../components/custom/modals/CreateTask'
 
 export default function NewTask() {
   const user = localStorage.getItem('user');
