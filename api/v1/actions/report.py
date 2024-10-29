@@ -10,13 +10,15 @@ from datetime import datetime, timedelta
 from flask import jsonify, request, abort
 
 
-@app_actions.route('/daily_report', methods=['POST', 'GET'],
+@app_actions.route('/report/daily', methods=['POST', 'GET'],
                    strict_slashes=False)
 def daily_report():
     """ Provides a daily report for the current user """
 
     # Gets User ID from the form
     user_id = request.form.get('userId')
+    print('User Id:', user_id)
+
 
     # Empty Dictionary
     daily_report = dict()
@@ -25,6 +27,7 @@ def daily_report():
         the Log object's "date" attribute '''
 
     date = request.form.get('date')
+    print('Date:', date)
 
     # date = date.replace('-', '.')
     # date = date.replace(':', '.')
@@ -39,24 +42,23 @@ def daily_report():
     else:
         date = datetime.strptime(date, "%Y-%m-%d").strftime("%B.%-d.%Y")
     
+    print("Formatted date:", date)
     # Get all logs that are for the given date
     logs = storage.get_logs_of_the_day(date)
 
-    # If there are no logs for that date
-    if not logs:
-        return jsonify({})
-
     ttot_day = 0
     twt_day = 0
+    
+    # If there are no logs for that date
+    if logs:
+        # Go through all the logs and add up the work time and wasted time metrics
+        for log in logs:
+            task = storage.get_task(log.task_id)
+            print("Task:", task)
 
-    # Go through all the logs and add up the work time and wasted time metrics
-    for log in logs:
-        task = storage.get_task(log.task_id)
-
-        if task.user_id == user_id:
-            ttot_day += log.time_on_task
-            twt_day += log.time_wasted
-
+            if task['user_id'] == user_id:
+                ttot_day += log.time_on_task
+                twt_day += log.time_wasted
     # Store result in the dictionary
     daily_report['ttot_day'] = ttot_day
     daily_report['twt_day'] = twt_day
@@ -68,7 +70,7 @@ def daily_report():
     return jsonify(daily_report)
 
 
-@app_actions.route('/weekly_report', methods=['POST', 'GET'],
+@app_actions.route('/report/weekly', methods=['POST', 'GET'],
                    strict_slashes=False)
 def weekly_report():
     """ Provides a weekly report for the current user """
@@ -105,7 +107,7 @@ def weekly_report():
 
             for log in logs:
                 task = storage.get_task(log.task_id)
-                if task.user_id == user_id:
+                if task['user_id'] == user_id:
                     ttot_week += log.time_on_task
                     twt_week += log.time_wasted
 
@@ -131,12 +133,12 @@ def weekly_report():
 
         # Provides a date for a day exactly a week from today
         return this_week(today - timedelta(days=7))
-    elif week == "custom":
+    else:
 
         ''' Gets the custom date and formats it to match a Log object's
             date attribute
         '''
-        custom_date = request.form.get('dateOfWeek')
+        custom_date = request.form.get('date')
         print(custom_date)
         custom_date =  datetime.strptime(custom_date, "%Y-%m-%d")
         # custom_date = custom_date.replace(' ', '.')
@@ -147,8 +149,6 @@ def weekly_report():
         # Converts the string to an actual datetime object
         year = custom_date.strftime("%Y")
         return this_week(custom_date)
-    else:
-        return jsonify({})
 
 
 @app_actions.route('/monthly_report', methods=['POST', 'GET'],
