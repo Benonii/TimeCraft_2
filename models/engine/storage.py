@@ -77,6 +77,7 @@ class Storage:
         return users
     
     def get_user_by_email(self, email):
+        ''' Get user byy email address '''
         return self.__session.query(User).filter(User.email == email).first()
 
     def get_task(self, task_id=None):
@@ -93,6 +94,14 @@ class Storage:
 
         # If noto Task ID is given, return all Task objects(for internal use)
         return tasks
+    
+    def get_task_by_user_id(self, user_id):
+        ''' Get a task by user Id '''
+        return self.__session.query(Task).filter(Task.user_id == user_id)
+    
+    def get_task_id_by_task_name(self, task_name):
+        ''' Get task's Id by task name'''
+        return self.__session.query(Task).filter(Task.name == task_name).first()
 
     def get_logs_of_the_day(self, log_date=None):
         """ Gets a log(or all logs) from the list of logs """

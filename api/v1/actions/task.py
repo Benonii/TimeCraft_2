@@ -10,12 +10,14 @@ from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
 
-@app_actions.route('/new_task', methods=['POST'], strict_slashes=False)
+@app_actions.route('/tasks/create', methods=['POST'], strict_slashes=False)
 def new_task():
     """ Creates a new task """
 
     # Gets the user ID from the form
     user_id = request.form.get('userId')
+    if not user_id:
+        return jsonify({"error": "User ID not provided"}), 400
 
     # Empty Dictionray
     task_dict = dict()
@@ -24,7 +26,7 @@ def new_task():
     user = storage.get_user(user_id)
 
     if user is None:
-        return jsonify({})
+        return jsonify({"Error": "Couldn't find user with that ID"}), 404
 
     # Assign form data about Task to the empty dictionary
     task_dict['user_id'] = user_id
@@ -38,27 +40,28 @@ def new_task():
     storage.new(new_task)
     storage.save()
 
-    return jsonify({'task_id': new_task.id})
+    return jsonify({'task_id': new_task.id}), 201
 
 
-@app_actions.route('/all_tasks', methods=['GET'], strict_slashes=False)
+@app_actions.route('/tasks', methods=['POST'], strict_slashes=False)
 def all_tasks():
-    """ Gets all tasks asscosiated with the user """
-    user_id = request.form.get('user_id')
-    user = storage.get_user(user_id)
-
-    # Create an empty list to hold the names of the Tasks
+    """Gets all tasks associated with the user"""
+    user_id = request.form.get('userId')
     user_task_names = []
+    if not user_id:
+            return jsonify({"error": "User ID not provided"}), 400
+    
+    tasks = storage.get_task_by_user_id(user_id)
+    task_names = [task.task_name for task in tasks]
 
-    # Gets a list of all existing tasks from the Storage
-    tasks = storage.get_task()
+    # for task in tasks:
+    #     if task.user_id == user_id:
+    #         user_task_names.append(task.name)
 
-    # Go through list of tasks and find the ones belonging to the given user
-    for task in tasks:
-        if task.user_id == user_id:
-            user_task_names.append(task.name)
+    return jsonify({'tasks': task_names})
 
-    return jsonify(user_task_names)
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 500
 
 
 @app_actions.route('/total_time_on_task', methods=['POST', 'GET'],

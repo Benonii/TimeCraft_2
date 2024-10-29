@@ -46,13 +46,13 @@ function TaskPicker({ userId }) {
             </SelectTrigger>
             <SelectContent>
               {isLoading ? (
-                <SelectItem value="loading" disabled>Loading tasks...</SelectItem>
+                <SelectItem key="loading" value="loading" disabled>Loading tasks...</SelectItem>
               ) : isError ? (
-                <SelectItem value="error" disabled>Error fetching tasks</SelectItem>
+                <SelectItem key="loading" value="error" disabled>Error fetching tasks</SelectItem>
               ) : (
-                data?.tasks.map((task) => (
-                  <SelectItem key={task.id} value={task.name}>
-                    {task.name}
+                data?.tasks.map((name, index) => (
+                  <SelectItem key={index} value={name}>
+                    {name}
                   </SelectItem>
                 ))
               )}
