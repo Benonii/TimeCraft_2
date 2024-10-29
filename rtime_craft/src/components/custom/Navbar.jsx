@@ -38,13 +38,20 @@ export default function Navbar() {
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white'><User className='w-10 h-10'/></MenubarTrigger>
                   <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                      {user ? (
-                        <Link to="user/profile" className='text-lg hover'>My profile</Link>
-                      ) : (
-                        <Link to="/user/login">Login/Signup</Link>
-                      )}
-                    </MenubarItem>
+                    {user ? (
+                      <Link to="/user/profile" className='text-lg hover'>
+                        <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                          My profile
+                        </MenubarItem>
+                      </Link>
+                    ) : (
+                      <Link to="/user/login" className='text-lg hover'>
+                        <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                          Login/Signup
+                        </MenubarItem>
+                      </Link>
+
+                    )}
                     {!user && (
                       <>
                         <hr className='mx-2 mt-1'/>
@@ -61,67 +68,88 @@ export default function Navbar() {
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Plus className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
                     {!user && (
-                      <>
+                      <Link to="/new/user">
                         <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                          <Link to="/new/user">New user</Link>
+                          New user
                         </MenubarItem>
                         <hr className='mx-2 mt-1'/>
-                      </>
+                      </Link>
                     )}
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/new/task">New task</Link>
-                    </MenubarItem>  
+                    <Link to="/new/task">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        New task
+                      </MenubarItem>  
+                    </Link>
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                    <Link to="/new/log">New log</Link>
-                    </MenubarItem> 
+                    <Link to="/new/log">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        New log
+                      </MenubarItem> 
+                    </Link>
                   </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><ChartNoAxesCombined className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                  <Link to="/reports/daily">
                     <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                      <Link to="/reports/daily">Daily report</Link>
+                      Daily report
                     </MenubarItem>
+                  </Link>
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/reports/weekly">Weekly report</Link>
-                    </MenubarItem>  
+                    <Link to="/reports/weekly">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        Weekly report
+                      </MenubarItem>  
+                    </Link>
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/reports/monthly">Monthly report</Link>
-                    </MenubarItem>
+                    <Link to="/reports/monthly">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        Monthly report
+                      </MenubarItem>
+                    </Link>
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/reports/tpt">Total productive time</Link>
-                    </MenubarItem>
+                    <Link to="/reports/tpt">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        Total productive time
+                      </MenubarItem>
+                    </Link>
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/reports/twt">Total wasted time</Link>
-                    </MenubarItem> 
+                    <Link to="/reports/twt">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        Total wasted time
+                      </MenubarItem> 
+                    </Link>
+
                     <hr className='mx-2 mt-1'/>
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      <Link to="/reports/ttot">Total time on task</Link>
-                    </MenubarItem> 
+                    <Link to="/reports/ttot">
+                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                        Total time on task
+                      </MenubarItem>
+                    </Link>
                   </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Clock3 className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-16 mt-[-60px] bg-white'>
-                  <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
-                    <Link to="/trackers/">Trackers</Link>
-                  </MenubarItem> 
+                  <Link to="/trackers/">
+                    <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
+                      Trackers
+                    </MenubarItem> 
+                  </Link>
                 </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl mt-14'><Cog className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-16 mt-[-60px] bg-white'>
-                <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
-                    <Link to="/settings">Settings</Link>
-                  </MenubarItem> 
+                  <Link to="/settings">
+                    <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
+                      Settings
+                    </MenubarItem>
+                  </Link>
                 </MenubarContent>
               </MenubarMenu>
           </Menubar>
