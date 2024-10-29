@@ -17,6 +17,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../../shadcn/Popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "../../shadcn/Dialog";
 
 
 export default function CreateTask() {
@@ -29,10 +38,12 @@ export default function CreateTask() {
       return null;
     }
   })();
+
+  // console.log("User ID:", user.id)
   
   const api = process.env.REACT_APP_API_URL;
     const newTaskSchema = z.object({
-      userId: z.string().length(36),
+      userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
       taskName: z.string().min(2, "Task name should be longer than 2 characters"),
       dailyGoal: z.coerce.number().min(1).max(23)
     })
@@ -40,14 +51,14 @@ export default function CreateTask() {
     const form = useForm<z.infer<typeof newTaskSchema>>({
       resolver: zodResolver(newTaskSchema),
       defaultValues: {
-        userId: "",
+        userId: user ? null : "", // Set to null if logged in
         taskName: "",
         dailyGoal: 0,
       }
     })
 
     type FormData = {
-      userId: string | null,
+      userId: string,
       taskName: string,
       dailyGoal: number,
     }
@@ -62,13 +73,11 @@ export default function CreateTask() {
     const mutation = useMutation({
       mutationFn: async (formData: FormData) => {
         const params = new URLSearchParams();
-        user
-          ? params.append('userId', user.userId)
-          : params.append('userId', formData.userId !);
+        params.append('userId', formData.userId);
         params.append('taskName', formData.taskName);
 	      params.append('dailyGoal', String(formData.dailyGoal));
 
-        const response = await fetch(`${api}/new_task`, {
+        const response = await fetch(`${api}/tasks/create`, {
           method: 'POST',
 		      headers: {
 			      'Content-Type': 'application/x-www-form-urlencoded'
@@ -90,8 +99,10 @@ export default function CreateTask() {
   });
 
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
+    // console.log('Form submitted with values:', values); // Add this line
     const transformedValues = {
         ...values,
+        userId: user ? user.id : values.userId, // Use userId from user object if logged in
         dailyGoal: Number(values.dailyGoal),
     };
     // console.log('Data:', transformedValues)
@@ -102,17 +113,26 @@ export default function CreateTask() {
     }
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>, values: z.infer<typeof newTaskSchema>) {
+    e.preventDefault();
+    console.log('Form submitted with values:', values);
+  }
 
   return (
     <div>
-      <Popover>
-        <PopoverTrigger
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 h-fit'
+      <Dialog>
+        <DialogTrigger 
+          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
         >
           Create task
-        </PopoverTrigger>
-        <PopoverContent>
-          <h2 className='font-monomaniac text-2xl text-center'>New Task</h2>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='font-monomaniac text-3xl text-center'>Create a task</DialogTitle>
+            <DialogDescription className='ml-10 text-lg font-monomaniac'>
+              Create a new task. You need a user ID if you are not signed in.
+            </DialogDescription>
+          </DialogHeader>
           <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
                   {!user && (
@@ -123,7 +143,11 @@ export default function CreateTask() {
                           <FormItem>
                               <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
                               <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
+                                  <Input 
+                                    id='user-id'
+                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                    className='text-lg' {...field}
+                                    value={field.value ?? undefined} />
                               </FormControl>
                               <FormMessage className='text-xs text-redd-500' />
                           </FormItem>
@@ -167,8 +191,8 @@ export default function CreateTask() {
                     </div>
                 </form>
             </Form>
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

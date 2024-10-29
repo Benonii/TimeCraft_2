@@ -13,10 +13,14 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../shadcn/Popover";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../shadcn/Dialog";
+
 
 
 export default function CreateUser() {
@@ -105,14 +109,19 @@ export default function CreateUser() {
 
   return (
     <div>
-      <Popover>
-        <PopoverTrigger
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 h-fit'
+      <Dialog>
+        <DialogTrigger 
+          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
         >
           Create task
-        </PopoverTrigger>
-        <PopoverContent>
-          <h2 className='font-monomaniac text-2xl text-center'>New Task</h2>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className='font-monomaniac text-3xl text-center'>Create a task</DialogTitle>
+            <DialogDescription className='ml-10 text-lg font-monomaniac'>
+              Create a new task. You need a user ID if you are not signed in.
+            </DialogDescription>
+          </DialogHeader>
           <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
                   {!user && (
@@ -167,8 +176,8 @@ export default function CreateUser() {
                     </div>
                 </form>
             </Form>
-        </PopoverContent>
-      </Popover>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
