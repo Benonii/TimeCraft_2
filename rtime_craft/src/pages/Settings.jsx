@@ -4,7 +4,7 @@ import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
 import { Switch } from '../components/shadcn/Switch';
 
-export default function Settigns() {
+export default function Settings() {
   return (
     <div>
       <Header />
