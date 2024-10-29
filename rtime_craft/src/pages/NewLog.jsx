@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
-import { Button } from '../components/shadcn/Button';
-import CreateLog from '../components/custom/popups/CreateLog';
+import CreateLog from '../components/custom/modals/CreateLog';
 
 export default function NewLog() {
   const user = localStorage.getItem('user');

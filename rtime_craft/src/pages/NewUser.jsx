@@ -3,7 +3,7 @@ import { Link } from '@tanstack/react-router';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
-import CreateUser from '../components/custom/popups/CreateUser';
+import CreateUser from '../components/custom/modals/CreateUser';
 
 export default function NewUser() {
   const user =localStorage.getItem('user');
