@@ -36,43 +36,41 @@ export default function CreateUser() {
   
   const api = process.env.REACT_APP_API_URL;
     const newTaskSchema = z.object({
-      userId: z.string().length(36),
-      taskName: z.string().min(2, "Task name should be longer than 2 characters"),
-      dailyGoal: z.coerce.number().min(1).max(23)
+      username: z.string().min(2),
+      weekly_hours_goal: z.coerce.number().min(1).max(100),
+      work_days: z.coerce.number().min(1).max(7)
     })
 
     const form = useForm<z.infer<typeof newTaskSchema>>({
       resolver: zodResolver(newTaskSchema),
       defaultValues: {
-        userId: "",
-        taskName: "",
-        dailyGoal: 0,
+        username: "",
+        weekly_hours_goal: 0,
+        work_days: 0,
       }
     })
 
     type FormData = {
-      userId: string | null,
-      taskName: string,
-      dailyGoal: number,
+      username: string,
+      weekly_hours_goal: number,
+      work_days: number,
     }
 
     type ResponseData = {
       message: string,
-      // data: {
-
-      // }
+      data: {
+        userId: string
+      }
     }
 
     const mutation = useMutation({
       mutationFn: async (formData: FormData) => {
         const params = new URLSearchParams();
-        user
-          ? params.append('userId', user.userId)
-          : params.append('userId', formData.userId !);
-        params.append('taskName', formData.taskName);
-	      params.append('dailyGoal', String(formData.dailyGoal));
+        params.append('username', formData.username)
+	      params.append('weekly_hours', String(formData.weekly_hours_goal));
+        params.append('work_days', String(formData.work_days));
 
-        const response = await fetch(`${api}/new_task`, {
+        const response = await fetch(`${api}/user/create`, {
           method: 'POST',
 		      headers: {
 			      'Content-Type': 'application/x-www-form-urlencoded'
@@ -96,9 +94,10 @@ export default function CreateUser() {
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
     const transformedValues = {
         ...values,
-        dailyGoal: Number(values.dailyGoal),
+        weekly_hours_goal: Number(values.weekly_hours_goal),
+        work_days: Number(values.work_days),
     };
-    // console.log('Data:', transformedValues)
+    console.log('Data:', transformedValues)
     try {
         mutation.mutate(transformedValues);
     } catch(error) {
@@ -111,15 +110,15 @@ export default function CreateUser() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
+          className='ml-2 bg-transparent border px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-gray-600 md:text-3xl md:px-7 hover:border-black hover:text-black'
         >
-          Create task
+          Create user
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Create a task</DialogTitle>
+            <DialogTitle className='font-monomaniac text-3xl text-center'>Create a user</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac'>
-              Create a new task. You need a user ID if you are not signed in.
+              Create a simple user without an email and a password.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -127,12 +126,12 @@ export default function CreateUser() {
                   {!user && (
                     <FormField
                       control={form.control}
-                      name="userId"
+                      name="username"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                              <FormLabel className='font-monomaniac text-xl'>Username</FormLabel>
                               <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
+                                  <Input id='username' placeholder='username123' className='text-lg' {...field} />
                               </FormControl>
                               <FormMessage className='text-xs text-redd-500' />
                           </FormItem>
@@ -141,14 +140,14 @@ export default function CreateUser() {
                   )}
                     <FormField
                         control={form.control}
-                        name="taskName"
+                        name="weekly_hours_goal"
                         render={({ field }) => (
                             <FormItem>
                                   <FormLabel className='font font-monomaniac text-xl'>
-                                      Task Name
+                                      Weekly goal
                                   </FormLabel>
                                   <FormControl>
-                                    <Input id='task-name' className='text-lg' {...field} />
+                                    <Input id='weekly-goal' className='text-lg' {...field} />
                                   </FormControl>
                                   <FormMessage className='text-xs text-red-600 '/>
                               </FormItem>
@@ -156,11 +155,11 @@ export default function CreateUser() {
                     />
                     <FormField
                         control={form.control}
-                        name="dailyGoal"
+                        name="work_days"
                         render={({ field }) => (
                             <FormItem>
                                   <FormLabel className='font font-monomaniac text-xl'>
-                                      Daily goal
+                                      Numebr of work days
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='daily-goal' className='text-lg' {...field} />
