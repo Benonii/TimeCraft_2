@@ -110,7 +110,7 @@ export default function CreateUser() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-2 bg-transparent border px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-gray-600 md:text-3xl md:px-7 hover:border-black hover:text-black'
+          className='ml-2 bg-transparent text-lg border px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-gray-600 md:text-3xl md:px-7 h-fit hover:border-black hover:text-black'
         >
           Create user
         </DialogTrigger>
