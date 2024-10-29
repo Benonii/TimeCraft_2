@@ -70,7 +70,7 @@ class Storage:
         if user_id:
             for user in users:
                 if user.id == user_id:
-                    return user
+                    return user.to_dict()
             return None
 
         # If no User Id given, return all User objects(for internal usage)
@@ -89,7 +89,7 @@ class Storage:
         if task_id:
             for task in tasks:
                 if task.id == task_id:
-                    return task
+                    return task.to_dict()
             return None
 
         # If noto Task ID is given, return all Task objects(for internal use)
@@ -101,7 +101,7 @@ class Storage:
     
     def get_task_id_by_task_name(self, task_name):
         ''' Get task's Id by task name'''
-        return self.__session.query(Task).filter(Task.name == task_name).first()
+        return self.__session.query(Task).filter(Task.task_name == task_name).first().id
 
     def get_logs_of_the_day(self, log_date=None):
         """ Gets a log(or all logs) from the list of logs """
