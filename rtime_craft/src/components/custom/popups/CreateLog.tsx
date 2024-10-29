@@ -37,9 +37,9 @@ export default function CreateLog() {
   
   const api = process.env.REACT_APP_API_URL;
     const newLogSchema = z.object({
-      userId: z.string().length(36),
-      taskId: z.string().length(36),
-      taskName: z.string().min(2),
+      userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
+      taskId: user ? z.string().nullable() : z.string().length(36),
+      taskName: user ? z.string().min(2) : z.string().nullable(),
       timeOnTask: z.coerce.number().min(0.5).max(24),
       timeWasted: z.coerce.number().min(0.5).max(23),
     })
@@ -47,9 +47,9 @@ export default function CreateLog() {
     const form = useForm<z.infer<typeof newLogSchema>>({
       resolver: zodResolver(newLogSchema),
       defaultValues: {
-        userId: "",
-        taskId: "",
-        taskName: "",
+        userId: user ? null : "",
+        taskId: user ? null : "",
+        taskName: user ? "" : null,
         timeOnTask: 0,
         timeWasted: 0,
       }
@@ -57,8 +57,8 @@ export default function CreateLog() {
 
     type FormData = {
       userId: string | null,
-      taskId: string,
-      taskName: string,
+      taskId: string | null,
+      taskName: string | null,
       timeOnTask: number,
       timeWasted: number,
     }
@@ -74,14 +74,16 @@ export default function CreateLog() {
       mutationFn: async (formData: FormData) => {
         const params = new URLSearchParams();
         if (user) {
-          params.append('userId', user.userId);
-          params.append('taskName', formData.taskName)
+          params.append('userId', user.id);
+          params.append('taskName', formData.taskName !)
         } else {
           params.append('userId', formData.userId !);
           params.append('taskId', formData.taskId !);
         }
         params.append('timeOnTask', String(formData.timeOnTask));
         params.append('timeWasted', String(formData.timeWasted));
+
+        // console.log("Params", params.toString())
         const response = await fetch(`${api}/new_log`, {
           method: 'POST',
 		      headers: {
@@ -143,7 +145,12 @@ export default function CreateLog() {
                           <FormItem>
                               <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
                               <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
+                                  <Input
+                                    id='user-id'
+                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                    className='text-lg' {...field}
+                                    value={field.value ?? undefined}
+                                  />
                               </FormControl>
                               <FormMessage className='text-xs text-redd-500' />
                           </FormItem>
@@ -160,7 +167,10 @@ export default function CreateLog() {
                                  Task name
                               </FormLabel>
                               <FormControl aria-disabled={true}>
-                                <TaskPicker userId={user?.id}/>
+                                <TaskPicker
+                                  userId={user?.id}
+                                  onSelect={(value: string) => form.setValue('taskName', value)}
+                                />
                               </FormControl>
                               <FormMessage className='text-xs text-red-600 '/>
                           </FormItem>
@@ -174,7 +184,11 @@ export default function CreateLog() {
                           <FormItem>
                               <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
                               <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
+                                  <Input
+                                    id='user-id'
+                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                    className='text-lg' {...field}
+                                    value={field.value ?? undefined} />
                               </FormControl>
                               <FormMessage className='text-xs text-redd-500' />
                           </FormItem>
@@ -221,103 +235,6 @@ export default function CreateLog() {
             </Form>
         </DialogContent>
       </Dialog>
-
-      {/* <Popover>
-        <PopoverTrigger
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 h-fit'
-        >
-          Make Log
-        </PopoverTrigger>
-        <PopoverContent>
-          <h2 className='font-monomaniac text-2xl text-center'>New Task</h2>
-          <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
-                  {!user && (
-                    <FormField
-                      control={form.control}
-                      name="userId"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
-                              <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-redd-500' />
-                          </FormItem>
-                      )}
-                    />
-                  )}
-                  {user ? (
-                    <FormField
-                      control={form.control}
-                      name="taskName"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font font-monomaniac text-xl'>
-                                 Task name
-                              </FormLabel>
-                              <FormControl aria-disabled={true}>
-                                <TaskPicker userId={user?.id}/>
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-600 '/>
-                          </FormItem>
-                      )}
-                    />
-                  ) : (
-                    <FormField
-                      control={form.control}
-                      name="taskId"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
-                              <FormControl>
-                                  <Input id='user-id' placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98' className='text-lg' {...field} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-redd-500' />
-                          </FormItem>
-                      )}
-                    />
-                  )}
-                   
-                    <FormField
-                        control={form.control}
-                        name="timeOnTask"
-                        render={({ field }) => (
-                            <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
-                                      Time on task
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='task-name' type='number' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="timeWasted"
-                        render={({ field }) => (
-                            <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
-                                      Time wasted
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='daily-goal' type="number" className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
-                    <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Log
-                        </Button>
-                    </div>
-                </form>
-            </Form>
-        </PopoverContent>
-      </Popover> */}
     </div>
   )
 }

@@ -9,7 +9,7 @@ import {
   } from "../shadcn/Select";
   
 
-function TaskPicker({ userId }) {
+function TaskPicker({ userId, onSelect }) {
   const api = process.env.REACT_APP_API_URL;
   const [tasks, setTasks ] = useState([]);
 
@@ -36,11 +36,11 @@ function TaskPicker({ userId }) {
     enabled: !!userId,
   });
 
-  console.log("Tasks:", data )
+  // console.log("Tasks:", data )
 
   return (
     <div>
-        <Select>
+        <Select onValueChange={onSelect}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a task..."/>
             </SelectTrigger>
