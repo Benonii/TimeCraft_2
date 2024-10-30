@@ -24,9 +24,17 @@ import {
 import TaskPicker from '../TaskPicker';
 import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
-
+import SuccessAlert from '../SuccessAlert';
+import ErrorAlert from '../ErrorAlert';
+import IdDisplay from '../IdDisplay';
+import { Label } from '../../shadcn/Label';
+import { useState } from 'react';
 
 export default function CreateLog() {
+  const [ success, setSuccess ] = useState<boolean>(false);
+  const [ error, setError ] = useState<boolean>(false);
+  const [ message, setMessage ] = useState<string>("");
+
   const user = (() => {
     try {
       const storedUser = localStorage.getItem('user');
@@ -36,6 +44,21 @@ export default function CreateLog() {
       return null;
     }
   })();
+
+  const handleSuccess = () => {
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false)
+    }, 3000);
+  }
+
+  const handleError = () => {
+    setError(true);
+
+    setTimeout(() => {
+      setError(false)
+    }, 3000);
+  }
   
   const api = process.env.REACT_APP_API_URL;
     const newLogSchema = z.object({
@@ -67,9 +90,6 @@ export default function CreateLog() {
 
     type ResponseData = {
       message: string,
-      // data: {
-
-      // }
     }
 
     const mutation = useMutation({
@@ -93,17 +113,24 @@ export default function CreateLog() {
 		  	  },
 		      body: params.toString(),
         })
-        if (!response.ok) {
-          throw new Error('Network Error');
-      }
 
-      return await response.json()
+        const resJSON = await response.json();
+        if (!response.ok) {
+          // console.log(response)
+          throw new Error(resJSON.message || 'An error occured');
+        }
+
+      return resJSON;
     },
     onSuccess: (response: ResponseData) => {
       console.log('New Log created successfully', response);
+      setMessage(response.message);
+      handleSuccess();
     },
     onError: (error: Error) => {
-        console.error('Failed to create Log', error);
+      console.error('Failed to create Log', error);
+      setMessage(error.message);
+      handleError();
     }
   });
 
@@ -124,7 +151,14 @@ export default function CreateLog() {
 
   return (
     <div>
-      <Dialog>
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) {
+            form.reset();     // Reset form when dialog closes
+            setMessage("");   // Clear any existing messages
+          }
+        }}
+      > 
         <DialogTrigger 
           className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
         >
@@ -137,6 +171,14 @@ export default function CreateLog() {
               Create a new log. You need a user ID if you are not signed in.
             </DialogDescription>
           </DialogHeader>
+          {success && (
+            <>
+              <SuccessAlert content={message} />
+            </>
+          )}
+          {error && (
+            <ErrorAlert content={message} />
+          )}
           <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
                   {!user && (
