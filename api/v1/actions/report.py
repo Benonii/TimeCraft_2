@@ -68,7 +68,7 @@ def daily_report():
         'ttot_day': ttot_day,
         'twt_day': twt_day,
         'date': date.replace(".", " "),
-        'weekday': datetime.strptime(date, "%B.%d.%Y").weekday(),
+        'weekday': datetime.strptime(date, "%B.%d.%Y").strftime("%A"),
         'tasks': tasks,
     } 
 
