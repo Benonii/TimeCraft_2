@@ -38,14 +38,14 @@ function GetMonthlyReport() {
     
     const monthlyReportSchema = z.object({
         userId: user ? z.string().nullable() : z.string().length(36),
-        month: z.string(),
+        month: z.string().min(3),
     })
 
     const form = useForm<z.infer<typeof monthlyReportSchema>>({
         resolver: zodResolver(monthlyReportSchema),
         defaultValues: {
             userId: user ? null : "",
-            month: 'January',
+            month: '',
         }
     })
 
@@ -150,7 +150,7 @@ function GetMonthlyReport() {
                         render={({ field }) => (
                             <FormItem>
                                   <FormLabel className='font font-monomaniac text-xl mr-1'>
-                                      Date:
+                                      Month:
                                   </FormLabel>
                                   <FormControl>
                                     <MonthPicker onSelect={(value: string) => form.setValue('month', value)} />
