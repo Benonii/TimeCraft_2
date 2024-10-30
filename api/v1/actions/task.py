@@ -8,6 +8,8 @@ from models.user import User
 from api.v1.actions import app_actions
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
+from sqlalchemy.exc import IntegrityError
+
 
 
 @app_actions.route('/tasks/create', methods=['POST'], strict_slashes=False)
@@ -26,7 +28,7 @@ def new_task():
     user = storage.get_user(user_id)
 
     if user is None:
-        return jsonify({"Error": "Couldn't find user with that ID"}), 404
+        return jsonify({"message": "Couldn't find user with that ID"}), 404
 
     # Assign form data about Task to the empty dictionary
     task_dict['user_id'] = user_id
@@ -36,11 +38,16 @@ def new_task():
         user.number_of_work_days
 
     # Create a new Task object and save it
-    new_task = Task(**task_dict)
-    storage.new(new_task)
-    storage.save()
+    try:
+        new_task = Task(**task_dict)
+        storage.new(new_task)
+        storage.save()
 
-    return jsonify({'task_id': new_task.id}), 201
+        return jsonify({'message': 'Task created successfully', 'data': {'task_id': new_task.id}}), 201
+    except IntegrityError as e:
+        return jsonify({'message': 'Task name has to be unique. Please try again'}), 400
+    except e:
+        return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 
 @app_actions.route('/tasks', methods=['POST'], strict_slashes=False)

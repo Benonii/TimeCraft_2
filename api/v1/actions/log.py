@@ -32,7 +32,7 @@ def new_log():
     log_dict['task_id'] = task_id
     task = storage.get_task(task_id)
     if not task:
-        return jsonify({"Error": "Couldn't find a task with that name/ID"}), 404
+        return jsonify({"message": "Couldn't find a task with that name/ID"}), 404
 
     # print("Task:", task)
     user = storage.get_user(user_id)
@@ -65,4 +65,4 @@ def new_log():
     storage.new(new_log)
     storage.save()
 
-    return jsonify({'log_date': new_log.date})
+    return jsonify({'message': 'Log created successfully'})

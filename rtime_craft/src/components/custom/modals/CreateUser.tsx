@@ -24,13 +24,26 @@ import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
+import IdDisplay from '../IdDisplay';
+import { Label } from '../../shadcn/Label';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function CreateUser() {
   const [ success, setSuccess ] = useState<boolean>(false);
   const [ error, setError ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
+  const [ id, setId ] = useState<string>("");
+
+  const user = (() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Failed to parse user data from localStorage:", error);
+      return null;
+    }
+  })();
 
   const handleSuccess = () => {
     setSuccess(true);
@@ -42,20 +55,10 @@ export default function CreateUser() {
   const handleError = () => {
     setError(true);
 
-    // setTimeout(() => {
-    //   setError(false)
-    // }, 3000);
+    setTimeout(() => {
+      setError(false)
+    }, 3000);
   }
-
-  const user = (() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Failed to parse user data from localStorage:", error);
-      return null;
-    }
-  })();
   
   const api = process.env.REACT_APP_API_URL;
     const newTaskSchema = z.object({
@@ -82,7 +85,7 @@ export default function CreateUser() {
     type ResponseData = {
       message: string,
       data: {
-        userId: string
+        user_id: string
       }
     }
 
@@ -107,7 +110,7 @@ export default function CreateUser() {
 
         const resJSON = await response.json();
         if (!response.ok) {
-          console.log(response)
+          // console.log(response)
           throw new Error(resJSON.message || 'An error occured');
         }
 
@@ -116,6 +119,7 @@ export default function CreateUser() {
     onSuccess: (response: ResponseData) => {
       console.log('New user created successfully', response);
       setMessage(response.message);
+      setId(response.data.user_id);
       handleSuccess();
     },
     onError: ( error: ErrorResponse ) => {
@@ -125,7 +129,7 @@ export default function CreateUser() {
     }
   });
 
-  console.log("Success", success)
+  // console.log("Success", success)
 
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
     const transformedValues = {
@@ -141,28 +145,44 @@ export default function CreateUser() {
     }
   }
 
-
   return (
     <div>
-      <Dialog>
-        <DialogTrigger 
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) {
+            form.reset();     // Reset form when dialog closes
+            setMessage("");   // Clear any existing messages
+            setId("");
+          }
+        }}
+      >       
+       <DialogTrigger 
           className='ml-2 bg-transparent text-lg border px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-gray-600 md:text-3xl md:px-7 h-fit hover:border-black hover:text-black'
         >
           Create user
         </DialogTrigger>
         <DialogContent>
-          {success && (
-            <SuccessAlert content={message} />
-          )}
-          {error && (
-            <ErrorAlert content={message} />
-          )}
           <DialogHeader>
             <DialogTitle className='font-monomaniac text-3xl text-center'>Create a user</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac'>
               Create a simple user without an email and a password.
+              Copy the user Id. You will need it
             </DialogDescription>
           </DialogHeader>
+          {success && (
+            <>
+              <SuccessAlert content={message} />
+            </>
+          )}
+          {error && (
+            <ErrorAlert content={message} />
+          )}
+          {id.length > 0 && (
+            <div className=''>
+              <Label htmlFor="id" className='ml-10 font-monomaniac text-gray-700 h-fit'>User Id</Label>
+              <IdDisplay id={id} />
+            </div>
+          )}
           <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
                   {!user && (
