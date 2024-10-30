@@ -209,7 +209,7 @@ function GetDailyReport() {
 
     const reportContent = (
       <div className='flex flex-col ml-5 font-monomaniac border rounded-lg shadow-lg shadow-yellow1 p-4 mb-10'>
-        <h3 className='text-xl text-gray-700'><span className='text-2x'>Date:</span> {report?.date}</h3>
+        <h3 className='text-xl text-gray-700'><span className='text-2x'>Date:</span> {report?.weekday}, {report?.date}</h3>
           {report?.tasks.map(task => (
             <div key={task.name}>
               <h4 className='ml-5'><span className='text-lg'>Task:</span>{task.name}</h4>
