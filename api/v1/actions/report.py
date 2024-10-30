@@ -64,12 +64,20 @@ def daily_report():
         return jsonify({ 'message': "There are no logs for this day. Please pick another date"}), 404
     # Store result in the dictionary
 
+    task_names = set(task['name'] for task in tasks)
+    task_tally_dict = {name: 0 for name in task_names}
+    for task in tasks:
+        for name in task_names:
+            if task['name'] == name:
+                task_tally_dict[name] += task['ttot']
+        
+    unique_tasks = [{'name': name, 'ttot': tally } for name, tally in task_tally_dict.items()]
     daily_report = {
         'ttot_day': ttot_day,
         'twt_day': twt_day,
         'date': date.replace(".", " "),
         'weekday': datetime.strptime(date, "%B.%d.%Y").strftime("%A"),
-        'tasks': tasks,
+        'tasks': unique_tasks,
     } 
 
     return jsonify({'report': daily_report}), 200
@@ -188,6 +196,8 @@ def monthly_report():
     ttot_month = 0
     # total wasted time month
     twt_month = 0
+    tasks = []
+
 
     # Get all logs in storage and filter by month
     logs = storage.get_logs_of_the_day()
@@ -199,24 +209,38 @@ def monthly_report():
 
     # If there are no logs for the given month
     if not logs_of_the_month:
-        return jsonify({})
+        return jsonify({'message': "Looks like there are no logs for tha month. Please try another one"}), 404
 
     # Get the hourly mesurments for the report on the month
     for log in logs_of_the_month:
         task = storage.get_task(log.task_id)
         if task.user_id== user_id:
+            tasks.append({
+                'name': task.task_name,
+                'ttot': log.time_on_task,
+            })
             ttot_month += log.time_on_task
             twt_month += log.time_wasted
 
+
+    task_names = set(task['name'] for task in tasks)
+    task_tally_dict = {name: 0 for name in task_names}
+    for task in tasks:
+        for name in task_names:
+            if task['name'] == name:
+                task_tally_dict[name] += task['ttot']
+        
+    unique_tasks = [{'name': name, 'ttot': tally } for name, tally in task_tally_dict.items()]
     # Store the report in a dictionary
     monthly_report = {
             'ttot_month': ttot_month,
             'twt_month': twt_month,
             'month': month,
-            'year': year
+            'year': year,
+            'tasks': unique_tasks,
         }
 
-    return jsonify(monthly_report)
+    return jsonify({ 'report': monthly_report })
 
 
 @app_actions.route('/report/productive', methods=['POST', 'GET'],

@@ -32,6 +32,8 @@ function GetWeeklyReport() {
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState<boolean>(false);
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');
@@ -42,8 +44,13 @@ function GetWeeklyReport() {
         }
     })();
 
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-
+    const handleError = () => {
+      setError(true);
+  
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
+    }
     
     const weeklyReportSchema = z.object({
         userId: user ? z.string().nullable() : z.string().length(36),
@@ -57,14 +64,6 @@ function GetWeeklyReport() {
             date: new Date()
         }
     })
-
-    const handleError = () => {
-      setError(true);
-  
-      setTimeout(() => {
-        setError(false)
-      }, 3000);
-    }
 
     type FormData = {
         userId: string,
