@@ -72,7 +72,7 @@ def daily_report():
         'tasks': tasks,
     } 
 
-    return jsonify({'report': daily_report})
+    return jsonify({'report': daily_report}), 200
 
 
 @app_actions.route('/report/weekly', methods=['POST', 'GET'],
@@ -101,6 +101,7 @@ def weekly_report():
         end_date = start_date + timedelta(days=6)
 
         # Total productive and wasted time for the week
+        tasks = []
         ttot_week = 0
         twt_week = 0
 
@@ -113,19 +114,37 @@ def weekly_report():
             for log in logs:
                 task = storage.get_task(log.task_id)
                 if task.user_id == user_id:
+                    tasks.append({
+                        'name': task.task_name,
+                        'ttot': log.time_on_task,
+                    })
+
                     ttot_week += log.time_on_task
                     twt_week += log.time_wasted
 
             day += timedelta(days=1)
 
-        # Initialize a dictionary and store the report to be returned
-        weekly_report = dict()
-        weekly_report['ttot_week'] = ttot_week
-        weekly_report['twt_week'] = twt_week
-        weekly_report['start_date'] = start_date
-        weekly_report['end_date'] = end_date
 
-        return jsonify(weekly_report)
+        task_names = set(task['name'] for task in tasks)
+        task_tally_dict = {name: 0 for name in task_names}
+        for task in tasks:
+            for name in task_names:
+                if task['name'] == name:
+                    task_tally_dict[name] += task['ttot']
+        
+        unique_tasks = [{'name': name, 'ttot': tally } for name, tally in task_tally_dict.items()]
+            
+            
+        # Initialize a dictionary and store the report to be returned
+        weekly_report = {
+            'ttot_week': ttot_week,
+            'twt_week': twt_week,
+            'start_date': start_date.strftime("%a, %d %b, %Y"),
+            'end_date': end_date.strftime("%a, %d %b, %Y"),
+            'tasks': unique_tasks,
+        }
+
+        return jsonify({'report': weekly_report}), 200
 
     # Gets today's date
     today = datetime.today()

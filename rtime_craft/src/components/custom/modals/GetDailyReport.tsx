@@ -42,13 +42,6 @@ function GetDailyReport() {
           return null;
         }
     })();
-
-    // const handleSuccess = () => {
-    //   setSuccess(true);
-    //   setTimeout(() => {
-    //     setSuccess(false)
-    //   }, 3000);
-    // }
   
     const handleError = () => {
       setError(true);
