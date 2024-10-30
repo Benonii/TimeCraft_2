@@ -24,7 +24,7 @@ import {
 import MonthPicker from '../MonthPicker';
 
 
-function GetMonthlyReport() {
+function GetTotalWastedTime() {
     const api = process.env.REACT_APP_API_URL;
     const user = (() => {
         try {
@@ -36,40 +36,34 @@ function GetMonthlyReport() {
         }
     })();
     
-    const monthlyReportSchema = z.object({
+    const twtReportSchema = z.object({
         userId: user ? z.string().nullable() : z.string().length(36),
-        month: z.string(),
     })
 
-    const form = useForm<z.infer<typeof monthlyReportSchema>>({
-        resolver: zodResolver(monthlyReportSchema),
+    const form = useForm<z.infer<typeof twtReportSchema>>({
+        resolver: zodResolver(twtReportSchema),
         defaultValues: {
             userId: user ? null : "",
-            month: 'January',
         }
     })
 
     type FormData = {
         userId: string,
-        month: string,
     }
 
     type ResponseData = {
         message: string,
         data: {
-            date: Date
-            ttot_day: number,
-            twt_day: number,
+            twt: number
         }
     }
 
     const getReport = async (formData: FormData) => {
         const params = new URLSearchParams();
         params.append('userId', user ? user.id : formData.userId)
-        params.append('month', formData.month)
         console.log("Params:", params.toString());
 
-        const response = await fetch(`${api}/report/monthly`, {
+        const response = await fetch(`${api}/report/wasted`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -94,12 +88,11 @@ function GetMonthlyReport() {
         }
     })
 
-    const onSubmit = async (values: z.infer<typeof monthlyReportSchema>) => {
+    const onSubmit = async (values: z.infer<typeof twtReportSchema>) => {
         // console.log('Data:', transformedValues)
         const transformedValues = {
             ...values,
             userId: user ? user.id : values.userId, // Use userId from user object if logged in
-            date: values.month,
         };
         console.log('Data:', transformedValues)
         try {
@@ -118,9 +111,9 @@ function GetMonthlyReport() {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Monthly Report</DialogTitle>
+            <DialogTitle className='font-monomaniac text-3xl text-center'>Total Wasted time</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac'>
-                Get your daily report by picking a date. Needs User Id if not signed in.
+                Get your total wasted time. Needs User Id if not signed in.
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
@@ -144,21 +137,6 @@ function GetMonthlyReport() {
                       )}
                     />
                   )}
-                    <FormField
-                        control={form.control}
-                        name="month"
-                        render={({ field }) => (
-                            <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl mr-1'>
-                                      Date:
-                                  </FormLabel>
-                                  <FormControl>
-                                    <MonthPicker onSelect={(value: string) => form.setValue('month', value)} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
                     <div className="flex justify-center w-full">
                         <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
                             Get report
@@ -172,4 +150,4 @@ function GetMonthlyReport() {
   )
 }
 
-export default GetMonthlyReport
+export default GetTotalWastedTime
