@@ -151,7 +151,7 @@ def weekly_report():
         return this_week(custom_date)
 
 
-@app_actions.route('/monthly_report', methods=['POST', 'GET'],
+@app_actions.route('/report/monthly', methods=['POST', 'GET'],
                    strict_slashes=False)
 def monthly_report():
     """ Provides a monthly report for the current user """
@@ -180,7 +180,7 @@ def monthly_report():
     # Get the hourly mesurments for the report on the month
     for log in logs_of_the_month:
         task = storage.get_task(log.task_id)
-        if task.user_id == user_id:
+        if task['user_id'] == user_id:
             ttot_month += log.time_on_task
             twt_month += log.time_wasted
 

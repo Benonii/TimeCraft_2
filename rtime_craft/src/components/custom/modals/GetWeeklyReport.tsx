@@ -149,7 +149,7 @@ function GetWeeklyReport() {
                                     className='text-lg' {...field}
                                     value={field.value ?? undefined} />
                               </FormControl>
-                              <FormMessage className='text-xs text-redd-500' />
+                              <FormMessage className='text-xs text-red-500' />
                           </FormItem>
                       )}
                     />
