@@ -9,6 +9,7 @@ from flask import jsonify, request, abort
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
+from sqlalchemy.exc import IntegrityError
 import json
 
 
@@ -36,11 +37,19 @@ def new_user():
     user_dict['number_of_work_days'] = int(work_days)
 
     # Create an object based on the data and save it
-    new_user = User(**user_dict)
-    storage.new(new_user)
-    storage.save()
+    try:
+        new_user = User(**user_dict)
+        storage.new(new_user)
+        storage.save()
+        
+        return jsonify({'message': 'User created successfully!', 'data': {'user_id': new_user.id} }), 201
 
-    return jsonify({'user_id': new_user.id}), 201
+    except IntegrityError as e:
+        return jsonify({'message': 'The username/email already exists. Please use a different one'}), 400
+
+    except e:
+        return jsonify({'message': 'Unkown error occured. Please try again'}), 500
+
 
 
 @app_actions.route('/signup', methods=['POST'], strict_slashes=False)
