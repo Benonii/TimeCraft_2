@@ -73,7 +73,7 @@ def total_time_on_task():
 
     if not task_id:
         task_id = storage.get_task_id_by_task_name(task_name)
-        # print("Task Id by task name:", task_id)
+        print("Task Id by task name:", task_id)
 
 
     # Gets a specific task from storage using the Task ID
@@ -81,6 +81,8 @@ def total_time_on_task():
 
     if task is None:
         return jsonify({})
+    
+    print('Ttot:', task.total_time_on_task)
 
     return jsonify({'ttot': task.total_time_on_task,
                     'taskName': task.task_name

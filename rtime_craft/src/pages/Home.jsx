@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
+import { Link } from '@tanstack/react-router';
 
 export default function Home() {
   return (
@@ -22,10 +23,13 @@ export default function Home() {
           </p>
         </div>
         <div className='flex justify-center absolute left-24 mt-48 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          <Button variant='default' 
-            className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit'>
-            Get started
-          </Button>
+          <Link to='/new/user'>
+            <Button variant='default' 
+              className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit hover:bg-yellow-400'>
+              Get started
+            </Button> 
+          </Link>
+          
       </div>
       </div>
     </div>

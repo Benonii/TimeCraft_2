@@ -54,9 +54,11 @@ def new_log():
     log_dict['time_wasted'] = twt
 
     # Update metrics that need to be changed on User and Task objects
-    task['total_time_on_task'] += tot
-    user['total_productive_time'] += tot
-    user['total_wasted_time'] += tw
+    task.total_time_on_task += tot
+    task.save()
+    user.total_productive_time += tot
+    user.total_wasted_time += twt
+    user.save()
 
     # Creates a new log object and saves it
     new_log = DailyLog(**log_dict)
