@@ -107,7 +107,7 @@ def weekly_report():
 
             for log in logs:
                 task = storage.get_task(log.task_id)
-                if task['user_id'] == user_id:
+                if task.user_id == user_id:
                     ttot_week += log.time_on_task
                     twt_week += log.time_wasted
 
@@ -180,7 +180,7 @@ def monthly_report():
     # Get the hourly mesurments for the report on the month
     for log in logs_of_the_month:
         task = storage.get_task(log.task_id)
-        if task['user_id'] == user_id:
+        if task.user_id== user_id:
             ttot_month += log.time_on_task
             twt_month += log.time_wasted
 

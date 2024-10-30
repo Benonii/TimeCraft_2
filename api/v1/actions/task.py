@@ -64,11 +64,17 @@ def all_tasks():
     #     return jsonify({"error": str(e)}), 500
 
 
-@app_actions.route('/total_time_on_task', methods=['POST', 'GET'],
+@app_actions.route('/tasks/total', methods=['POST', 'GET'],
                    strict_slashes=False)
 def total_time_on_task():
     """ Gets the total time spent on task """
     task_id = request.form.get('taskId')
+    task_name = request.form.get('taskName')
+
+    if not task_id:
+        task_id = storage.get_task_id_by_task_name(task_name)
+        # print("Task Id by task name:", task_id)
+
 
     # Gets a specific task from storage using the Task ID
     task = storage.get_task(task_id)
