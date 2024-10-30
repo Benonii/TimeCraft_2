@@ -70,7 +70,7 @@ class Storage:
         if user_id:
             for user in users:
                 if user.id == user_id:
-                    return user.to_dict()
+                    return user
             return None
 
         # If no User Id given, return all User objects(for internal usage)
@@ -89,7 +89,7 @@ class Storage:
         if task_id:
             for task in tasks:
                 if task.id == task_id:
-                    return task.to_dict()
+                    return task
             return None
 
         # If noto Task ID is given, return all Task objects(for internal use)

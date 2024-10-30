@@ -105,7 +105,6 @@ function GetDailyReport() {
     })
 
     const onSubmit = async (values: z.infer<typeof dailyReportSchema>) => {
-        // console.log('Data:', transformedValues)
         const transformedValues = {
             ...values,
             userId: user ? user.id : values.userId, // Use userId from user object if logged in

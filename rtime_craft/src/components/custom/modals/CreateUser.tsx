@@ -20,7 +20,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../shadcn/Dialog";
-
+import CustomTooltip from '../CustomTooltip';
+import { HelpCircle } from 'lucide-react';
 
 
 export default function CreateUser() {
@@ -84,7 +85,7 @@ export default function CreateUser() {
       return await response.json()
     },
     onSuccess: (response: ResponseData) => {
-      console.log('New task created successfully', response);
+      console.log('New user created successfully', response);
     },
     onError: (error: Error) => {
         console.error('Failed to create task', error);
@@ -143,8 +144,11 @@ export default function CreateUser() {
                         name="weekly_hours_goal"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className=' flex items-center gap-1 font font-monomaniac text-xl'>
                                       Weekly goal
+                                      <CustomTooltip content="How many hours per week are you aiming to work?">
+                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600'/>
+                                      </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='weekly-goal' className='text-lg' {...field} />
@@ -158,8 +162,11 @@ export default function CreateUser() {
                         name="work_days"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
                                       Numebr of work days
+                                      <CustomTooltip content="How many days per week are you aiming to work?">
+                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600'/>
+                                      </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='daily-goal' className='text-lg' {...field} />

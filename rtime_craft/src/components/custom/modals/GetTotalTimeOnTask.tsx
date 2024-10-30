@@ -103,7 +103,7 @@ function GetTotalTimeOnTask() {
             ...values,
             userId: user ? user.id : values.userId, // Use userId from user object if logged in
         };
-        console.log('Data:', transformedValues)
+        // console.log('Data:', transformedValues)
         try {
             mutation.mutate(transformedValues);
         } catch(error) {

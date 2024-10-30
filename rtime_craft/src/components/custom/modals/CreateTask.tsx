@@ -21,7 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../shadcn/Dialog";
-
+import CustomTooltip from '../CustomTooltip';
+import { HelpCircle } from 'lucide-react';
 
 export default function CreateTask() {
   const user = (() => {
@@ -65,12 +66,18 @@ export default function CreateTask() {
       // }
     }
 
+    type ErrorResonse = {
+      error: string,
+    }
+
     const mutation = useMutation({
       mutationFn: async (formData: FormData) => {
         const params = new URLSearchParams();
         params.append('userId', formData.userId);
         params.append('taskName', formData.taskName);
 	      params.append('dailyGoal', String(formData.dailyGoal));
+
+        // console.log(params.toString());
 
         const response = await fetch(`${api}/tasks/create`, {
           method: 'POST',
@@ -88,8 +95,8 @@ export default function CreateTask() {
     onSuccess: (response: ResponseData) => {
       console.log('New task created successfully', response);
     },
-    onError: (error: Error) => {
-        console.error('Failed to create task', error);
+    onError: (errorResponse: ErrorResonse) => {
+        console.error('Failed to create task', errorResponse.error);
     }
   });
 
@@ -169,8 +176,11 @@ export default function CreateTask() {
                         name="dailyGoal"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
                                       Daily goal
+                                      <CustomTooltip content="How many hours per day would you like to spend on this task?">
+                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600'/>
+                                      </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='daily-goal' className='text-lg' {...field} />

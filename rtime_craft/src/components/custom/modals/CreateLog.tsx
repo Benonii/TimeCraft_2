@@ -22,6 +22,8 @@ import {
 } from "../../shadcn/Dialog"
 
 import TaskPicker from '../TaskPicker';
+import CustomTooltip from '../CustomTooltip';
+import { HelpCircle } from 'lucide-react';
 
 
 export default function CreateLog() {
@@ -163,7 +165,7 @@ export default function CreateLog() {
                       name="taskName"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font font-monomaniac text-xl'>
+                              <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
                                  Task name
                               </FormLabel>
                               <FormControl aria-disabled={true}>
@@ -201,8 +203,11 @@ export default function CreateLog() {
                         name="timeOnTask"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className='flex imtes-center gap-1 font font-monomaniac text-xl'>
                                       Time on task
+                                      <CustomTooltip content="The productive time spent on task">
+                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600'/>
+                                      </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='task-name' type='number' className='text-lg' {...field} />
@@ -216,8 +221,11 @@ export default function CreateLog() {
                         name="timeWasted"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
                                       Time wasted
+                                      <CustomTooltip content="unproductive time">
+                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600'/>
+                                      </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
                                     <Input id='daily-goal' type="number" className='text-lg' {...field} />

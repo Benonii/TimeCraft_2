@@ -56,7 +56,7 @@ def daily_report():
             task = storage.get_task(log.task_id)
             print("Task:", task)
 
-            if task['user_id'] == user_id:
+            if task.user_id == user_id:
                 ttot_day += log.time_on_task
                 twt_day += log.time_wasted
     # Store result in the dictionary
@@ -209,7 +209,7 @@ def total_productive_time():
     tpt = {'tpt': 0}
 
     # Get's a User's total productive time and store it in the dictionary
-    tpt['tpt'] = user['total_productive_time']
+    tpt['tpt'] = user.total_productive_time
 
     return jsonify(tpt)
 
@@ -226,6 +226,6 @@ def total_wasted_time():
 
     # Get a User's total wasted time and store it in a dictionary
     twt = {
-            'twt': user['total_wasted_time']
+            'twt': user.total_wasted_time
         }
     return jsonify(twt)
