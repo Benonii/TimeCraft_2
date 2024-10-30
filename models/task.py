@@ -10,7 +10,7 @@ class Task(BaseModel, Base):
     ''' This is the class that will represent Task objects '''
 
     __tablename__ = "tasks"
-    task_name = Column(String(128), nullable=False)
+    task_name = Column(String(128), nullable=False, unique=True)
     total_time_on_task = Column(Float, default=0)
     daily_goal = Column(Float, nullable=False)
     weekly_goal = Column(Float, nullable=False)
