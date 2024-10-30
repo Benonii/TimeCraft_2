@@ -195,7 +195,7 @@ def monthly_report():
     return jsonify(monthly_report)
 
 
-@app_actions.route('/total_productive_time', methods=['POST', 'GET'],
+@app_actions.route('/report/productive', methods=['POST', 'GET'],
                    strict_slashes=False)
 def total_productive_time():
     """ Gets the total productive time for a User """
@@ -209,12 +209,12 @@ def total_productive_time():
     tpt = {'tpt': 0}
 
     # Get's a User's total productive time and store it in the dictionary
-    tpt['tpt'] = user.total_productive_time
+    tpt['tpt'] = user['total_productive_time']
 
     return jsonify(tpt)
 
 
-@app_actions.route('/total_wasted_time', methods=['POST', 'GET'],
+@app_actions.route('/report/wasted', methods=['POST', 'GET'],
                    strict_slashes=False)
 def total_wasted_time():
     """ Gets the total wasted time for a User """
@@ -226,6 +226,6 @@ def total_wasted_time():
 
     # Get a User's total wasted time and store it in a dictionary
     twt = {
-            'twt': user.total_wasted_time
+            'twt': user['total_wasted_time']
         }
     return jsonify(twt)
