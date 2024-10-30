@@ -37,7 +37,7 @@ def new_log():
     # print("Task:", task)
     user = storage.get_user(user_id)
     tot = float(request.form.get('timeOnTask'))
-    tw = float(request.form.get('timeWasted'))
+    twt = float(request.form.get('timeWasted'))
 
     # Calculate the month, day and year of the day the log is being made
     month = datetime.today().strftime("%B")
@@ -51,7 +51,7 @@ def new_log():
     log_dict['date'] = f"{month}.{day}.{year}"
     log_dict['day_of_week'] = datetime.today().weekday()
     log_dict['time_on_task'] = tot
-    log_dict['time_wasted'] = tw
+    log_dict['time_wasted'] = twt
 
     # Update metrics that need to be changed on User and Task objects
     task['total_time_on_task'] += tot
