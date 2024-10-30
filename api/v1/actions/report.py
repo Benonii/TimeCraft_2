@@ -19,10 +19,6 @@ def daily_report():
     user_id = request.form.get('userId')
     print('User Id:', user_id)
 
-
-    # Empty Dictionary
-    daily_report = dict()
-
     ''' Get the date and format the string into something compatible with
         the Log object's "date" attribute '''
 
@@ -46,6 +42,7 @@ def daily_report():
     # Get all logs that are for the given date
     logs = storage.get_logs_of_the_day(date)
 
+    tasks = []
     ttot_day = 0
     twt_day = 0
     
@@ -57,17 +54,25 @@ def daily_report():
             print("Task:", task)
 
             if task.user_id == user_id:
+                tasks.append({
+                    'name': task.task_name,
+                    'ttot': log.time_on_task,
+                })
                 ttot_day += log.time_on_task
                 twt_day += log.time_wasted
+    else:
+        return jsonify({ 'message': "There are no logs for this day. Please pick another date"}), 404
     # Store result in the dictionary
-    daily_report['ttot_day'] = ttot_day
-    daily_report['twt_day'] = twt_day
-    daily_report['date'] = date.replace(".", " ")
-    date = datetime.strptime(date, "%B.%d.%Y")
-    weekday = date.weekday()
-    daily_report['weekday'] = weekday
 
-    return jsonify(daily_report)
+    daily_report = {
+        'ttot_day': ttot_day,
+        'twt_day': twt_day,
+        'date': date.replace(".", " "),
+        'weekday': datetime.strptime(date, "%B.%d.%Y").weekday(),
+        'tasks': tasks,
+    } 
+
+    return jsonify({'report': daily_report})
 
 
 @app_actions.route('/report/weekly', methods=['POST', 'GET'],
