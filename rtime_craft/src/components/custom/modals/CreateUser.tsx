@@ -22,9 +22,31 @@ import {
 } from "../../shadcn/Dialog";
 import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
+import SuccessAlert from '../SuccessAlert';
+import ErrorAlert from '../ErrorAlert';
 
+import { useEffect, useState } from 'react';
 
 export default function CreateUser() {
+  const [ success, setSuccess ] = useState<boolean>(false);
+  const [ error, setError ] = useState<boolean>(false);
+  const [ message, setMessage ] = useState<string>("");
+
+  const handleSuccess = () => {
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false)
+    }, 3000);
+  }
+
+  const handleError = () => {
+    setError(true);
+
+    // setTimeout(() => {
+    //   setError(false)
+    // }, 3000);
+  }
+
   const user = (() => {
     try {
       const storedUser = localStorage.getItem('user');
@@ -64,6 +86,10 @@ export default function CreateUser() {
       }
     }
 
+    type ErrorResponse = {
+      message: string,
+    }
+
     const mutation = useMutation({
       mutationFn: async (formData: FormData) => {
         const params = new URLSearchParams();
@@ -78,19 +104,28 @@ export default function CreateUser() {
 		  	  },
 		      body: params.toString(),
         })
-        if (!response.ok) {
-          throw new Error('Network Error');
-      }
 
-      return await response.json()
+        const resJSON = await response.json();
+        if (!response.ok) {
+          console.log(response)
+          throw new Error(resJSON.message || 'An error occured');
+        }
+
+      return resJSON;
     },
     onSuccess: (response: ResponseData) => {
       console.log('New user created successfully', response);
+      setMessage(response.message);
+      handleSuccess();
     },
-    onError: (error: Error) => {
-        console.error('Failed to create task', error);
+    onError: ( error: ErrorResponse ) => {
+      console.error('Failed to create task', error);
+      setMessage(error.message);
+      handleError();
     }
   });
+
+  console.log("Success", success)
 
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
     const transformedValues = {
@@ -116,6 +151,12 @@ export default function CreateUser() {
           Create user
         </DialogTrigger>
         <DialogContent>
+          {success && (
+            <SuccessAlert content={message} />
+          )}
+          {error && (
+            <ErrorAlert content={message} />
+          )}
           <DialogHeader>
             <DialogTitle className='font-monomaniac text-3xl text-center'>Create a user</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac'>
@@ -151,7 +192,7 @@ export default function CreateUser() {
                                       </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
-                                    <Input id='weekly-goal' className='text-lg' {...field} />
+                                    <Input id='weekly-goal' type='number' className='text-lg' {...field} />
                                   </FormControl>
                                   <FormMessage className='text-xs text-red-600 '/>
                               </FormItem>
@@ -169,7 +210,7 @@ export default function CreateUser() {
                                       </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
-                                    <Input id='daily-goal' className='text-lg' {...field} />
+                                    <Input id='daily-goal' type='number' className='text-lg' {...field} />
                                   </FormControl>
                                   <FormMessage className='text-xs text-red-600 '/>
                               </FormItem>

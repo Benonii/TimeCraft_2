@@ -4,12 +4,16 @@ import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
 import CreateUser from '../components/custom/modals/CreateUser';
+import CustomAlert from '../components/custom/SuccessAlert';
+
 
 export default function NewUser() {
   const user =localStorage.getItem('user');
+
   return (
     <div className=''>
       <Header />
+
       <div className="relative flex items-center mt-10 min-h-[900px]">
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
