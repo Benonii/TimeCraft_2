@@ -30,6 +30,7 @@ import { Label } from '../../shadcn/Label';
 import { useState } from 'react';
 
 export default function CreateUser() {
+  const api = process.env.REACT_APP_API_URL;
   const [ success, setSuccess ] = useState<boolean>(false);
   const [ error, setError ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
@@ -60,7 +61,6 @@ export default function CreateUser() {
     }, 3000);
   }
   
-  const api = process.env.REACT_APP_API_URL;
     const newTaskSchema = z.object({
       username: z.string().min(2),
       weekly_hours_goal: z.coerce.number().min(1).max(100),
