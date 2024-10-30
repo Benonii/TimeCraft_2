@@ -21,8 +21,6 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "../../shadcn/Dialog";
-import MonthPicker from '../MonthPicker';
-
 
 function GetTotalWastedTime() {
     const api = process.env.REACT_APP_API_URL;
