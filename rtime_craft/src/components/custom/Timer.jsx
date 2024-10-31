@@ -63,9 +63,9 @@ function Timer({ handleChange }) {
 
     return (
         <div className='flex flex-col items-center'>
-            <Card className='flex justify-center items-center p-8 w-60'>
+            <Card className='flex justify-center items-center p-8 w-60 dark:border-gray-400'>
                 <CardContent className='grid place-items-center text-center'>
-                    <div className="flex items-center justify-center gap-1 text-gray-500">
+                    <div className="flex items-center justify-center gap-1 text-gray-500 dark:text-gray-300">
                         <input
                             disabled={isRunning}
                             type="number"
@@ -99,13 +99,13 @@ function Timer({ handleChange }) {
                             type="button"
                             disabled={(!time.hours && !time.minutes && !time.seconds)} 
                             onClick={() => setIsRunning(!isRunning)}
-                            className='hover:bg-yellow1 hover:text-white font-madimi'>
+                            className='hover:bg-yellow1 hover:text-white font-madimi dark:border-gray-400'>
                             {isRunning ? 'Stop' : 'Start'}
                         </Button>
                         <Button
                             variant='outline'
                             type="button"
-                            className='font-madimi hover:bg-red-500 hover:text-white'
+                            className='font-madimi hover:bg-red-500 hover:text-white dark:border-gray-400'
                             onClick={handleClear}>
                             Clear
                         </Button>

@@ -160,13 +160,13 @@ export default function CreateLog() {
         }}
       > 
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
+          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 hover:bg-yellow-300 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
         >
           Make Log
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Make a log</DialogTitle>
+            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Make a log</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac'>
               Create a new log. You need a user ID if you are not signed in.
             </DialogDescription>
@@ -187,7 +187,7 @@ export default function CreateLog() {
                       name="userId"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                              <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
                               <FormControl>
                                   <Input
                                     id='user-id'
@@ -207,7 +207,7 @@ export default function CreateLog() {
                       name="taskName"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
+                              <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
                                  Task name
                               </FormLabel>
                               <FormControl aria-disabled={true}>
@@ -226,15 +226,15 @@ export default function CreateLog() {
                       name="taskId"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
-                              <FormControl>
-                                  <Input
-                                    id='user-id'
-                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                    className='text-lg' {...field}
-                                    value={field.value ?? undefined} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-redd-500' />
+                            <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Task ID</FormLabel>
+                            <FormControl>
+                                <Input
+                                  id='user-id'
+                                  placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                  className='text-lg' {...field}
+                                  value={field.value ?? undefined} />
+                            </FormControl>
+                            <FormMessage className='text-xs text-redd-500' />
                           </FormItem>
                       )}
                     />
@@ -245,16 +245,16 @@ export default function CreateLog() {
                         name="timeOnTask"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='flex imtes-center gap-1 font font-monomaniac text-xl'>
-                                      Time on task
-                                      <CustomTooltip content="The productive time spent on task">
-                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600'/>
-                                      </CustomTooltip>
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='task-name' type='number' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
+                                <FormLabel className='flex imtes-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
+                                    Time on task
+                                    <CustomTooltip content="The productive time spent on task">
+                                      <HelpCircle className='w-4 h-4 mt-2 text-gray-600 dark:text-gray-300'/>
+                                    </CustomTooltip>
+                                </FormLabel>
+                                <FormControl>
+                                  <Input id='task-name' type='number' className='text-lg' {...field} />
+                                </FormControl>
+                                <FormMessage className='text-xs text-red-600 '/>
                               </FormItem>
                         )}
                     />
@@ -263,10 +263,10 @@ export default function CreateLog() {
                         name="timeWasted"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
+                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
                                       Time wasted
                                       <CustomTooltip content="unproductive time">
-                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600'/>
+                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600 dark:text-gray-300'/>
                                       </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>

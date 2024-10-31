@@ -142,7 +142,7 @@ function GetTotalProductiveTime() {
                   name="userId"
                   render={({ field }) => (
                       <FormItem>
-                          <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                          <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
                           <FormControl>
                               <Input 
                                 id='user-id'
@@ -166,11 +166,11 @@ function GetTotalProductiveTime() {
 
     const reportContent = (
         <div className='flex flex-col ml-5 font-monomaniac border rounded-lg shadow-lg shadow-yellow1 p-4 mb-10'>
-            <h3 className='ml-5 text-xl'><span className='text-2xl'>Total productive time:</span> <span className='text-green-700'>{report?.tpt} hours</span></h3>
+            <h3 className='ml-5 text-xl dark:text-gray-300'><span className='text-2xl'>Total productive time:</span> <span className='text-green-500'>{report?.tpt.toFixed(2)} hours</span></h3>
 
             <Button
               variant='outline'
-              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1'
+              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1 dark:text-gray-300 dark:border-gray-400'
               onClick={() => {
                 setSuccess(false)
                 setLoading(false)
@@ -184,14 +184,14 @@ function GetTotalProductiveTime() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
+          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-300'
         >
           Get report
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Total Productive time</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac'>
+            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Total Productive time</DialogTitle>
+            <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
                 Get your total productive time. Needs User Id if not signed in.
             </DialogDescription>
           </DialogHeader>

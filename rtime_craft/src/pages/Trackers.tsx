@@ -151,13 +151,13 @@ function Trackers() {
             <div className="relative flex items-center mt-5 min-h-[900px]">
                 <Navbar className=''/>
                 <div className='absolute top-3 left-24'>
-                    <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>Timers</h2>
+                    <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl dark:text-gray-300'>Timers</h2>
                     {!user && (
                         <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
                           Note: <Link to='/user/signup' className='hover:underline'>Sign up </Link>for the best experience
                         </p>
                     )}
-                    <p className='ml-5 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
+                    <p className='ml-5 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl dark:text-gray-400'>
                         You can use the built in timers below to track productive nad wasted time. <br /><br />
                         The “worked” timer is a timer. That means you can set it to how ever long you would like to work and it counts down. <br /><br />
                         The “wasted” timer is actually a stopwatch. Start it when you’ve stopped working or you’re being unproductive.<br></br>
@@ -173,7 +173,7 @@ function Trackers() {
                                 name="userId"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
                                     <FormControl>
                                       <Input
                                         id='user-id'
@@ -193,7 +193,7 @@ function Trackers() {
                                 name="taskName"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
+                                    <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
                                        Task name
                                     </FormLabel>
                                     <FormControl aria-disabled={true}>
@@ -212,7 +212,7 @@ function Trackers() {
                                 name="taskId"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Task ID</FormLabel>
                                     <FormControl>
                                       <Input
                                         id='user-id'
@@ -265,7 +265,7 @@ function Trackers() {
                               )}
                             />
                             </div>
-                            <div className="flex justify-center w-full border mt-[-5px]">
+                            <div className="flex justify-center w-full mt-[-5px]">
                               <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
                                   Log
                               </Button>

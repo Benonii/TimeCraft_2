@@ -1,7 +1,8 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { DarkModeProvider } from './context/DarkModeContext';
+
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import queryClient from './queryClient.ts';
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <StrictMode>
         <QueryClientProvider client={new queryClient}>
-            <App />
+            <DarkModeProvider>
+                <App />
+            </DarkModeProvider>,
         </QueryClientProvider>
     </StrictMode>,
 );

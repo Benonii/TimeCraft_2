@@ -39,11 +39,11 @@ export default function Navbar() {
       <div className={`absolute top-14 mt-2 ml-5 overflow-hidden transition-all duration-700 ease-in-out
         ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         {isOpen && (
-          <Menubar className='rounded-xl bg-yellow1 shadow-xl'>
-              <h2 className='mt-5 text-orange2 font-monofett text-2xl'>Menu</h2>
+          <Menubar className='rounded-xl bg-yellow1 dark:bg-transparent shadow-xl'>
+              <h2 className='mt-5 text-orange2 font-monofett text-2xl dark:text-yellow1'>Menu</h2>
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white'><User className='w-10 h-10'/></MenubarTrigger>
-                  <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                  <MenubarContent className='ml-16 mt-[-60px] bg-white w-40 dark:bg-black'>
                     {user ? (
                       <>
                         <Link to="/user/profile" className='text-lg hover'>
@@ -61,7 +61,7 @@ export default function Navbar() {
                       </>
                     ) : (
                       <Link to="/user/login" className='text-lg hover'>
-                        <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                        <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
                           Login/Signup
                         </MenubarItem>
                       </Link>
@@ -72,7 +72,7 @@ export default function Navbar() {
         
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Plus className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40 dark:bg-black'>
                     {!user && (
                       <Link to="/new/user">
                         <MenubarItem className='font-monomaniac mt-2 ml-2'>
@@ -97,7 +97,7 @@ export default function Navbar() {
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><ChartNoAxesCombined className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white w-40 dark:bg-black'>
                   <Link to="/reports/daily">
                     <MenubarItem className='font-monomaniac mt-2 ml-2'>
                       Daily report
@@ -139,7 +139,7 @@ export default function Navbar() {
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><Clock3 className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-16 mt-[-60px] bg-white'>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white dark:bg-black'>
                   <Link to="/trackers/">
                     <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
                       Trackers
@@ -150,7 +150,7 @@ export default function Navbar() {
     
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl mt-14'><Cog className='w-10 h-10'/></MenubarTrigger>
-                <MenubarContent className='ml-16 mt-[-60px] bg-white'>
+                <MenubarContent className='ml-16 mt-[-60px] bg-white dark:bg-black'>
                   <Link to="/settings">
                     <MenubarItem className='font-monomaniac mt-1 ml-1 mb-2'>
                       Settings

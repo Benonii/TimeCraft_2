@@ -112,13 +112,13 @@ function Login () {
 
     return (
         <div className="flex flex-col justify-center max-w-[600px] min-h-full mx-auto mt-48 rounded-md shadow-lg min-w-56">
-            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl">
+            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl dark:text-gray-300">
                 Log in
             </h2>
 
-            <hr className='mt-5' />
+            <hr className='mt-5 dark:border-gray-300' />
 
-            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
+            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
                 Welcome back!
             </h3>
             <div className='flex w-full justify-center items-center'>
@@ -133,7 +133,7 @@ function Login () {
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='font-monomaniac text-xl'>Email</FormLabel>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Email</FormLabel>
                                 <FormControl>
                                     <Input id='username' placeholder='username@123' className='text-lg' {...field} />
                                 </FormControl>
@@ -146,7 +146,7 @@ function Login () {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl'>
+                                  <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
                                       Password
                                   </FormLabel>
                                   <FormControl>
@@ -163,7 +163,7 @@ function Login () {
                     </div>
                 </form>
             </Form>
-            <p className='text-center font-monomaniac text-xl mt-5 mb-24'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
+            <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
         </div>
     )
 }

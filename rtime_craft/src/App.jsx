@@ -1,6 +1,5 @@
 import { RouterProvider } from "@tanstack/react-router";
-import { Toaster } from "./components/shadcn/Toaster"
-
+import { Toaster } from "./components/shadcn/Toaster";
 import router from './router';
 
 // import "./style.css"

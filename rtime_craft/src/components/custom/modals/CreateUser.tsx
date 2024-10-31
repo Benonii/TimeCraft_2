@@ -157,14 +157,16 @@ export default function CreateUser() {
         }}
       >       
        <DialogTrigger 
-          className='ml-2 bg-transparent text-lg border px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-gray-600 md:text-3xl md:px-7 h-fit hover:border-black hover:text-black'
-        >
+          className='ml-2 px-4 py-2 md:py-6 h-fit
+                    bg-transparent border rounded-md shadow-lg hover:border-black hover:text-black dark:hover:bg-white dark:text-gray-200 dark:hover:text-gray-600
+                    text-lg font-madimi text-gray-600 md:text-3xl md:px-7'
+          >
           Create user
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Create a user</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac'>
+            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Create a user</DialogTitle>
+            <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
               Create a simple user without an email and a password.
               Copy the user Id. You will need it
             </DialogDescription>
@@ -179,7 +181,7 @@ export default function CreateUser() {
           )}
           {id.length > 0 && (
             <div className=''>
-              <Label htmlFor="id" className='ml-10 font-monomaniac text-gray-700 h-fit'>User Id</Label>
+              <Label htmlFor="id" className='ml-10 font-monomaniac text-gray-700 h-fit dark:text-gray-300'>User Id</Label>
               <IdDisplay id={id} />
             </div>
           )}
@@ -191,7 +193,7 @@ export default function CreateUser() {
                       name="username"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>Username</FormLabel>
+                              <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Username</FormLabel>
                               <FormControl>
                                   <Input id='username' placeholder='username123' className='text-lg' {...field} />
                               </FormControl>
@@ -205,10 +207,10 @@ export default function CreateUser() {
                         name="weekly_hours_goal"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className=' flex items-center gap-1 font font-monomaniac text-xl'>
+                                  <FormLabel className=' flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
                                       Weekly goal
                                       <CustomTooltip content="How many hours per week are you aiming to work?">
-                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600'/>
+                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600 dark:text-gray-300'/>
                                       </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>
@@ -223,10 +225,10 @@ export default function CreateUser() {
                         name="work_days"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl'>
+                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
                                       Numebr of work days
                                       <CustomTooltip content="How many days per week are you aiming to work?">
-                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600'/>
+                                        <HelpCircle className='w-4 h-4 mt-1 text-gray-600 dark:text-gray-300'/>
                                       </CustomTooltip>
                                   </FormLabel>
                                   <FormControl>

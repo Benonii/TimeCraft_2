@@ -143,13 +143,13 @@ function Signup () {
 
     return (
         <div className="flex flex-col justify-center max-w-[600px] min-h-full mx-auto mt-48 rounded-md shadow-lg min-w-56">
-            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl">
+            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl dark:text-gray-300">
                 Sign up
             </h2>
 
-            <hr className='mt-5' />
+            <hr className='mt-5 dark:border-gray-300' />
 
-            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
+            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
                 Welcome back!
             </h3>
             <div className='flex w-full justify-center items-center'>
@@ -158,13 +158,13 @@ function Signup () {
                 )}
             </div>
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
+                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
                     <FormField
                         control={form.control}
                         name="email"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='font-monomaniac text-xl' >Email</FormLabel>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300' >Email</FormLabel>
                                 <FormControl>
                                     <Input id='email' placeholder='example@email.com' className='text-lg' {...field} />
                                 </FormControl>
@@ -177,7 +177,7 @@ function Signup () {
                         name="username"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='font-monomaniac text-xl' >Username</FormLabel>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300' >Username</FormLabel>
                                 <FormControl>
                                     <Input id='username' placeholder='user1234' className='text-lg' {...field} />
                                 </FormControl>
@@ -190,14 +190,14 @@ function Signup () {
                         name="weekly_hours"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font-monomaniac text-xl'>
-                                      Weekly work hours goal
-                                  </FormLabel>
-                                  <FormControl>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                  Weekly work hours goal
+                                </FormLabel>
+                                <FormControl>
                                     <Input id='weekly-hours' type='number' placeholder='60' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
+                                </FormControl>
+                                <FormMessage className='text-xs text-red-600 '/>
+                            </FormItem>
                         )}
                     />
                     <FormField
@@ -205,14 +205,14 @@ function Signup () {
                         name="work_days"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font-monomaniac text-xl' >
-                                      Number of work days
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='work-days' type='number' placeholder='5' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300' >
+                                    Number of work days
+                                </FormLabel>
+                                <FormControl>
+                                  <Input id='work-days' type='number' placeholder='5' className='text-lg' {...field} />
+                                </FormControl>
+                                <FormMessage className='text-xs text-red-600 '/>
+                            </FormItem>
                         )}
                     />
                     <FormField
@@ -220,14 +220,14 @@ function Signup () {
                         name="password"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font-monomaniac text-xl'>
-                                      Password
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='password' type='password' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                    Password
+                                </FormLabel>
+                                <FormControl>
+                                  <Input id='password' type='password' className='text-lg' {...field} />
+                                </FormControl>
+                                <FormMessage className='text-xs text-red-600 '/>
+                            </FormItem>
                         )}
                     />
                     <FormField
@@ -235,7 +235,7 @@ function Signup () {
                         name="confirmPassword"
                         render={({ field }) => (
                             <FormItem>
-                                  <FormLabel className='font-monomaniac text-xl' >
+                                  <FormLabel className='font-monomaniac text-xl dark:text-gray-300' >
                                       Confirm password
                                   </FormLabel>
                                   <FormControl>
@@ -252,7 +252,7 @@ function Signup () {
                     </div>
                 </form>
             </Form>
-            <p className='text-center font-monomaniac text-xl mt-5 mb-24'>Already have an account? <Link to='/user/login' className='text-yellow1 hover:underline'>Login!</Link></p>
+            <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>Already have an account? <Link to='/user/login' className='text-yellow1 hover:underline'>Login!</Link></p>
         </div>
     )
 }

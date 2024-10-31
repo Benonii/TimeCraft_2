@@ -17,13 +17,13 @@ export default function NewUser() {
       <div className="relative flex items-center mt-10 min-h-[900px]">
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
-          <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>New User</h2>
+          <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl dark:text-gray-200'>New User</h2>
           {user && (
             <p className='ml-4 mt-2 font-monomaniac text-sm text-gray-500'>
               Note: Don't create a user if you already have an account
             </p>
           )}
-          <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
+          <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl dark:text-gray-400'>
             You can create a new user with just your name and your weekly targets. <br /><br />
             You will be provided with an Id. Use it to create tasks, make logs and get reports. <br /><br />
 
