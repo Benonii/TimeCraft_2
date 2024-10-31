@@ -199,7 +199,7 @@ function GetMonthlyReport() {
         <h3 className='text-xl text-gray-700'><span className='text-2x'>Month: </span>{report?.month}, {report?.year}</h3>
           {report?.tasks.map((task) => (
             <div key={task.name}>
-              <h4 className='ml-5'><span className='text-lg'>Task:</span>{task.name}</h4>
+              <h4 className='ml-5'><span className='text-lg'>Task:</span> {task.name}</h4>
               <h5 className='ml-10'>Productive time: <span className='text-green-700'>{task.ttot} Hours</span></h5>
             </div>
           ))}
