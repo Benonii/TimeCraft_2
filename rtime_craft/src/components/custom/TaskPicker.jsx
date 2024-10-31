@@ -43,7 +43,7 @@ function TaskPicker({ userId, onSelect }) {
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a task..."/>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='dark:bg-black'>
               {isLoading ? (
                 <SelectItem key="loading" value="loading" disabled>
                   Loading tasks...

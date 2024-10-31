@@ -151,7 +151,7 @@ function GetTotalTimeOnTask() {
                   name="userId"
                   render={({ field }) => (
                       <FormItem>
-                          <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                          <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
                           <FormControl>
                               <Input 
                                 id='user-id'
@@ -170,7 +170,7 @@ function GetTotalTimeOnTask() {
                   name="taskName"
                   render={({ field }) => (
                       <FormItem>
-                          <FormLabel className='font font-monomaniac text-xl'>
+                          <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
                              Task name
                           </FormLabel>
                           <FormControl aria-disabled={true}>
@@ -189,7 +189,7 @@ function GetTotalTimeOnTask() {
                       name="taskId"
                       render={({ field }) => (
                           <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
+                              <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Task ID</FormLabel>
                               <FormControl>
                                   <Input
                                     id='user-id'
@@ -218,7 +218,7 @@ function GetTotalTimeOnTask() {
 
             <Button
               variant='outline'
-              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1'
+              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1 dark:text-gray-300 dark:border-gray-400'
               onClick={() => {
                 setSuccess(false)
                 setLoading(false)
@@ -232,14 +232,14 @@ function GetTotalTimeOnTask() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
+          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-300'
         >
           Get report
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center'>Total Time on Task</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac'>
+            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Total Time on Task</DialogTitle>
+            <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
                 Get total (productive) time on one task. Needs User Id if not signed in.
             </DialogDescription>
           </DialogHeader>

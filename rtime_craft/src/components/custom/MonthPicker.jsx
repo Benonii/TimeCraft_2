@@ -21,7 +21,7 @@ function MonthPicker({ onSelect }) {
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a month..."/>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='dark:bg-black'>
               <SelectItem value={'January'}>January</SelectItem>
               <SelectItem value={'February'}>February</SelectItem>
               <SelectItem value={'March'}>March</SelectItem>

@@ -5,14 +5,15 @@ import { Button } from '../components/shadcn/Button';
 import { Link } from '@tanstack/react-router';
 
 export default function Home() {
+  const user = localStorage.getItem('user');
   return (
     <div className=''>
       <Header />
       <div className="relative flex items-center mt-10 min-h-[900px]">
         <Navbar className=''/>
         <div className='absolute top-3 left-24'>
-          <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl'>Welcome to Timecraft!</h2>
-          <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl'>
+          <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl dark:text-gary-200'>Welcome to Timecraft!</h2>
+          <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl dark:text-gray-400'>
             This app was made to help you keep track of your productive time. <br /><br />
             You can find out exactly how many hours you put into your tasks. <br /><br />
 
@@ -23,9 +24,9 @@ export default function Home() {
           </p>
         </div>
         <div className='flex justify-center absolute left-24 mt-48 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          <Link to='/new/user'>
+          <Link to={user ? '/new/task' : '/new/user'}>
             <Button variant='default' 
-              className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit hover:bg-yellow-400'>
+              className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit hover:bg-yellow-300'>
               Get started
             </Button> 
           </Link>
