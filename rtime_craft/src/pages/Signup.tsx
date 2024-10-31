@@ -13,9 +13,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../components/shadcn/Input';
+import ErrorAlert from '../components/custom/ErrorAlert';
+import { useState } from 'react';
 
 function Signup () {
     const api = process.env.REACT_APP_API_URL;
+    const [ error, setError ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
     const signupSchema = z.object({
         email: z.string().email(),
         username: z.string().min(2, 'Username can not be empty'),
@@ -45,6 +49,16 @@ function Signup () {
         }
     })
 
+    const handleError = () => {
+
+        setError(true);
+    
+        setTimeout(() => {
+          setError(false)
+        }, 5000);
+    }
+
+
     type User = {
         email: string,
         username: string,
@@ -66,7 +80,10 @@ function Signup () {
 
     type ResponseData = {
         message: string,
-        data: { message: string };
+    }
+
+    type ErrorReseponse = {
+        message: string
     }
 
     const router = useRouter();
@@ -87,18 +104,26 @@ function Signup () {
                 body: params.toString()
             })
 
+            const resJSON = await response.json();
             if (!response.ok) {
-                throw new Error('Network Error');
+              // console.log(response)
+              throw new Error(resJSON.message || 'An error occured');
             }
 
-            return await response.json()
+        return resJSON;
         },
         onSuccess: (response: ResponseData) => {
             console.log('Signup successful', response);
             router.navigate({ to: '/user/login' })
         },
-        onError: (error: Error) => {
+        onError: (errorResponse: ErrorReseponse) => {
             console.error('Signup failed', error);
+            setMessage(errorResponse.message);
+            handleError();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
         }
     });
 
@@ -127,6 +152,9 @@ function Signup () {
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
                 Welcome back!
             </h3>
+            {error && (
+            <ErrorAlert content={message} />
+            )}
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField
