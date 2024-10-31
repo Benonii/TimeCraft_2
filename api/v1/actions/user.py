@@ -45,7 +45,7 @@ def new_user():
         return jsonify({'message': 'User created successfully!', 'data': {'user_id': new_user.id} }), 201
 
     except IntegrityError as e:
-        return jsonify({'message': 'The username/email already exists. Please use a different one'}), 400
+        return jsonify({'message': 'The username already exists. Please use a different one'}), 400
 
     except e:
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
@@ -65,10 +65,18 @@ def signup():
         number_of_work_days=request.form.get('work_days'),
         password=bcrypt_context.hash(request.form.get('password')),
     )
-    new_user = User(**user_model)
-    new_user.save()
 
-    return jsonify({ 'message': 'User signed up successfully'}), 201
+    try:
+        new_user = User(**user_model)
+        new_user.save()
+
+        return jsonify({ 'message': 'User signed up successfully!'}), 201
+
+    except IntegrityError as e:
+        return jsonify({'message': 'This email already exists. Please use a different one'}), 400
+    except e:
+        return jsonify({'message': 'Unkown error occured. Please try again'}), 500
+
 
 
 @app_actions.route('/login', methods=['POST'], strict_slashes=False)
@@ -97,7 +105,7 @@ def login():
     }
 
     token = create_access_token(user.email, user.id ,timedelta(minutes=20))
-    return jsonify({ 'message': 'Login successful', 'data': {'token': token, 'user': returning_user} }), 201
+    return jsonify({ 'message': 'Login successful!', 'data': {'token': token, 'user': returning_user} }), 200
 
 
 def create_access_token(email, id, expires_delta):

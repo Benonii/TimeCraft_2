@@ -13,9 +13,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../components/shadcn/Input';
+import ErrorAlert from '../components/custom/ErrorAlert';
+import { useState } from 'react';
 
 function Login () {
     const api = process.env.REACT_APP_API_URL;
+    const [ error, setError ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
     const loginSchema = z.object({
         email: z.string().email(),
         password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -28,6 +32,14 @@ function Login () {
             password: "",
         }
     })
+
+    const handleError = () => {
+        setError(true);
+    
+        setTimeout(() => {
+          setError(false)
+        }, 3000);
+    }
 
     type User = {
         username: string,
@@ -49,6 +61,10 @@ function Login () {
         data: {token: string, user: User};
     }
 
+    type ErrorReseponse = {
+        message: string
+    }
+
     const router = useRouter();
 
     const mutation = useMutation({
@@ -64,11 +80,13 @@ function Login () {
                 body: params.toString(),
             })
 
+            const resJSON = await response.json();
             if (!response.ok) {
-                throw new Error('Network Error');
+              // console.log(response)
+              throw new Error(resJSON.message || 'An error occured');
             }
 
-            return await response.json()
+        return resJSON;
         },
         onSuccess: (response: ResponseData) => {
             console.log('Login successful', response);
@@ -76,8 +94,10 @@ function Login () {
             localStorage.setItem('user', JSON.stringify(response.data.user));
             router.navigate({ to: '/' })
         },
-        onError: (error: Error) => {
-            console.error('Login failed', error);
+        onError: (errorResponse: ErrorReseponse) => {
+            console.error('Login failed', errorResponse);
+            setMessage(errorResponse.message);
+            handleError()
         }
     });
 
@@ -101,6 +121,9 @@ function Login () {
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
                 Welcome back!
             </h3>
+            {error && (
+            <ErrorAlert content={message} />
+            )}
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField
