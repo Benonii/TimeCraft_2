@@ -73,7 +73,7 @@ def signup():
         return jsonify({ 'message': 'User signed up successfully!'}), 201
 
     except IntegrityError as e:
-        return jsonify({'message': 'This email already exists. Please use a different one'}), 400
+        return jsonify({'message': 'The username/email already exists. Please use a different one'}), 400
     except e:
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 

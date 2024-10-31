@@ -121,9 +121,11 @@ function Login () {
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
                 Welcome back!
             </h3>
-            {error && (
-            <ErrorAlert content={message} />
-            )}
+            <div className='flex w-full justify-center items-center'>
+                {error && (
+                <ErrorAlert content={message} />
+                )}
+            </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField

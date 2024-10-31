@@ -31,6 +31,7 @@ import { Label } from '../../shadcn/Label';
 import { useState } from 'react';
 
 export default function CreateLog() {
+  const api = process.env.REACT_APP_API_URL;
   const [ success, setSuccess ] = useState<boolean>(false);
   const [ error, setError ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
@@ -60,7 +61,6 @@ export default function CreateLog() {
     }, 3000);
   }
   
-  const api = process.env.REACT_APP_API_URL;
     const newLogSchema = z.object({
       userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
       taskId: user ? z.string().nullable() : z.string().length(36),

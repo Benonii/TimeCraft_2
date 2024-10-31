@@ -256,6 +256,9 @@ function GetTotalTimeOnTask() {
                 formContent
             ) 
           }
+          {error && (
+            <ErrorAlert content={message} />
+          )}
           
         </DialogContent>
       </Dialog>

@@ -34,7 +34,7 @@ function Signup () {
         confirmPassword: z.string(),
     }).refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
-        path: ["confirmPasswrod"]
+        path: ["confirmPassword"],
     });
 
     const form = useForm<z.infer<typeof signupSchema>>({
@@ -152,9 +152,11 @@ function Signup () {
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac'>
                 Welcome back!
             </h3>
-            {error && (
-            <ErrorAlert content={message} />
-            )}
+            <div className='flex w-full justify-center items-center'>
+                {error && (
+                <ErrorAlert content={message} />
+                )}
+            </div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
                     <FormField
@@ -237,9 +239,9 @@ function Signup () {
                                       Confirm password
                                   </FormLabel>
                                   <FormControl>
-                                    <Input id='confirm-password' type='password' className='text-lg' {...field} />
+                                    <Input id='confirmPassword' type='password' className='text-lg' {...field} />
                                   </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
+                                  <FormMessage className='text-xs text-red-600 ' />
                               </FormItem>
                         )}
                     />
