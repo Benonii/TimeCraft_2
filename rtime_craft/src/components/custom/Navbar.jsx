@@ -10,16 +10,22 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "../shadcn/MenuBar";
-import { Link, useMatchRoute } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 import { User, Plus, ChartNoAxesCombined, Clock3, Cog } from 'lucide-react';
 
 
 export default function Navbar() {
   const user = localStorage.getItem('user');
-    const [ isOpen, setIsOpen ] = useState(false)
+  const [ isOpen, setIsOpen ] = useState(false);
+  const navigate = useNavigate();
     // console.log("Is open:", isOpen);
-
+  
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    navigate({to: '/'});
+  }
   return (
     <div className='mt-3'>
       <div className='ml-10 left-0 absolute top-3 ' onClick={() => setIsOpen(prev => !prev)}>
@@ -39,11 +45,20 @@ export default function Navbar() {
                 <MenubarTrigger className='py-5 text-white'><User className='w-10 h-10'/></MenubarTrigger>
                   <MenubarContent className='ml-16 mt-[-60px] bg-white w-40'>
                     {user ? (
-                      <Link to="/user/profile" className='text-lg hover'>
-                        <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                          My profile
+                      <>
+                        <Link to="/user/profile" className='text-lg hover'>
+                          <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                            My profile
+                          </MenubarItem>
+                        </Link>
+                        <hr className='mx-2 mt-1'/>
+                        <MenubarItem 
+                          className='font-monomaniac mt-2 mb-2 ml-2 hover:text-red-500'
+                          onClick={handleLogout}
+                        >
+                          Logout
                         </MenubarItem>
-                      </Link>
+                      </>
                     ) : (
                       <Link to="/user/login" className='text-lg hover'>
                         <MenubarItem className='font-monomaniac mt-2 ml-2'>
