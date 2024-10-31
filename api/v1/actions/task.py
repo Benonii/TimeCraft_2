@@ -56,7 +56,7 @@ def all_tasks():
     user_id = request.form.get('userId')
     user_task_names = []
     if not user_id:
-            return jsonify({"error": "User ID not provided"}), 400
+            return jsonify({"message": "User ID not provided"}), 400
     
     tasks = storage.get_task_by_user_id(user_id)
     task_names = [task.task_name for task in tasks]
@@ -89,11 +89,13 @@ def total_time_on_task():
     if task is None:
         return jsonify({})
     
-    print('Ttot:', task.total_time_on_task)
+    # print('Ttot:', task.total_time_on_task)
 
-    return jsonify({'ttot': task.total_time_on_task,
-                    'taskName': task.task_name
-                    })
+    return jsonify({'report':{
+        'ttot': task.total_time_on_task,
+        'taskName': task.task_name
+        }
+    })
 
 
 @app_actions.route("/delete_task", methods=['DELETE'], strict_slashes=False)

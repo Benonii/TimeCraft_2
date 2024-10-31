@@ -251,7 +251,7 @@ def total_productive_time():
     user = storage.get_user(user_id)
 
     if not user:
-        return jsonify({})
+        return jsonify({'message': 'No user with that id. Please try again'}), 200
 
     # Dictionary to store the total productive time
     tpt = {'tpt': 0}
@@ -259,7 +259,7 @@ def total_productive_time():
     # Get's a User's total productive time and store it in the dictionary
     tpt['tpt'] = user.total_productive_time
 
-    return jsonify(tpt)
+    return jsonify({'report': tpt})
 
 
 @app_actions.route('/report/wasted', methods=['POST', 'GET'],
@@ -270,10 +270,10 @@ def total_wasted_time():
     user = storage.get_user(user_id)
 
     if not user:
-        return jsonify({})
+        return jsonify({'message': 'No user with that id. Please try again'}), 200
 
     # Get a User's total wasted time and store it in a dictionary
     twt = {
             'twt': user.total_wasted_time
         }
-    return jsonify(twt)
+    return jsonify({'report': twt})
