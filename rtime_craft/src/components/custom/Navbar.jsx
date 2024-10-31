@@ -66,16 +66,7 @@ export default function Navbar() {
                         </MenubarItem>
                       </Link>
 
-                    )}
-                    {!user && (
-                      <>
-                        <hr className='mx-2 mt-1'/>
-                        <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                          Assign user
-                        </MenubarItem> 
-                      </>
-                    )}
-                    
+                    )}    
                   </MenubarContent>
               </MenubarMenu>
         
