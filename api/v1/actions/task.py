@@ -20,6 +20,7 @@ def new_task():
     user_id = request.form.get('userId')
     if not user_id:
         return jsonify({"error": "User ID not provided"}), 400
+    # print("User ID", user_id)
 
     # Empty Dictionray
     task_dict = dict()

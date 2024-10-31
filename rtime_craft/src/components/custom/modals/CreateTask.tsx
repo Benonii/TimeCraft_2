@@ -105,7 +105,7 @@ export default function CreateTask() {
         params.append('taskName', formData.taskName);
 	      params.append('dailyGoal', String(formData.dailyGoal));
 
-        // console.log(params.toString());
+        console.log(params.toString());
 
         const response = await fetch(`${api}/tasks/create`, {
           method: 'POST',
