@@ -22,11 +22,16 @@ import {
     DialogTrigger,
   } from "../../shadcn/Dialog";
 import TaskPicker from '../TaskPicker';
-
-
+import ErrorAlert from '../ErrorAlert';
+import { Skeleton } from "../../shadcn/Skeleton";
 
 function GetTotalTimeOnTask() {
     const api = process.env.REACT_APP_API_URL;
+    const [ success, setSuccess ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
+    const [ error, setError ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(false);
+
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');
@@ -36,7 +41,15 @@ function GetTotalTimeOnTask() {
           return null;
         }
     })();
+
+    const handleError = () => {
+        setError(true);
     
+        setTimeout(() => {
+          setError(false)
+        }, 3000);
+    }
+
     const ttotReportSchema = z.object({
         userId: user ? z.string().nullable() : z.string().length(36),
         taskId: user ? z.string().nullable() : z.string().length(36),
@@ -58,12 +71,20 @@ function GetTotalTimeOnTask() {
         taskName: string | null,
     }
 
-    type ResponseData = {
-        message: string,
-        data: {
-            ttot: number
-        }
+    type Report = {
+        ttot: number
+        taskName: string
     }
+
+    type ResponseData = {
+      report: Report
+    }
+
+    type ErrorResponse = {
+      message: string
+    }
+  
+    const [ report, setReport ] = useState<Report>();
 
     const getReport = async (formData: FormData) => {
         const params = new URLSearchParams();
@@ -80,22 +101,32 @@ function GetTotalTimeOnTask() {
             body: params.toString(),
         })
 
+        const resJSON = await response.json();
         if (!response.ok) {
-            throw new Error('Network Error');
+          // console.log(response)
+          throw new Error(resJSON.message || 'An error occured');
         }
 
-        return await response.json();
+        return resJSON;
     }
 
     const mutation = useMutation({
         mutationFn: getReport,
         onSuccess: (data: ResponseData) => {
             console.log("Here is your report:", data )
+            setReport(data.report);
+            setSuccess(true);
         },
-        onError: (error: Error) => {
-            console.error("Error fetching report:", error)
+        onError: (errorResponse: ErrorResponse) => {
+            console.error("Error fetching report:", errorResponse);
+            setMessage(errorResponse.message);
+            handleError();
         }
     })
+
+    useEffect(() => {
+        setLoading(mutation.isPending)
+    }, [mutation])
 
     const onSubmit = async (values: z.infer<typeof ttotReportSchema>) => {
         // console.log('Data:', transformedValues)
@@ -110,6 +141,93 @@ function GetTotalTimeOnTask() {
             console.error('Error submitting form:', error);
         }
     }
+
+    const formContent = (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
+              {!user && (
+                <FormField
+                  control={form.control}
+                  name="userId"
+                  render={({ field }) => (
+                      <FormItem>
+                          <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
+                          <FormControl>
+                              <Input 
+                                id='user-id'
+                                placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                className='text-lg' {...field}
+                                value={field.value ?? undefined} />
+                          </FormControl>
+                          <FormMessage className='text-xs text-red-500' />
+                      </FormItem>
+                  )}
+                />
+              )}
+              {user ? (
+                <FormField
+                  control={form.control}
+                  name="taskName"
+                  render={({ field }) => (
+                      <FormItem>
+                          <FormLabel className='font font-monomaniac text-xl'>
+                             Task name
+                          </FormLabel>
+                          <FormControl aria-disabled={true}>
+                            <TaskPicker
+                              userId={user?.id}
+                              onSelect={(value: string) => form.setValue('taskName', value)}
+                            />
+                          </FormControl>
+                          <FormMessage className='text-xs text-red-600 '/>
+                      </FormItem>
+                  )}
+                />
+                ) : (
+                    <FormField
+                      control={form.control}
+                      name="taskId"
+                      render={({ field }) => (
+                          <FormItem>
+                              <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
+                              <FormControl>
+                                  <Input
+                                    id='user-id'
+                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
+                                    className='text-lg' {...field}
+                                    value={field.value ?? undefined} />
+                              </FormControl>
+                              <FormMessage className='text-xs text-redd-500' />
+                          </FormItem>
+                      )}
+                    />
+                )}
+                <div className="flex justify-center w-full">
+                    <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
+                        Get report
+                    </Button>
+                </div>
+            </form>
+        </Form>
+    )
+
+    const reportContent = (
+        <div className='flex flex-col ml-5 font-monomaniac border rounded-lg shadow-lg shadow-yellow1 p-4 mb-10'>
+            <h4 className='ml-5'><span className='text-lg'>Task:</span> {report?.taskName}</h4>
+            <h3 className='ml-5 text-xl'><span className='text-2xl'>Total time on task:</span> <span className='text-yellow1'>{report?.ttot} hours</span></h3>
+
+            <Button
+              variant='outline'
+              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1'
+              onClick={() => {
+                setSuccess(false)
+                setLoading(false)
+              }}
+            >
+              Back
+            </Button>
+      </div>
+    )
   return (
     <div>
       <Dialog>
@@ -125,72 +243,20 @@ function GetTotalTimeOnTask() {
                 Get total (productive) time on one task. Needs User Id if not signed in.
             </DialogDescription>
           </DialogHeader>
-          <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
-                  {!user && (
-                    <FormField
-                      control={form.control}
-                      name="userId"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font-monomaniac text-xl'>User ID</FormLabel>
-                              <FormControl>
-                                  <Input 
-                                    id='user-id'
-                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                    className='text-lg' {...field}
-                                    value={field.value ?? undefined} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-500' />
-                          </FormItem>
-                      )}
-                    />
-                  )}
-                  {user ? (
-                    <FormField
-                      control={form.control}
-                      name="taskName"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font font-monomaniac text-xl'>
-                                 Task name
-                              </FormLabel>
-                              <FormControl aria-disabled={true}>
-                                <TaskPicker
-                                  userId={user?.id}
-                                  onSelect={(value: string) => form.setValue('taskName', value)}
-                                />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-600 '/>
-                          </FormItem>
-                      )}
-                    />
-                    ) : (
-                        <FormField
-                          control={form.control}
-                          name="taskId"
-                          render={({ field }) => (
-                              <FormItem>
-                                  <FormLabel className='font-monomaniac text-xl'>Task ID</FormLabel>
-                                  <FormControl>
-                                      <Input
-                                        id='user-id'
-                                        placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                        className='text-lg' {...field}
-                                        value={field.value ?? undefined} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-redd-500' />
-                              </FormItem>
-                          )}
-                        />
-                    )}
-                    <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Get report
-                        </Button>
-                    </div>
-                </form>
-            </Form>
+          {success ? (
+            reportContent
+            ) : loading ? (
+                <div className='flex flex-col gap-2 items-justify'>
+                  <Skeleton className="w-[150px] h-[25px] rounded-full ml-20" />
+                  <Skeleton className="w-[250px] h-[20px] rounded-full ml-20" />
+                  <Skeleton className="w-[250px] h-[20px] rounded-full ml-20" />
+                  <Skeleton className="w-[250px] h-[20px] rounded-full ml-20" />
+                </div>
+              ) : (
+                formContent
+            ) 
+          }
+          
         </DialogContent>
       </Dialog>
     </div>
