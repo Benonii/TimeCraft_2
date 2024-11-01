@@ -23,7 +23,6 @@ import {
   } from "../../shadcn/Dialog";
 import TaskPicker from '../TaskPicker';
 import SuccessAlert from '../SuccessAlert';
-
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
 import TasksTable from '../TasksTable';
@@ -61,17 +60,6 @@ function ManageTasks() {
         }, 3000);
     }
 
-    const changeUsernameSchema = z.object({
-        username: z.string().min(2),
-    })
-
-    const form = useForm<z.infer<typeof changeUsernameSchema>>({
-        resolver: zodResolver(changeUsernameSchema),
-        defaultValues: {
-            username: "",
-        }
-    })
-
     type FormData = {
        username: string
     }
@@ -84,7 +72,7 @@ function ManageTasks() {
       message: string
     }
   
-    const changeUsername = async (formData: FormData) => {
+    const changeTaskName = async (formData: FormData) => {
         const params = new URLSearchParams();
         params.append('username', formData.username);
         params.append('userId', user.id);
@@ -109,7 +97,7 @@ function ManageTasks() {
     }
 
     const mutation = useMutation({
-        mutationFn: changeUsername,
+        mutationFn: changeTaskName,
         onSuccess: (data: ResponseData, formData) => {
             console.log("Here is your report:", data )
             localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
@@ -127,15 +115,6 @@ function ManageTasks() {
     useEffect(() => {
         setLoading(mutation.isPending)
     }, [mutation])
-
-    const onSubmit = async (values: z.infer<typeof changeUsernameSchema>) => {
-        console.log('Data:', values)
-        try {
-            mutation.mutate(values);
-        } catch(error) {
-            console.error('Error submitting form:', error);
-        }
-    }
 
   return (
     <div>
