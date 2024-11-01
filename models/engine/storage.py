@@ -5,7 +5,7 @@
 import os
 import sys
 import sqlalchemy
-from sqlalchemy import (create_engine)
+from sqlalchemy import (create_engine, update)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.basemodel import Base
@@ -127,6 +127,18 @@ class Storage:
     def set_user_id(self, user_id):
         ''' Sets a user id for the session '''
         self.user_id = user_id
+
+    def change_username(self, username, user_id):
+        ''' Change username of a user '''
+        update_query = (
+            update(User)
+            .where(User.id == user_id)
+            .values(username=username)
+        )
+
+        with self.__session as session:
+            session.execute(update_query)
+            session.commit()
 
     def save(self):
         ''' Saves all changes made in the session '''
