@@ -12,6 +12,7 @@ from models.basemodel import Base
 from models.user import User
 from models.task import Task
 from models.dailylog import DailyLog
+from contextlib import contextmanager
 
 
 class Storage:
@@ -137,6 +138,19 @@ class Storage:
         )
 
         with self.__session as session:
+            self.session.execute(update_query)
+            self.session.commit()
+
+
+    def change_task_name(self, new_name, task_id):
+        ''' Change task name of a task '''
+        update_query = (
+            update(Task)
+            .where(Task.id == task_id)
+            .values(task_name = new_name)
+        )
+
+        with self.__session as session:
             session.execute(update_query)
             session.commit()
 
@@ -147,6 +161,7 @@ class Storage:
     def delete(self, obj):
         ''' Deletes an object from the database '''
         if obj:
+            # with self.__session as session:
             self.__session.delete(obj)
 
     def reload(self):

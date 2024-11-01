@@ -146,11 +146,14 @@ def update_user() :
     user = storage.get_user(user_id)
     
     if user is None:
-        return jsonify({'message': "Couldn't find a user with that ID. Please try again." }), 200
+        return jsonify({'message': "Couldn't find a user with that ID. Please try again." }), 404
+    
+    if user.username == username:
+        return jsonify({'message': "No change detected"}), 400
 
     try:
         storage.change_username(username, user_id)
-        return jsonify({ 'message': 'User updated successfully!'})
+        return jsonify({ 'message': 'User updated successfully!'}), 200
     except IntegrityError as e:
         return jsonify({'message': 'The username is taken. Please change it and try again'} ), 400
     except Exception as e:

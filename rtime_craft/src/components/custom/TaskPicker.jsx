@@ -7,14 +7,14 @@ import {
     SelectTrigger,
     SelectValue,
   } from "../shadcn/Select";
-  
+import { Skeleton } from "../shadcn/Skeleton";
 
 function TaskPicker({ userId, onSelect }) {
   const api = process.env.REACT_APP_API_URL;
 
-  const params = new URLSearchParams();
-  params.append('userId', userId);
   const getTasks = async () => {
+    const params = new URLSearchParams();
+    params.append('userId', userId);
     const res = await fetch( `${api}/tasks`, {
       method: 'POST',
       headers: {
@@ -46,13 +46,17 @@ function TaskPicker({ userId, onSelect }) {
             <SelectContent className='dark:bg-black'>
               {isLoading ? (
                 <SelectItem key="loading" value="loading" disabled>
-                  Loading tasks...
+                  <div className='flex flex-col gap-2 items-justify'>
+                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
+                </div>
                 </SelectItem>
               ) : isError ? (
                 <SelectItem key="loading" value="error" disabled>Error fetching tasks</SelectItem>
               ) : (
                 data?.length > 0 ? (
-                  data.tasks.map((name, index) => (
+                  data.tasks_names.map((name, index) => (
                     <SelectItem key={index} value={name}>
                       {name}
                     </SelectItem>
