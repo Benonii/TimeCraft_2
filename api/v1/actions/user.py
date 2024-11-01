@@ -123,7 +123,7 @@ def get_session_user():
 @app_actions.route('/switch_user', methods=['POST'], strict_slashes=False)
 def switch_user():
     """ Changes the user for the session """
-    user_id = request.json.get("userID")
+    user_id = request.json.get("userId")
     user = storage.get_user(user_id)
 
     if user is None:
@@ -133,3 +133,27 @@ def switch_user():
     storage.save()
 
     return jsonify({'name': user.name})
+
+
+@app_actions.route('/user/update', methods=['POST'], strict_slashes=False)
+def update_user() :
+    """ Changes the user data """
+    user_id = request.form.get('userId')
+    username = request.form.get('username')
+
+    if not username:
+        return ({'message': 'username is required'}), 400
+    user = storage.get_user(user_id)
+    
+    if user is None:
+        return jsonify({'message': "Couldn't find a user with that ID. Please try again." }), 200
+
+    try:
+        storage.change_username(username, user_id)
+        return jsonify({ 'message': 'User updated successfully!'})
+    except IntegrityError as e:
+        return jsonify({'message': 'The username is taken. Please change it and try again'} ), 400
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'Unkown error occured. Please try again'}), 500
+    
