@@ -235,7 +235,7 @@ export default function CreateTask() {
                                   </CustomTooltip>
                               </FormLabel>
                               <FormControl>
-                                <Input id='daily-goal' className='text-lg' {...field} />
+                                <Input type="number" id='daily-goal' className='text-lg' {...field} />
                               </FormControl>
                               <FormMessage className='text-xs text-red-600 '/>
                             </FormItem>

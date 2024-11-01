@@ -4,6 +4,7 @@ import Navbar from '../components/custom/Navbar';
 import { useDarkMode } from '../context/DarkModeContext';
 import { Switch } from '../components/shadcn/Switch';
 import ChangeUsername from '../components/custom/modals/ChangeUsername';
+import ManageTasks from '../components/custom/modals/ManageTasks';
 
 export default function Settings() {
   const api = process.env.REACT_APP_API_URL;
@@ -40,7 +41,7 @@ export default function Settings() {
                   <>
                     <h4 className='text-gray-600 text-xl font-semibold dark:text-gray-500'>Profile</h4>
                     <ChangeUsername />
-                    <p className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300'>Manage tasks</p>
+                    <ManageTasks />
                     <p className='ml-7 hover:underline text-red-600 dark:hover:text-red-500 text-lg'>Delete account</p>
                   </>
                 )}
