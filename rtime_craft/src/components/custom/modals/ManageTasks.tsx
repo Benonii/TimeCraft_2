@@ -26,7 +26,7 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
 import TasksTable from '../TasksTable';
-import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
+import { ChangeTaskNameFormData, changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
 import { changeTaskName } from '@/src/lib/functions';
 
 function ManageTasks() {
@@ -63,7 +63,7 @@ function ManageTasks() {
     }
 
     const mutation = useMutation({
-        mutationFn: (formData: changeUsernameFormData) => changeTaskName(formData, user),
+        mutationFn: (formData: ChangeTaskNameFormData) => changeTaskName(formData),
         onSuccess: (data: MessageResponseData, user, formData: changeUsernameFormData) => {
             console.log("Here is your report:", data )
             localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
