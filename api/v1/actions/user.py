@@ -159,4 +159,25 @@ def update_user() :
     except Exception as e:
         print(e)
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
+
+
+@app_actions.route('/user/delete', methods=['DELETE'], strict_slashes=False)
+def delete_user():
+    ''' Delete the user '''
+    user_id = request.form.get('userId')
+
+    if not user_id:
+        return jsonify({'message': "User Id is required"}), 400
     
+    user = storage.get_user(user_id)
+
+    if not user:
+        return jsonify({ 'message': "Couldn't find that user. Please try again"}), 404
+
+    try:
+        storage.delete(user)
+        storage.save()
+        return jsonify({'message': 'User deleted successfully!'}), 200
+    except Exception as e:
+        print(e)
+        return jsonify({'message': 'Unkown error occured. Please try again'}), 500
