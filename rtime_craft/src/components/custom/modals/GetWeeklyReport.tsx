@@ -2,32 +2,25 @@ import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    Dialog, DialogContent, DialogDescription,
+    DialogHeader, DialogTitle, DialogTrigger,
   } from "../../shadcn/Dialog";
 import { DatePicker } from '../../shadcn/DatePicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+import { WeeklyReport, WeeklyReportResponseData, DailyReportFromData, MessageResponseData } from '@/src/lib/types';
+import { getWeeklyReport } from '@/src/lib/functions';
 
 
 function GetWeeklyReport() {
-    const api = process.env.REACT_APP_API_URL;
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
@@ -65,72 +58,16 @@ function GetWeeklyReport() {
         }
     })
 
-    type FormData = {
-        userId: string,
-        date: Date,
-    }
-
-    type Report = {
-      tasks: [
-        task: {
-          name: string
-          ttot: number
-        }
-      ]
-      ttot_week: number,
-      twt_week: number,
-      start_date: string,
-      end_date: string,
-    }
-
-    type ResponseData = {
-      report: Report
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
-
-    const [ report, setReport ] = useState<Report>();
-
-    const getReport = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('userId', user ? user.id : formData.userId)
-        const localDate = new Date(formData.date);
-        const year = localDate.getFullYear();
-        const month = String(localDate.getMonth() + 1).padStart(2, '0');
-        const day = String(localDate.getDate()).padStart(2, '0');
-        
-        const formattedDate = `${year}-${month}-${day}`
-        // console.log(formattedDate);
-        params.append('date', formattedDate)
-        // console.log("Params:", params.toString());
-
-        const response = await fetch(`${api}/report/weekly`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
+    const [ report, setReport ] = useState<WeeklyReport>();
 
     const mutation = useMutation({
-        mutationFn: getReport,
-        onSuccess: (data: ResponseData) => {
+        mutationFn: (formData: DailyReportFromData) => getWeeklyReport(formData, user),
+        onSuccess: (data: WeeklyReportResponseData) => {
             console.log("Here is your report:", data )
             setReport(data.report);
             setSuccess(true);
         },
-        onError: (errorResponse: ErrorResponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error("Error fetching report:", errorResponse)
             setMessage(errorResponse.message);
             handleError();

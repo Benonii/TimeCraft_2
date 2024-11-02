@@ -23,10 +23,11 @@ import {
   } from "../../shadcn/Dialog";
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
-
+import { TptReport, TptReportResponseData, TptFormData,
+         MessageResponseData } from '@/src/lib/types';
+import { getTpt } from '@/src/lib/functions';
 
 function GetTotalProductiveTime() {
-    const api = process.env.REACT_APP_API_URL;
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
@@ -61,54 +62,16 @@ function GetTotalProductiveTime() {
         }
     })
 
-    type FormData = {
-      userId: string,
-    }
-
-    type Report = {
-      tpt: number
-    }
-  
-    type ResponseData = {
-      report: Report
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
-
-    const [ report, setReport ] = useState<Report>();
-
-    const getReport = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('userId', user ? user.id : formData.userId)
-        // console.log("Params:", params.toString());
-
-        const response = await fetch(`${api}/report/productive`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
+    const [ report, setReport ] = useState<TptReport>();
 
     const mutation = useMutation({
-        mutationFn: getReport,
-        onSuccess: (data: ResponseData) => {
+        mutationFn: (formData: TptFormData) => getTpt(formData, user),
+        onSuccess: (data: TptReportResponseData) => {
             console.log("Here is your report:", data )
             setReport(data.report);
             setSuccess(true);
         },
-        onError: (errorResponse: ErrorResponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error("Error fetching report:", errorResponse);
             setMessage(errorResponse.message);
             handleError();
@@ -220,4 +183,4 @@ function GetTotalProductiveTime() {
   )
 }
 
-export default GetTotalProductiveTime
+export default GetTotalProductiveTime;

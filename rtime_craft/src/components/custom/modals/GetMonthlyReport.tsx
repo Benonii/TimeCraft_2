@@ -2,32 +2,25 @@ import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    Dialog, DialogContent, DialogDescription,
+    DialogHeader, DialogTitle, DialogTrigger,
   } from "../../shadcn/Dialog";
 import MonthPicker from '../MonthPicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+import { MonthlyReport, MonthlyReportResponseData, MonthlyReportFormData, MessageResponseData } from '@/src/lib/types';
+import { getMonthlyReport } from '@/src/lib/functions';
 
 
 function GetMonthlyReport() {
-    const api = process.env.REACT_APP_API_URL;
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
@@ -64,65 +57,17 @@ function GetMonthlyReport() {
         }
     })
 
-    type FormData = {
-      userId: string,
-      month: string,
-  }
+    const [ report, setReport ] = useState<MonthlyReport>();
 
-    type Report = {
-      tasks: [
-        task: {
-          name: string
-          ttot: number
-        }
-      ]
-      ttot_month: number,
-      twt_month: number,
-      month: string,
-      year: string,
-    }
-
-    type ResponseData = {
-      report: Report
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
-
-    const [ report, setReport ] = useState<Report>();
-
-    const getReport = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('userId', user ? user.id : formData.userId)
-        params.append('month', formData.month)
-        // console.log("Params:", params.toString());
-
-        const response = await fetch(`${api}/report/monthly`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
 
     const mutation = useMutation({
-        mutationFn: getReport,
-        onSuccess: (data: ResponseData) => {
+        mutationFn: (formData: MonthlyReportFormData) => getMonthlyReport(formData, user),
+        onSuccess: (data: MonthlyReportResponseData) => {
             console.log("Here is your report:", data)
             setReport(data.report)
             setSuccess(true);
         },
-        onError: (errorResponse: ErrorResponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error("Error fetching report:", errorResponse)
             setMessage(errorResponse.message);
             handleError();
@@ -259,4 +204,4 @@ function GetMonthlyReport() {
   )
 }
 
-export default GetMonthlyReport
+export default GetMonthlyReport;

@@ -16,10 +16,10 @@ import { useRef } from 'react';
 import SuccessAlert from './SuccessAlert';
 import ErrorAlert from './ErrorAlert';
 import { Link } from '@tanstack/react-router';
-import queryClient from '@/src/queryClient';
+import { ChangeTaskNameFormData, DeleteTask, MessageResponseData } from '@/src/lib/types';
+import { changeTaskName, deleteTask, getTasks } from '@/src/lib/functions';
 
 function TasksTable({ userId }) {
-    const api = process.env.REACT_APP_API_URL;
     const [ edit, setEdit ] = useState(false);
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
@@ -46,65 +46,14 @@ function TasksTable({ userId }) {
       inputValue?.length > 0 && changeTaskMutation.mutate({id: id, newName: inputValue})
     }
 
-    type changeTaskName = {
-        id: string,
-        newName: string,
-    }
-
-    type DeleteTask = {
-        id: string,
-    }
-
-    type ResponseData = {
-        message: string,
-    }
-
-    const getTasks = async () => {
-        const params = new URLSearchParams();
-        params.append('userId', userId);
-        const res = await fetch( `${api}/tasks`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          body: params.toString(),
-        })
-    
-        if (!res.ok) {
-          throw new Error('Network Error');
-        }
-        return await res.json();
-    }
-
     const changeTaskMutation = useMutation({
-        mutationFn: async (data: changeTaskName) => {
-            const params = new URLSearchParams();
-            params.append('taskId', data.id);
-            params.append('newName', data.newName)
-            
-            console.log("Params:", params.toString());
-            const res = await fetch( `${api}/tasks/update`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString(),
-            })
-          
-            const resJSON = await res.json();
-            if (!res.ok) {
-              // console.log(response)
-              throw new Error(resJSON.message || 'An error occured');
-            }
-
-            return resJSON;      
-        },
-        onSuccess: (response: ResponseData) => {
+        mutationFn: (formData: ChangeTaskNameFormData) => changeTaskName(formData),
+        onSuccess: (response: MessageResponseData) => {
             console.log('Task updated successfully', response);
             setMessage(response.message);
             handleSuccess();
         },
-        onError: (error: Error) => {
+        onError: (error: MessageResponseData) => {
           console.error('Failed to update task', error);
           setMessage(error.message);
           handleError();
@@ -112,29 +61,8 @@ function TasksTable({ userId }) {
     })
 
     const delteTaskMutation = useMutation({
-        mutationFn: async (data: DeleteTask) => {
-            // console.log("ID:", data.id)
-            const params = new URLSearchParams();
-            params.append("taskId", data.id);
-
-            // console.log("Params", params.toString())
-            const res = await fetch( `${api}/tasks/delete`, {
-                method: 'DELETE',
-                headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString(),
-            })
-          
-            const resJSON = await res.json();
-            if (!res.ok) {
-              // console.log(response)
-              throw new Error(resJSON.message || 'An error occured');
-            }
-
-            return resJSON;      
-        },
-        onSuccess: (response: ResponseData) => {
+        mutationFn: (data: DeleteTask) => deleteTask(data),
+        onSuccess: (response: MessageResponseData) => {
             console.log('Task deleted successfully', response);
             setMessage(response.message);
             handleSuccess();
@@ -149,7 +77,7 @@ function TasksTable({ userId }) {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['tasks', userId],
-        queryFn:  getTasks,
+        queryFn:  () => getTasks(userId),
         enabled: !!userId,
     });
 

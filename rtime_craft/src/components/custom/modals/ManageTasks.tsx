@@ -26,6 +26,8 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
 import TasksTable from '../TasksTable';
+import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
+import { changeTaskName } from '@/src/lib/functions';
 
 function ManageTasks() {
     const api = process.env.REACT_APP_API_URL;
@@ -60,52 +62,16 @@ function ManageTasks() {
         }, 3000);
     }
 
-    type FormData = {
-       username: string
-    }
-
-    type ResponseData = {
-        message: string
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
-  
-    const changeTaskName = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('username', formData.username);
-        params.append('userId', user.id);
-
-        // console.log('Params:', params.toString());
-
-        const response = await fetch(`${api}/user/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
-
     const mutation = useMutation({
-        mutationFn: changeTaskName,
-        onSuccess: (data: ResponseData, formData) => {
+        mutationFn: (formData: changeUsernameFormData) => changeTaskName(formData, user),
+        onSuccess: (data: MessageResponseData, user, formData: changeUsernameFormData) => {
             console.log("Here is your report:", data )
             localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
             setMessage(data.message);
             handleSuccess();
 
         },
-        onError: (errorResponse: ErrorResponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error("Error fetching report:", errorResponse);
             setMessage(errorResponse.message);
             handleError();

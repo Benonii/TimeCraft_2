@@ -21,14 +21,14 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "../../shadcn/Dialog";
-import TaskPicker from '../TaskPicker';
 import SuccessAlert from '../SuccessAlert';
-
 import ErrorAlert from '../ErrorAlert';
-import { Skeleton } from "../../shadcn/Skeleton";
+import { Skeleton } from '../../shadcn/Skeleton';
+import { changeUsername } from '@/src/lib/functions';
+import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
+import { changeUsernameSchema } from '@/src/lib/schemas';
 
 function ChangeUsername() {
-    const api = process.env.REACT_APP_API_URL;
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
@@ -60,67 +60,27 @@ function ChangeUsername() {
         }, 3000);
     }
 
-    const changeUsernameSchema = z.object({
-        username: z.string().min(2),
-    })
-
     const form = useForm<z.infer<typeof changeUsernameSchema>>({
         resolver: zodResolver(changeUsernameSchema),
         defaultValues: {
             username: "",
         }
     })
-
-    type FormData = {
-       username: string
-    }
-
-    type ResponseData = {
-        message: string
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
   
-    const changeUsername = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('username', formData.username);
-        params.append('userId', user.id);
-
-        // console.log('Params:', params.toString());
-
-        const response = await fetch(`${api}/user/update`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
 
     const mutation = useMutation({
-        mutationFn: changeUsername,
-        onSuccess: (data: ResponseData, formData) => {
-            console.log("Here is your report:", data )
-            localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
-            setMessage(data.message);
-            handleSuccess();
-
-        },
-        onError: (errorResponse: ErrorResponse) => {
-            console.error("Error fetching report:", errorResponse);
-            setMessage(errorResponse.message);
-            handleError();
-        }
+      mutationFn: (formData: changeUsernameFormData) => changeUsername(formData, user),
+      onSuccess: (data: MessageResponseData, formData) => {
+        console.log("Here is your report:", data )
+        localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
+        setMessage(data.message);
+        handleSuccess();
+      },
+      onError: (errorResponse: MessageResponseData) => {
+        console.error("Error fetching report:", errorResponse);
+        setMessage(errorResponse.message);
+        handleError();
+      }
     })
 
     useEffect(() => {
@@ -156,7 +116,14 @@ function ChangeUsername() {
             {error && (
               <ErrorAlert content={message} />
             )}
-            <p className='ml-10 font font-monomaniac'>Current username: <span className='font-mono'>{user.username}</span></p>
+            <p className='ml-10 font font-monomaniac'>Current username: {
+              loading ? (
+                <Skeleton />
+              ) : (
+              <span className='font-mono'>{user.username}</span>
+              )
+              }
+            </p>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-5 mt-5'>
                     <FormField
