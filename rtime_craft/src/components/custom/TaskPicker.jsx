@@ -8,30 +8,12 @@ import {
     SelectValue,
   } from "../shadcn/Select";
 import { Skeleton } from "../shadcn/Skeleton";
+import getTasks from "../../lib/functions;"
 
 function TaskPicker({ userId, onSelect }) {
-  const api = process.env.REACT_APP_API_URL;
-
-  const getTasks = async () => {
-    const params = new URLSearchParams();
-    params.append('userId', userId);
-    const res = await fetch( `${api}/tasks`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: params.toString(),
-    })
-
-    if (!res.ok) {
-      throw new Error('Network Error');
-    }
-    return await res.json();
-  }
-
   const { data, isLoading, isError} = useQuery({
     queryKey: ['tasks', userId],
-    queryFn:  getTasks,
+    queryFn:  (userId) => getTasks(userId),
     enabled: !!userId,
   });
 
@@ -67,7 +49,6 @@ function TaskPicker({ userId, onSelect }) {
                 )}
             </SelectContent>
         </Select>
-
     </div>
   )
 }

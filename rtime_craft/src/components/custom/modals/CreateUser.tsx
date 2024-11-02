@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '../../shadcn/Button';
 import { 
@@ -26,49 +27,48 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
-
-import { useState } from 'react';
+import { NewUserFormData, NewUserResponseData,
+         MessageResponseData } from '@/src/lib/types';
+import { createUser } from '@/src/lib/functions';
 
 export default function CreateUser() {
-  const api = process.env.REACT_APP_API_URL;
-  const [ success, setSuccess ] = useState<boolean>(false);
-  const [ error, setError ] = useState<boolean>(false);
-  const [ message, setMessage ] = useState<string>("");
-  const [ id, setId ] = useState<string>("");
+    const [ success, setSuccess ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
+    const [ id, setId ] = useState<string>("");
 
-  const user = (() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Failed to parse user data from localStorage:", error);
-      return null;
+    const user = (() => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+      } catch (error) {
+        console.error("Failed to parse user data from localStorage:", error);
+        return null;
+      }
+    })();
+
+    const handleSuccess = () => {
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000);
     }
-  })();
 
-  const handleSuccess = () => {
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false)
-    }, 3000);
-  }
-
-  const handleError = () => {
-    setError(true);
-
-    setTimeout(() => {
-      setError(false)
-    }, 3000);
-  }
+    const handleError = () => {
+      setError(true);
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
+    }
   
-    const newTaskSchema = z.object({
+    const newUserSchema = z.object({
       username: z.string().min(2),
       weekly_hours_goal: z.coerce.number().min(1).max(100),
       work_days: z.coerce.number().min(1).max(7)
     })
 
-    const form = useForm<z.infer<typeof newTaskSchema>>({
-      resolver: zodResolver(newTaskSchema),
+    const form = useForm<z.infer<typeof newUserSchema>>({
+      resolver: zodResolver(newUserSchema),
       defaultValues: {
         username: "",
         weekly_hours_goal: 0,
@@ -76,62 +76,24 @@ export default function CreateUser() {
       }
     })
 
-    type FormData = {
-      username: string,
-      weekly_hours_goal: number,
-      work_days: number,
-    }
-
-    type ResponseData = {
-      message: string,
-      data: {
-        user_id: string
-      }
-    }
-
-    type ErrorResponse = {
-      message: string,
-    }
-
     const mutation = useMutation({
-      mutationFn: async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('username', formData.username)
-	      params.append('weekly_hours', String(formData.weekly_hours_goal));
-        params.append('work_days', String(formData.work_days));
-
-        const response = await fetch(`${api}/user/create`, {
-          method: 'POST',
-		      headers: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
-		  	  },
-		      body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-      return resJSON;
-    },
-    onSuccess: (response: ResponseData) => {
+      mutationFn: (formData: NewUserFormData ) => createUser(formData, user),
+      onSuccess: (response: NewUserResponseData) => {
       console.log('New user created successfully', response);
       setMessage(response.message);
       setId(response.data.user_id);
       handleSuccess();
-    },
-    onError: ( error: ErrorResponse ) => {
-      console.error('Failed to create task', error);
-      setMessage(error.message);
-      handleError();
-    }
-  });
+      },
+      onError: ( error: MessageResponseData ) => {
+        console.error('Failed to create task', error);
+        setMessage(error.message);
+        handleError();
+      }
+    });
 
   // console.log("Success", success)
 
-  async function onSubmit(values: z.infer<typeof newTaskSchema>) {
+  async function onSubmit(values: z.infer<typeof newUserSchema>) {
     const transformedValues = {
         ...values,
         weekly_hours_goal: Number(values.weekly_hours_goal),

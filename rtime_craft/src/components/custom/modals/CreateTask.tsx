@@ -27,45 +27,48 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
+import { createTask } from '@/src/lib/functions';
 
 import { useState } from 'react';
 
+import { NewTaskFormData, NewTaskResponseData, 
+         MessageResponseData } from '@/src/lib/types';
+
 
 export default function CreateTask() {
-  const [ success, setSuccess ] = useState<boolean>(false);
-  const [ error, setError ] = useState<boolean>(false);
-  const [ message, setMessage ] = useState<string>("");
-  const [ id, setId ] = useState<string>("");
+    const [ success, setSuccess ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
+    const [ id, setId ] = useState<string>("");
 
 
-  const user = (() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Failed to parse user data from localStorage:", error);
-      return null;
+    const user = (() => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+      } catch (error) {
+        console.error("Failed to parse user data from localStorage:", error);
+        return null;
+      }
+    })();
+
+    const handleSuccess = () => {
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000);
     }
-  })();
 
-  const handleSuccess = () => {
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false)
-    }, 3000);
-  }
+    const handleError = () => {
+      setError(true);
 
-  const handleError = () => {
-    setError(true);
-
-    setTimeout(() => {
-      setError(false)
-    }, 3000);
-  }
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
+    }
 
   // console.log("User ID:", user.id)
   
-  const api = process.env.REACT_APP_API_URL;
     const newTaskSchema = z.object({
       userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
       taskName: z.string().min(2, "Task name should be longer than 2 characters"),
@@ -81,60 +84,20 @@ export default function CreateTask() {
       }
     })
 
-    type FormData = {
-      userId: string,
-      taskName: string,
-      dailyGoal: number,
-    }
-
-    type ResponseData = {
-      message: string,
-      data: {
-        task_id: string
-      }
-    }
-
-    type ErrorResonse = {
-      message: string,
-    }
-
     const mutation = useMutation({
-      mutationFn: async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('userId', formData.userId);
-        params.append('taskName', formData.taskName);
-	      params.append('dailyGoal', String(formData.dailyGoal));
-
-        console.log(params.toString());
-
-        const response = await fetch(`${api}/tasks/create`, {
-          method: 'POST',
-		      headers: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
-		  	  },
-		      body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(r)
-          throw new Error(resJSON.message || 'An error occured');
+      mutationFn: (formData: NewTaskFormData) => createTask(formData, user),
+      onSuccess: (response: NewTaskResponseData) => {
+        console.log('New task created successfully', response);
+        setMessage(response.message);
+        setId(response.data.task_id);
+        handleSuccess();
+      },
+      onError: (errorResponse: MessageResponseData) => {
+        console.error('Failed to create task', errorResponse);
+        setMessage(errorResponse.message);
+        handleError();
       }
-
-      return resJSON
-    },
-    onSuccess: (response: ResponseData) => {
-      console.log('New task created successfully', response);
-      setMessage(response.message);
-      setId(response.data.task_id);
-      handleSuccess();
-    },
-    onError: (errorResponse: ErrorResonse) => {
-      console.error('Failed to create task', errorResponse);
-      setMessage(errorResponse.message);
-      handleError();
-    }
-  });
+    });
 
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
     const transformedValues = {

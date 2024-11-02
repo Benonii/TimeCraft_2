@@ -26,39 +26,40 @@ import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
+import { CreateLogFormData, MessageResponseData } from '@/src/lib/types';
+import { createLog } from '@/src/lib/functions';
 
 import { useState } from 'react';
 
 export default function CreateLog() {
-  const api = process.env.REACT_APP_API_URL;
-  const [ success, setSuccess ] = useState<boolean>(false);
-  const [ error, setError ] = useState<boolean>(false);
-  const [ message, setMessage ] = useState<string>("");
+    const [ success, setSuccess ] = useState<boolean>(false);
+    const [ error, setError ] = useState<boolean>(false);
+    const [ message, setMessage ] = useState<string>("");
 
-  const user = (() => {
-    try {
-      const storedUser = localStorage.getItem('user');
-      return storedUser ? JSON.parse(storedUser) : null;
-    } catch (error) {
-      console.error("Failed to parse user data from localStorage:", error);
-      return null;
+    const user = (() => {
+      try {
+        const storedUser = localStorage.getItem('user');
+        return storedUser ? JSON.parse(storedUser) : null;
+      } catch (error) {
+        console.error("Failed to parse user data from localStorage:", error);
+        return null;
+      }
+    })();
+
+    const handleSuccess = () => {
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000);
     }
-  })();
 
-  const handleSuccess = () => {
-    setSuccess(true);
-    setTimeout(() => {
-      setSuccess(false)
-    }, 3000);
-  }
+    const handleError = () => {
+      setError(true);
 
-  const handleError = () => {
-    setError(true);
-
-    setTimeout(() => {
-      setError(false)
-    }, 3000);
-  }
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
+    }
   
     const newLogSchema = z.object({
       userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
@@ -79,58 +80,18 @@ export default function CreateLog() {
       }
     })
 
-    type FormData = {
-      userId: string | null,
-      taskId: string | null,
-      taskName: string | null,
-      timeOnTask: number,
-      timeWasted: number,
-    }
-
-    type ResponseData = {
-      message: string,
-    }
-
     const mutation = useMutation({
-      mutationFn: async (formData: FormData) => {
-        const params = new URLSearchParams();
-        if (user) {
-          params.append('userId', user.id);
-          params.append('taskName', formData.taskName !)
-        } else {
-          params.append('userId', formData.userId !);
-          params.append('taskId', formData.taskId !);
-        }
-        params.append('timeOnTask', String(formData.timeOnTask));
-        params.append('timeWasted', String(formData.timeWasted));
-
-        // console.log("Params", params.toString())
-        const response = await fetch(`${api}/new_log`, {
-          method: 'POST',
-		      headers: {
-			      'Content-Type': 'application/x-www-form-urlencoded'
-		  	  },
-		      body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-      return resJSON;
-    },
-    onSuccess: (response: ResponseData) => {
-      console.log('New Log created successfully', response);
-      setMessage(response.message);
-      handleSuccess();
-    },
-    onError: (error: Error) => {
-      console.error('Failed to create Log', error);
-      setMessage(error.message);
-      handleError();
-    }
+      mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
+      onSuccess: (response: MessageResponseData) => {
+        console.log('New Log created successfully', response);
+        setMessage(response.message);
+        handleSuccess();
+      },
+      onError: (error: MessageResponseData) => {
+        console.error('Failed to create Log', error);
+        setMessage(error.message);
+        handleError();
+      }
   });
 
   async function onSubmit(values: z.infer<typeof newLogSchema>) {
@@ -146,7 +107,6 @@ export default function CreateLog() {
         console.error('Error submitting form:', error);
     }
   }
-
 
   return (
     <div>

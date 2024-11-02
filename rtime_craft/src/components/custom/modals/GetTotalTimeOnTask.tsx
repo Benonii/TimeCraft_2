@@ -24,6 +24,9 @@ import {
 import TaskPicker from '../TaskPicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+import { MessageResponseData, TtotFormData, TtotReport,
+         TtotReportResponseData } from '@/src/lib/types';
+import { getTtot } from '@/src/lib/functions';
 
 function GetTotalTimeOnTask() {
     const api = process.env.REACT_APP_API_URL;
@@ -64,60 +67,17 @@ function GetTotalTimeOnTask() {
             taskName: user ? "" : null,
         }
     })
-
-    type FormData = {
-        userId: string,
-        taskId: string | null,
-        taskName: string | null,
-    }
-
-    type Report = {
-        ttot: number
-        taskName: string
-    }
-
-    type ResponseData = {
-      report: Report
-    }
-
-    type ErrorResponse = {
-      message: string
-    }
   
-    const [ report, setReport ] = useState<Report>();
-
-    const getReport = async (formData: FormData) => {
-        const params = new URLSearchParams();
-        params.append('userId', user ? user.id : formData.userId)
-        user ? params.append('taskName', formData.taskName !)
-             : params.append('taskId', formData.taskId !) 
-        console.log("Params:", params.toString());
-
-        const response = await fetch(`${api}/tasks/total`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString(),
-        })
-
-        const resJSON = await response.json();
-        if (!response.ok) {
-          // console.log(response)
-          throw new Error(resJSON.message || 'An error occured');
-        }
-
-        return resJSON;
-    }
+    const [ report, setReport ] = useState<TtotReport>();
 
     const mutation = useMutation({
-        mutationFn: getReport,
-        onSuccess: (data: ResponseData) => {
+        mutationFn: (formData: TtotFormData) => getTtot(formData, user),
+        onSuccess: (data: TtotReportResponseData) => {
             console.log("Here is your report:", data )
             setReport(data.report);
             setSuccess(true);
         },
-        onError: (errorResponse: ErrorResponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error("Error fetching report:", errorResponse);
             setMessage(errorResponse.message);
             handleError();
@@ -266,4 +226,4 @@ function GetTotalTimeOnTask() {
   )
 }
 
-export default GetTotalTimeOnTask
+export default GetTotalTimeOnTask;

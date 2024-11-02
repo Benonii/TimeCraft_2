@@ -9,12 +9,6 @@ import {
   
 
 function MonthPicker({ onSelect }) {
-  const api = process.env.REACT_APP_API_URL;
-
-  const params = new URLSearchParams();
-
-  // console.log("Tasks:", data )
-
   return (
     <div>
         <Select onValueChange={onSelect}>
