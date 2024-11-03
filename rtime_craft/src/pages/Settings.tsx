@@ -1,24 +1,32 @@
+// Hooks
 import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useDarkMode } from '../context/DarkModeContext';
+
+// Components
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
-import { useDarkMode } from '../context/DarkModeContext';
 import { Switch } from '../components/shadcn/Switch';
 import ChangeUsername from '../components/custom/modals/ChangeUsername';
 import DeleteUserAlert from '../components/custom/DeleteUserAlert';
 import ManageTasks from '../components/custom/modals/ManageTasks';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
-import { useNavigate } from '@tanstack/react-router';
+
+// Types
+import { DeleteTask, MessageResponseData } from '../lib/types';
+
+// Others
+import { deleteTask } from '../lib/functions';
+
 
 export default function Settings() {
-  const api = process.env.REACT_APP_API_URL;
-  const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [ success, setSuccess ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
   const [ error, setError ] = useState<boolean>(false);
 
+  // Get user from local storage
   const user = (() => {
     try {
       const storedUser = localStorage.getItem('user');
@@ -45,38 +53,13 @@ export default function Settings() {
       }, 3000);
   }
 
-  type ResponseData = {
-    message: string
-  }
-
-  const deleteTask = async () => {
-    const params = new URLSearchParams();
-    params.append('userId', user.id);
-
-    const response = await fetch(`${api}/user/delete`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params.toString(),
-  })
-
-  const resJSON = await response.json();
-  if (!response.ok) {
-    // console.log(response)
-    throw new Error(resJSON.message || 'An error occured');
-  }
-
-  return resJSON;
-}
-
   const mutation = useMutation({
-    mutationFn: deleteTask,
-    onSuccess: (data: ResponseData) => {
+    mutationFn: (formData: DeleteTask) => deleteTask(formData),
+    onSuccess: (data: MessageResponseData) => {
       setMessage(data.message)
       handleSuccess();
     },
-    onError: (errorResponse: ResponseData) => {
+    onError: (errorResponse: MessageResponseData) => {
       setMessage(errorResponse.message);
       handleError();
     }
@@ -107,7 +90,8 @@ export default function Settings() {
                     <Switch 
                       id="dark-mode"
                       checked={isDarkMode}
-                      onCheckedChange={toggleDarkMode} />
+                      onCheckedChange={toggleDarkMode}
+                    />
                 </div>
                 {user && (
                   <>
@@ -117,12 +101,7 @@ export default function Settings() {
                     <DeleteUserAlert handleDelete={() => {mutation.mutate(user.id)}}/>
                   </>
                 )}
-                
-                {/* <h4 className='text-gray-600 text-xl font-semibold'>Timer</h4>
-                    <p className='ml-7 text-gray-600 text-lg'>Worked Timer type: <span className='hover:underline text-black'>Timer</span></p>
-                    <p className='ml-7 text-gray-600 text-lg'>Wasted Timer type: <span className='hover:underline text-black'>Stopwatch</span></p> */}
             </div>
-            
         </div>
       </div>
     </div>

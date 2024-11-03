@@ -1,11 +1,16 @@
+// Hooks
 import React, { useState } from 'react';
+
+// Components
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Link } from '@tanstack/react-router';
 import CreateTask from '../components/custom/modals/CreateTask'
 
 export default function NewTask() {
+  // Get user from local storage
   const user = localStorage.getItem('user');
+
   return (
     <div className=''>
       <Header />
@@ -26,12 +31,8 @@ export default function NewTask() {
           </p>
         </div>
         <div className='flex justify-center absolute left-24 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          {/* <Button variant='outline' 
-            className=' px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi border border-gray-500 text-gray-500 hover:text-black hover:border-black md:text-3xl md:px-7 h-fit'>
-            Create task
-          </Button> */}
           <CreateTask />
-      </div>
+        </div>
       </div>
     </div>
   )

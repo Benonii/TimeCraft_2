@@ -1,25 +1,42 @@
+// Hooks
 import { useMutation } from '@tanstack/react-query';
-import { useRouter, Link } from '@tanstack/react-router'
+import { useRouter, Link } from '@tanstack/react-router';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../components/shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '../components/shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+    Form, FormControl, FormField,
+    FormItem, FormLabel,FormMessage
+  } from '../components/shadcn/Form';
 import { Input } from '../components/shadcn/Input';
 import ErrorAlert from '../components/custom/ErrorAlert';
 import { useState } from 'react';
 
+// Types
+import { LoginFormData, User, MessageResponseData,
+    LoginResponseData 
+  } from '../lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { login } from '../lib/functions';
+
+
 function Login () {
-    const api = process.env.REACT_APP_API_URL;
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
+    const router = useRouter();
+
+    const handleError = () => {
+        setError(true);
+    
+        setTimeout(() => {
+          setError(false)
+        }, 3000);
+    }
+
     const loginSchema = z.object({
         email: z.string().email(),
         password: z.string().min(8, 'Password must be at least 8 characters'),
@@ -33,68 +50,15 @@ function Login () {
         }
     })
 
-    const handleError = () => {
-        setError(true);
-    
-        setTimeout(() => {
-          setError(false)
-        }, 3000);
-    }
-
-    type User = {
-        username: string,
-        id: string,
-        email: string,
-        weekly_work_hours_goal: number,
-        number_of_work_days: number,
-        total_wasted_time: number,
-        total_productive_time:  number,
-    }
-
-    type FormData = {
-        email: string,
-        password: string,
-    }
-
-    type ResponseData = {
-        message: string,
-        data: {token: string, user: User};
-    }
-
-    type ErrorReseponse = {
-        message: string
-    }
-
-    const router = useRouter();
-
     const mutation = useMutation({
-        mutationFn: async (formData: FormData) => {
-            const params = new URLSearchParams();
-            params.append('email', formData.email);
-            params.append('password', formData.password);
-            const response = await fetch(`${api}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: params.toString(),
-            })
-
-            const resJSON = await response.json();
-            if (!response.ok) {
-              // console.log(response)
-              throw new Error(resJSON.message || 'An error occured');
-            }
-
-        return resJSON;
-        },
-        onSuccess: (response: ResponseData) => {
+        mutationFn: (formData: LoginFormData) => login(formData),
+        onSuccess: (response: LoginResponseData) => {
             console.log('Login successful', response);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             router.navigate({ to: '/' })
         },
-        onError: (errorResponse: ErrorReseponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error('Login failed', errorResponse);
             setMessage(errorResponse.message);
             handleError()
@@ -115,7 +79,6 @@ function Login () {
             <h2 className="mt-10 text-center font-madimi font-semibold text-4xl dark:text-gray-300">
                 Log in
             </h2>
-
             <hr className='mt-5 dark:border-gray-300' />
 
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>

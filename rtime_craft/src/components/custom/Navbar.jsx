@@ -1,17 +1,14 @@
+// Hooks
 import React, { useState } from 'react';
+import { Link, useNavigate } from "@tanstack/react-router";
+
+// Components
 import CloseMenu from '../custom/CloseMenu'; 
 import  OpenMenu  from '../custom/OpenMenu';
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from "../shadcn/MenuBar";
-import { Link, useNavigate } from "@tanstack/react-router";
-
+    Menubar, MenubarContent, MenubarItem,
+    MenubarMenu, MenubarTrigger }
+  from "../shadcn/MenuBar";
 import { User, Plus, ChartNoAxesCombined, Clock3, Cog } from 'lucide-react';
 
 
@@ -26,6 +23,7 @@ export default function Navbar() {
     localStorage.removeItem('token');
     navigate({to: '/'});
   }
+
   return (
     <div className='mt-3'>
       <div className='ml-10 left-0 absolute top-3 ' onClick={() => setIsOpen(prev => !prev)}>

@@ -1,23 +1,27 @@
+// Hooks
+import { useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRef } from 'react';
+
+// Components
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
+    Table, TableBody, TableCaption,
+    TableCell, TableHead, TableHeader,
     TableRow,
   } from "../shadcn/Table";
 import { Skeleton } from "../shadcn/Skeleton";
-import { Pencil, Trash2, Save, RotateCw } from 'lucide-react';
+import { Pencil, Trash2, Save } from 'lucide-react';
 import { Input } from '../shadcn/Input';
-import { useState } from 'react';
-import { useRef } from 'react';
 import SuccessAlert from './SuccessAlert';
 import ErrorAlert from './ErrorAlert';
 import { Link } from '@tanstack/react-router';
+
+// Types
 import { ChangeTaskNameFormData, DeleteTask, MessageResponseData } from '@/src/lib/types';
+
+// Others
 import { changeTaskName, deleteTask, getTasks } from '@/src/lib/functions';
+
 
 function TasksTable({ userId }) {
     const [ edit, setEdit ] = useState(false);

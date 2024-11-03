@@ -1,10 +1,14 @@
+// Hoojs
 import React, { useState } from 'react';
+
+// Components
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
 import { Link } from '@tanstack/react-router';
 
 export default function Home() {
+  // Get user from local storage
   const user = localStorage.getItem('user');
   return (
     <div className=''>
@@ -29,9 +33,8 @@ export default function Home() {
               className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit hover:bg-yellow-300'>
               Get started
             </Button> 
-          </Link>
-          
-      </div>
+          </Link>  
+        </div>
       </div>
     </div>
   )

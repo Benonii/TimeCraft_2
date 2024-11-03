@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
-import { Copy } from "lucide-react";
-import { Button } from "../shadcn/Button"
 import { Input } from "../shadcn/Input"
+// import { Copy } from "lucide-react";
+// import { Button } from "../shadcn/Button"
 
 function IdDisplay({ id }) {
-    const inputRef = useRef(null);
+    // const inputRef = useRef(null);
     // console.log("ID:", id);
 
     // const handleCopy = () => {

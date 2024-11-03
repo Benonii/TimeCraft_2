@@ -1,41 +1,40 @@
+// Hooks
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter, Link } from '@tanstack/react-router'
+import { useRouter, Link } from '@tanstack/react-router';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../components/shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../components/shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { Input } from '../components/shadcn/Input';
 import ErrorAlert from '../components/custom/ErrorAlert';
-import { useState } from 'react';
+
+// Types
+import { SignupFormData, MessageResponseData } from '../lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema  } from '../lib/schemas';
+import { signup } from '../lib/functions';
+
 
 function Signup () {
-    const api = process.env.REACT_APP_API_URL;
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
-    const signupSchema = z.object({
-        email: z.string().email(),
-        username: z.string().min(2, 'Username can not be empty'),
-        weekly_hours: z.coerce.number().min(1, { message: "Weekly work hours goal is too low" }),
-        work_days: z.coerce.number().min(1, { message: "Number of work days is too low" })
-                                       .max(7, { message: "Number of work days is too high" }),
-        password: z.string().regex(/[a-z]/, {message: "Password must contain at least one lowercase letter"})
-        .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
-        .regex(/[0-9]/, { message: "Password must contain at least one number" })
-        .regex(/[!@#$%^&*(),.?":{}|<>]/, { message: "Password must contain at least one special character" })
-        .min(8, 'Password must be at least 8 characters long'),
-        confirmPassword: z.string(),
-    }).refine((data) => data.password === data.confirmPassword, {
-        message: "Passwords do not match",
-        path: ["confirmPassword"],
-    });
+
+    const handleError = () => {
+
+        setError(true);
+    
+        setTimeout(() => {
+          setError(false)
+        }, 5000);
+    }
 
     const form = useForm<z.infer<typeof signupSchema>>({
         resolver: zodResolver(signupSchema),
@@ -49,74 +48,15 @@ function Signup () {
         }
     })
 
-    const handleError = () => {
-
-        setError(true);
-    
-        setTimeout(() => {
-          setError(false)
-        }, 5000);
-    }
-
-
-    type User = {
-        email: string,
-        username: string,
-        id: string,
-        weekly_hours: string,
-        work_days: string,
-        total_wasted_time: number,
-        total_productive_time:  number,
-    }
-
-    type FormData = {
-        email: string,
-        username: string,
-        weekly_hours: number,
-        work_days: number,
-        password: string,
-        confirmPassword: string,
-    }
-
-    type ResponseData = {
-        message: string,
-    }
-
-    type ErrorReseponse = {
-        message: string
-    }
-
     const router = useRouter();
 
     const mutation = useMutation({
-        mutationFn: async (formData: FormData) => {
-            const params = new URLSearchParams();
-            params.append('email', formData.email);
-            params.append('username', formData.username);
-            params.append('weekly_hours', String(formData.weekly_hours))
-            params.append('work_days', String(formData.work_days))
-            params.append('password', formData.password)
-            const response = await fetch(`${api}/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString()
-            })
-
-            const resJSON = await response.json();
-            if (!response.ok) {
-              // console.log(response)
-              throw new Error(resJSON.message || 'An error occured');
-            }
-
-        return resJSON;
-        },
-        onSuccess: (response: ResponseData) => {
+        mutationFn: (FormData: SignupFormData) => signup(FormData),
+        onSuccess: (response: MessageResponseData) => {
             console.log('Signup successful', response);
             router.navigate({ to: '/user/login' })
         },
-        onError: (errorResponse: ErrorReseponse) => {
+        onError: (errorResponse: MessageResponseData) => {
             console.error('Signup failed', error);
             setMessage(errorResponse.message);
             handleError();

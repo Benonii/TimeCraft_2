@@ -1,17 +1,14 @@
+// Hooks
 import {useState} from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../components/shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '../components/shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
+  } from '../components/shadcn/Form';
 import { Input } from '../components/shadcn/Input';
 import Timer from '../components/custom/Timer';
 import Header from '../components/custom/Header';
@@ -22,6 +19,13 @@ import { Link } from '@tanstack/react-router';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
 
+// Types
+import { CreateLogFormData, MessageResponseData } from '../lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createLog } from '../lib/functions';
 
 
 function Trackers() {
@@ -31,6 +35,7 @@ function Trackers() {
       const [ error, setError ] = useState<boolean>(false);
       const [ loading, setLoading ] = useState<boolean>(false);
 
+      // Get user from localstorage
       const user = (() => {
           try {
             const storedUser = localStorage.getItem('user');
@@ -88,45 +93,17 @@ function Trackers() {
       }
 
       const mutation = useMutation({
-        mutationFn: async (formData: FormData) => {
-          const params = new URLSearchParams();
-          if (user) {
-            params.append('userId', user.id);
-            params.append('taskName', formData.taskName !)
-          } else {
-            params.append('userId', formData.userId !);
-            params.append('taskId', formData.taskId !);
-          }
-          params.append('timeOnTask', String(formData.timeOnTask));
-          params.append('timeWasted', String(formData.timeWasted));
-
-          // console.log("Params", params.toString())
-          const response = await fetch(`${api}/new_log`, {
-            method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                  },
-                body: params.toString(),
-          })
-
-          const resJSON = await response.json();
-          if (!response.ok) {
-            // console.log(response)
-            throw new Error(resJSON.message || 'An error occured');
-          }
-
-        return resJSON;
-      },
-      onSuccess: (response: ResponseData) => {
-        console.log('New Log created successfully', response);
-        setMessage(response.message);
-        handleSuccess();
-      },
-      onError: (error: Error) => {
-        console.error('Failed to create Log', error);
-        setMessage(error.message);
-        handleError();
-      }
+        mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
+        onSuccess: (response: MessageResponseData) => {
+          console.log('New Log created successfully', response);
+          setMessage(response.message);
+          handleSuccess();
+        },
+        onError: (error: MessageResponseData) => {
+          console.error('Failed to create Log', error);
+          setMessage(error.message);
+          handleError();
+        }
     });
 
     async function onSubmit(values: z.infer<typeof newLogSchema>) {

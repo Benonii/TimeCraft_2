@@ -1,22 +1,32 @@
+// Hooks
 import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
     Form, FormControl, FormField,
-    FormItem, FormLabel, FormMessage } from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+    FormItem, FormLabel, FormMessage 
+  } from '../../shadcn/Form';
 import { Input } from '../../shadcn/Input';
 import {
     Dialog, DialogContent, DialogHeader,
-    DialogTitle, DialogTrigger } from "../../shadcn/Dialog";
+    DialogTitle, DialogTrigger 
+  } from "../../shadcn/Dialog";
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from '../../shadcn/Skeleton';
-import { changeUsername } from '@/src/lib/functions';
-import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { changeUsernameSchema } from '@/src/lib/schemas';
+import { changeUsername } from '@/src/lib/functions';
+
+// Types
+import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
+
 
 function ChangeUsername() {
     const [ success, setSuccess ] = useState<boolean>(false);
@@ -24,6 +34,7 @@ function ChangeUsername() {
     const [ error, setError ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState<boolean>(false);
 
+    // Get user from localstorage
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');

@@ -1,41 +1,40 @@
+// Hooks
 import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+    Form, FormControl, FormField, FormItem,
+    FormLabel, FormMessage 
+  } from '../../shadcn/Form';
 import { Input } from '../../shadcn/Input';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../shadcn/Dialog"
-
+    Dialog, DialogContent, DialogDescription,
+    DialogHeader, DialogTitle, DialogTrigger, 
+  } from "../../shadcn/Dialog"
 import TaskPicker from '../TaskPicker';
 import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
-import { CreateLogFormData, MessageResponseData } from '@/src/lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { createLog } from '@/src/lib/functions';
 
-import { useState } from 'react';
+// Types
+import { CreateLogFormData, MessageResponseData } from '@/src/lib/types';
+
 
 export default function CreateLog() {
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
 
+    // Get user from localstorage
     const user = (() => {
       try {
         const storedUser = localStorage.getItem('user');

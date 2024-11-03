@@ -1,10 +1,15 @@
+// Hooks
 import React, { useState } from 'react';
+
+// Components
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import GetWeeklyReport from '../components/custom/modals/GetWeeklyReport';
 import { Link } from '@tanstack/react-router';
 
+
 export default function WeeklyReport() {
+  // Get user from localstorage
   const user = localStorage.getItem('user');
   return (
     <div className=''>
@@ -26,12 +31,8 @@ export default function WeeklyReport() {
           </p>
         </div>
         <div className='flex justify-center absolute left-24 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          {/* <Button variant='outline' 
-            className=' px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi border border-gray-500 text-gray-500 hover:text-black hover:border-black md:text-3xl md:px-7 h-fit'>
-            Create task
-          </Button> */}
           <GetWeeklyReport />
-      </div>
+        </div>
       </div>
     </div>
   )
