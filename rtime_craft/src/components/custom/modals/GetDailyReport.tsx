@@ -1,17 +1,15 @@
+// Hooks
 import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+
 import { Input } from '../../shadcn/Input';
 import {
     Dialog,
@@ -24,8 +22,14 @@ import {
 import { DatePicker } from '../../shadcn/DatePicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
-import { getDailyReport } from '@/src/lib/functions';
+
+// Types
 import { DailyReportFromData, MessageResponseData, DailyReportResponseData, DailyReport } from '@/src/lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { getDailyReport } from '@/src/lib/functions';
 
 
 function GetDailyReport() {
@@ -37,6 +41,7 @@ function GetDailyReport() {
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ report, setReport ] = useState<DailyReport>();
 
+    // Get user from local storage
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');

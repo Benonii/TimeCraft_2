@@ -1,12 +1,16 @@
+// Hooks
 import React from 'react';
+
+// Components
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Button } from '../components/shadcn/Button';
 
 function Profile() {
+  // Get user from local storage
   const user = JSON.parse(localStorage.getItem('user'));
-  console.log("Username:", user)
-  
+  // console.log("Username:", user)
+
   return (
     <div>
       <Header />

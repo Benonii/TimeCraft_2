@@ -1,6 +1,6 @@
+import { Button } from "../shadcn/Button"
 import { X  } from "lucide-react"
 
-import { Button } from "../shadcn/Button"
 
 export default function OpenMenu() {
   return (

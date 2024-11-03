@@ -1,25 +1,18 @@
+// Hooks
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  Dialog, DialogContent, DialogDescription,
+  DialogHeader, DialogTitle, DialogTrigger,
 } from "../../shadcn/Dialog";
 import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
@@ -27,8 +20,14 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
+
+// Types 
 import { NewUserFormData, NewUserResponseData,
          MessageResponseData } from '@/src/lib/types';
+
+// Others
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { createUser } from '@/src/lib/functions';
 
 export default function CreateUser() {
@@ -37,6 +36,7 @@ export default function CreateUser() {
     const [ message, setMessage ] = useState<string>("");
     const [ id, setId ] = useState<string>("");
 
+    // Get user from local storage
     const user = (() => {
       try {
         const storedUser = localStorage.getItem('user');

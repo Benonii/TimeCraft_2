@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../shadcn/Button';
 import { Card, CardContent } from '../shadcn/Card';
 
+
 function Timer({ handleChange }) {
     const [time, setTime] = useState({ hours: 3, minutes: 0, seconds: 0 });
     const [isRunning, setIsRunning] = useState(false);

@@ -1,33 +1,62 @@
 import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
          MonthlyReportFormData, NewTaskFormData, NewUserFormData, 
-         User, TptFormData, TtotFormData, ChangeTaskNameFormData, DeleteTask } from "./types";
+         User, TptFormData, TtotFormData, ChangeTaskNameFormData,
+         DeleteTask, LoginFormData, SignupFormData } from "./types";
 
+// API URL
 const api = process.env.REACT_APP_API_URL;
 
-// User related fucntions
-export const changeUsername = async (formData: changeUsernameFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('username', formData.username);
-    params.append('userId', user.id);
 
-    // console.log('Params:', params.toString());
+// Create functions
+export const createUser = async (formData: NewUserFormData, user: User) => {
+  const params = new URLSearchParams();
+  params.append('username', formData.username)
+    params.append('weekly_hours', String(formData.weekly_hours_goal));
+  params.append('work_days', String(formData.work_days));
 
-    const response = await fetch(`${api}/user/update`, {
-        method: 'POST',
+  const response = await fetch(`${api}/user/create`, {
+    method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
         body: params.toString(),
-    })
+  })
 
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
-    }
+  const resJSON = await response.json();
+  if (!response.ok) {
+    // console.log(response)
+    throw new Error(resJSON.message || 'An error occured');
+  }
 
-    return resJSON;
+return resJSON;
 }
+
+
+export const createTask = async (formData: NewTaskFormData, user: User) => {
+  const params = new URLSearchParams();
+  params.append('userId', formData.userId);
+  params.append('taskName', formData.taskName);
+    params.append('dailyGoal', String(formData.dailyGoal));
+
+  console.log(params.toString());
+
+  const response = await fetch(`${api}/tasks/create`, {
+    method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+        body: params.toString(),
+  })
+
+  const resJSON = await response.json();
+  if (!response.ok) {
+    // console.log(r)
+    throw new Error(resJSON.message || 'An error occured');
+}
+
+return resJSON
+};
+
 
 export const createLog = async (formData: CreateLogFormData, user: User) => {
     const params = new URLSearchParams();
@@ -59,54 +88,8 @@ export const createLog = async (formData: CreateLogFormData, user: User) => {
       return resJSON;
 }
 
-export const createTask = async (formData: NewTaskFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('userId', formData.userId);
-    params.append('taskName', formData.taskName);
-      params.append('dailyGoal', String(formData.dailyGoal));
 
-    console.log(params.toString());
-
-    const response = await fetch(`${api}/tasks/create`, {
-      method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-          body: params.toString(),
-    })
-
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(r)
-      throw new Error(resJSON.message || 'An error occured');
-  }
-
-  return resJSON
-};
-
-export const createUser = async (formData: NewUserFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('username', formData.username)
-      params.append('weekly_hours', String(formData.weekly_hours_goal));
-    params.append('work_days', String(formData.work_days));
-
-    const response = await fetch(`${api}/user/create`, {
-      method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-          body: params.toString(),
-    })
-
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
-    }
-
-  return resJSON;
-}
-
+// Get functions
 export const getDailyReport = async (formData: DailyReportFromData, user: User) => {
     const params = new URLSearchParams();
     params.append('userId', user ? user.id : formData.userId)
@@ -136,6 +119,7 @@ export const getDailyReport = async (formData: DailyReportFromData, user: User) 
 
     return resJSON;
 }
+
 
 export const getWeeklyReport = async (formData: DailyReportFromData, user: User) => {
     const params = new URLSearchParams();
@@ -167,6 +151,7 @@ export const getWeeklyReport = async (formData: DailyReportFromData, user: User)
     return resJSON;
 }
 
+
 export const getMonthlyReport = async (formData: MonthlyReportFormData, user: User) => {
     const params = new URLSearchParams();
     params.append('userId', user ? user.id : formData.userId)
@@ -190,6 +175,7 @@ export const getMonthlyReport = async (formData: MonthlyReportFormData, user: Us
     return resJSON;
 }
 
+
 export const getTpt = async (formData: TptFormData, user: User) => {
     const params = new URLSearchParams();
     params.append('userId', user ? user.id : formData.userId)
@@ -212,6 +198,7 @@ export const getTpt = async (formData: TptFormData, user: User) => {
     return resJSON;
 }
 
+
 export const getTwt = async (formData: TptFormData, user: User) => {
     const params = new URLSearchParams();
     params.append('userId', user ? user.id : formData.userId)
@@ -233,6 +220,7 @@ export const getTwt = async (formData: TptFormData, user: User) => {
 
     return resJSON;
 }
+
 
 export const getTtot = async (formData: TtotFormData, user: User) => {
     const params = new URLSearchParams();
@@ -258,46 +246,50 @@ export const getTtot = async (formData: TtotFormData, user: User) => {
     return resJSON;
 }
 
-export const changeUserName = async (formData: changeUsernameFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('username', formData.username);
-    params.append('userId', user.id);
-
-    // console.log('Params:', params.toString());
-
-    const response = await fetch(`${api}/user/update`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params.toString(),
-    })
-
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
-    }
-
-    return resJSON;
-}
 
 export const getTasks = async (id: string) => {
-    const params = new URLSearchParams();
-    params.append('userId', id);
-    const res = await fetch( `${api}/tasks`, {
+  const params = new URLSearchParams();
+  params.append('userId', id);
+  const res = await fetch( `${api}/tasks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: params.toString(),
+  })
+
+  if (!res.ok) {
+    throw new Error('Network Error');
+  }
+  return await res.json();
+}
+
+
+// Update functions
+export const changeUsername = async (formData: changeUsernameFormData, user: User) => {
+  const params = new URLSearchParams();
+  params.append('username', formData.username);
+  params.append('userId', user.id);
+
+  // console.log('Params:', params.toString());
+
+  const response = await fetch(`${api}/user/update`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: params.toString(),
-    })
+  })
 
-    if (!res.ok) {
-      throw new Error('Network Error');
-    }
-    return await res.json();
+  const resJSON = await response.json();
+  if (!response.ok) {
+    // console.log(response)
+    throw new Error(resJSON.message || 'An error occured');
+  }
+
+  return resJSON;
 }
+
 
 export const changeTaskName = async (data: ChangeTaskNameFormData) => {
     const params = new URLSearchParams();
@@ -322,6 +314,8 @@ export const changeTaskName = async (data: ChangeTaskNameFormData) => {
     return resJSON;      
 };
 
+
+// Delete functions
 export const deleteTask = async (data: DeleteTask) => {
     // console.log("ID:", data.id)
     const params = new URLSearchParams();
@@ -343,4 +337,50 @@ export const deleteTask = async (data: DeleteTask) => {
     }
 
     return resJSON;      
+}
+
+// Auth functions
+export const login = async (formData: LoginFormData) => {
+  const params = new URLSearchParams();
+  params.append('email', formData.email);
+  params.append('password', formData.password);
+  const response = await fetch(`${api}/login`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString(),
+  })
+
+  const resJSON = await response.json();
+  if (!response.ok) {
+    // console.log(response)
+    throw new Error(resJSON.message || 'An error occured');
+  }
+
+return resJSON;
+}
+
+export const signup = async (formData: SignupFormData) => {
+  const params = new URLSearchParams();
+  params.append('email', formData.email);
+  params.append('username', formData.username);
+  params.append('weekly_hours', String(formData.weekly_hours))
+  params.append('work_days', String(formData.work_days))
+  params.append('password', formData.password)
+  const response = await fetch(`${api}/signup`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params.toString()
+  })
+
+  const resJSON = await response.json();
+  if (!response.ok) {
+    // console.log(response)
+    throw new Error(resJSON.message || 'An error occured');
+  }
+
+return resJSON;
 }

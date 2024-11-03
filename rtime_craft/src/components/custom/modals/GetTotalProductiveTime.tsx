@@ -1,31 +1,32 @@
+// Hooks
 import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
+  } from '../../shadcn/Form';
 import { Input } from '../../shadcn/Input';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    Dialog, DialogContent, DialogDescription,
+    DialogHeader, DialogTitle, DialogTrigger,
   } from "../../shadcn/Dialog";
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+
+// Types
 import { TptReport, TptReportResponseData, TptFormData,
-         MessageResponseData } from '@/src/lib/types';
+         MessageResponseData } 
+  from '@/src/lib/types';
+
+// Others
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod";
 import { getTpt } from '@/src/lib/functions';
+
 
 function GetTotalProductiveTime() {
     const [ success, setSuccess ] = useState<boolean>(false);
@@ -33,6 +34,7 @@ function GetTotalProductiveTime() {
     const [ error, setError ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState<boolean>(false);
 
+    // Get user from local storage
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');

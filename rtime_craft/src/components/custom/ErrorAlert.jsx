@@ -1,6 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from "../shadcn/Alert";
 import { AlertCircle } from "lucide-react"
-// import { X } from 'lucide-react';
 
 
 function ErrorAlert({ content }) {

@@ -1,13 +1,14 @@
+// Hooks
 import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
     Dialog, DialogContent, DialogDescription,
@@ -16,7 +17,13 @@ import {
 import MonthPicker from '../MonthPicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+
+// Types
 import { MonthlyReport, MonthlyReportResponseData, MonthlyReportFormData, MessageResponseData } from '@/src/lib/types';
+
+// Others
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod";
 import { getMonthlyReport } from '@/src/lib/functions';
 
 
@@ -26,6 +33,7 @@ function GetMonthlyReport() {
     const [ error, setError ] = useState<boolean>(false);
     const [ loading, setLoading ] = useState<boolean>(false);
 
+    // Get user from local storage
     const user = (() => {
         try {
           const storedUser = localStorage.getItem('user');

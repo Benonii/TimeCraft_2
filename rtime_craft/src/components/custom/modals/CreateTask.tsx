@@ -1,25 +1,18 @@
+// Hooks
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useForm } from "react-hook-form";
+
+// Components
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage
 } from '../../shadcn/Form';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod";
-import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
-
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  Dialog, DialogContent, DialogDescription,
+  DialogHeader, DialogTitle, DialogTrigger,
 } from "../../shadcn/Dialog";
 import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
@@ -29,11 +22,12 @@ import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
 import { createTask } from '@/src/lib/functions';
 
-import { useState } from 'react';
+// Types
+import { NewTaskFormData, NewTaskResponseData, MessageResponseData } from '@/src/lib/types';
 
-import { NewTaskFormData, NewTaskResponseData, 
-         MessageResponseData } from '@/src/lib/types';
-
+// Others
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod";
 
 export default function CreateTask() {
     const [ success, setSuccess ] = useState<boolean>(false);
@@ -42,6 +36,7 @@ export default function CreateTask() {
     const [ id, setId ] = useState<string>("");
 
 
+    // Get user from local storage
     const user = (() => {
       try {
         const storedUser = localStorage.getItem('user');

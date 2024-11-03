@@ -11,7 +11,6 @@ export type User = {
 }
 
 // Form data types
-
 export type changeUsernameFormData = {
     username: string 
 }
@@ -65,8 +64,22 @@ export type DeleteTask = {
     id: string
 }
 
-// Response data types
+export type LoginFormData = {
+    email: string,
+    password: string,
+}
 
+export type SignupFormData = {
+    email: string,
+    username: string,
+    weekly_hours: number,
+    work_days: number,
+    password: string,
+    confirmPassword: string,
+}
+
+
+// Response data types
 export type MessageResponseData = {
     message: string
 }
@@ -160,4 +173,9 @@ export type TwtReportResponseData = {
 
 export type TtotReportResponseData = {
     report: TtotReport
+}
+
+export type LoginResponseData = {
+    message: string,
+    data: {token : string, user: User}
 }
