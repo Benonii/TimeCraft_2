@@ -24,7 +24,7 @@ import { MonthlyReport, MonthlyReportResponseData, MonthlyReportFormData, Messag
 // Others
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { getMonthlyReport } from '@/src/lib/functions';
+import { getMonthlyReport } from '../../../lib/functions';
 
 
 function GetMonthlyReport() {

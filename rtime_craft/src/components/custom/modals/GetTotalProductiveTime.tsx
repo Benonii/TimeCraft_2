@@ -25,7 +25,7 @@ import { TptReport, TptReportResponseData, TptFormData,
 // Others
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { getTpt } from '@/src/lib/functions';
+import { getTpt } from '../../../lib/functions';
 
 
 function GetTotalProductiveTime() {

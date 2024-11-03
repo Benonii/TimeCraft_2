@@ -21,8 +21,8 @@ import { Skeleton } from '../../shadcn/Skeleton';
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { changeUsernameSchema } from '@/src/lib/schemas';
-import { changeUsername } from '@/src/lib/functions';
+import { changeUsernameSchema } from '../../../lib/schemas';
+import { changeUsername } from '../../../lib/functions';
 
 // Types
 import { changeUsernameFormData, MessageResponseData } from '@/src/lib/types';

@@ -25,7 +25,7 @@ import { TwtReport, TwtReportResponseData, TptFormData,
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getTwt } from '@/src/lib/functions';
+import { getTwt } from '../../../lib/functions';
 
 
 function GetTotalWastedTime() {

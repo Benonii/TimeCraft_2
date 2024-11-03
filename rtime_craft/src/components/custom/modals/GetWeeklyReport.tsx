@@ -24,7 +24,7 @@ import { WeeklyReport, WeeklyReportResponseData, DailyReportFromData, MessageRes
 // Others
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
-import { getWeeklyReport } from '@/src/lib/functions';
+import { getWeeklyReport } from '../../../lib/functions';
 
 
 function GetWeeklyReport() {

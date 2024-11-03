@@ -20,7 +20,7 @@ import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
-import { createTask } from '@/src/lib/functions';
+import { createTask } from '../../../lib/functions';
 
 // Types
 import { NewTaskFormData, NewTaskResponseData, MessageResponseData } from '@/src/lib/types';

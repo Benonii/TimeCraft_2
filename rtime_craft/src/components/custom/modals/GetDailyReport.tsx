@@ -29,7 +29,7 @@ import { DailyReportFromData, MessageResponseData, DailyReportResponseData, Dail
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getDailyReport } from '@/src/lib/functions';
+import { getDailyReport } from '../../../lib/functions';
 
 
 function GetDailyReport() {

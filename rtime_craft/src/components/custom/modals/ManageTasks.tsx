@@ -1,30 +1,18 @@
 // Hooks
-import { useState, useEffect } from 'react';
-import { useMutation } from "@tanstack/react-query";
 
 // Components
 import {
     Dialog, DialogContent, DialogDescription,
     DialogHeader, DialogTitle, DialogTrigger,
   } from "../../shadcn/Dialog";
-import TaskPicker from '../TaskPicker';
-import SuccessAlert from '../SuccessAlert';
-import ErrorAlert from '../ErrorAlert';
-import { Skeleton } from "../../shadcn/Skeleton";
 import TasksTable from '../TasksTable';
 
 // Types
-import { ChangeTaskNameFormData, changeUsernameFormData, MessageResponseData } from '@/src/lib/types';
 
 // Others
-import { changeTaskName } from '@/src/lib/functions';
+
 
 function ManageTasks() {
-    const [ success, setSuccess ] = useState<boolean>(false);
-    const [ message, setMessage ] = useState<string>("");
-    const [ error, setError ] = useState<boolean>(false);
-    const [ loading, setLoading ] = useState<boolean>(false);
-
     // Get user from local storage
     const user = (() => {
         try {
@@ -35,42 +23,6 @@ function ManageTasks() {
           return null;
         }
     })();
-
-    const handleSuccess = () => {
-        setSuccess(true);
-
-        setTimeout(() => {
-          setSuccess(false)
-        }, 3000);
-    }
-
-    const handleError = () => {
-        setError(true);
-    
-        setTimeout(() => {
-          setError(false)
-        }, 3000);
-    }
-
-    const mutation = useMutation({
-        mutationFn: (formData: ChangeTaskNameFormData) => changeTaskName(formData),
-        onSuccess: (data: MessageResponseData, user, formData: changeUsernameFormData) => {
-            console.log("Here is your report:", data )
-            localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
-            setMessage(data.message);
-            handleSuccess();
-
-        },
-        onError: (errorResponse: MessageResponseData) => {
-            console.error("Error fetching report:", errorResponse);
-            setMessage(errorResponse.message);
-            handleError();
-        }
-    })
-
-    useEffect(() => {
-        setLoading(mutation.isPending)
-    }, [mutation])
 
   return (
     <div>
@@ -87,14 +39,6 @@ function ManageTasks() {
                 View, edit and delete your tasks
             </DialogDescription>
           </DialogHeader>
-            {success && (
-              <>
-                <SuccessAlert content={message} />
-              </>
-            )}
-            {error && (
-              <ErrorAlert content={message} />
-            )}
             <TasksTable userId={user.id}/>
         </DialogContent>
       </Dialog>
