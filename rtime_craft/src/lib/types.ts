@@ -10,12 +10,10 @@ export type User = {
     total_productive_time:  number,
 }
 
+// Form data types
+
 export type changeUsernameFormData = {
     username: string 
-}
-
-export type MessageResponseData = {
-    message: string
 }
 
 export type CreateLogFormData = {
@@ -32,24 +30,10 @@ export type NewUserFormData = {
     work_days: number,
 }
 
-export type NewUserResponseData = {
-    message: string,
-    data: {
-      user_id: string
-    }
-}
-
 export type NewTaskFormData = {
     userId: string,
     taskName: string,
     dailyGoal: number,
-}
-
-export type NewTaskResponseData = {
-    message: string,
-    data: {
-      task_id: string
-    }
 }
 
 export type DailyReportFromData = {
@@ -79,6 +63,26 @@ export type ChangeTaskNameFormData = {
 
 export type DeleteTask = {
     id: string
+}
+
+// Response data types
+
+export type MessageResponseData = {
+    message: string
+}
+
+export type NewUserResponseData = {
+    message: string,
+    data: {
+      user_id: string
+    }
+}
+
+export type NewTaskResponseData = {
+    message: string,
+    data: {
+      task_id: string
+    }
 }
 
 export type DailyReport = {
