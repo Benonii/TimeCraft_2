@@ -102,6 +102,7 @@ export default function CreateUser() {
     console.log('Data:', transformedValues)
     try {
         mutation.mutate(transformedValues);
+        setId("");
     } catch(error) {
         console.error('Error submitting form:', error);
     }

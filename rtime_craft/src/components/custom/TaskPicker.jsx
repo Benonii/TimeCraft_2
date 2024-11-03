@@ -13,11 +13,14 @@ import { getTasks } from "../../lib/functions";
 function TaskPicker({ userId, onSelect }) {
   const { data, isLoading, isError} = useQuery({
     queryKey: ['tasks', userId],
-    queryFn:  (userId) => getTasks(userId),
+    queryFn:  ({ queryKey }) => {
+      const [, userId ] = queryKey;
+      return getTasks(userId);
+    },
     enabled: !!userId,
   });
 
-  // console.log("Tasks:", data )
+  console.log("Tasks:", data )
   return (
     <div>
         <Select onValueChange={onSelect}>
@@ -36,8 +39,8 @@ function TaskPicker({ userId, onSelect }) {
               ) : isError ? (
                 <SelectItem key="loading" value="error" disabled>Error fetching tasks</SelectItem>
               ) : (
-                data?.length > 0 ? (
-                  data.tasks_names.map((name, index) => (
+                data ? (
+                  data.task_names.map((name, index) => (
                     <SelectItem key={index} value={name}>
                       {name}
                     </SelectItem>

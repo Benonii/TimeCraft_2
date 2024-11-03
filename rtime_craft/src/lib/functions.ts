@@ -1,3 +1,6 @@
+// Hooks
+
+// Types
 import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
          MonthlyReportFormData, NewTaskFormData, NewUserFormData, 
          User, TptFormData, TtotFormData, ChangeTaskNameFormData,
@@ -32,13 +35,14 @@ return resJSON;
 }
 
 
-export const createTask = async (formData: NewTaskFormData, user: User) => {
+export const createTask = async (formData: NewTaskFormData) => {
+  console.log("Form data:", formData)
   const params = new URLSearchParams();
   params.append('userId', formData.userId);
   params.append('taskName', formData.taskName);
-    params.append('dailyGoal', String(formData.dailyGoal));
+  params.append('dailyGoal', String(formData.dailyGoal));
 
-  console.log(params.toString());
+  console.log("Params", params.toString());
 
   const response = await fetch(`${api}/tasks/create`, {
     method: 'POST',
@@ -70,7 +74,7 @@ export const createLog = async (formData: CreateLogFormData, user: User) => {
     params.append('timeOnTask', String(formData.timeOnTask));
     params.append('timeWasted', String(formData.timeWasted));
 
-    // console.log("Params", params.toString())
+    console.log("Params", params.toString())
     const response = await fetch(`${api}/new_log`, {
       method: 'POST',
           headers: {
@@ -250,6 +254,8 @@ export const getTtot = async (formData: TtotFormData, user: User) => {
 export const getTasks = async (id: string) => {
   const params = new URLSearchParams();
   params.append('userId', id);
+
+  // console.log("Params:", params.toString())
   const res = await fetch( `${api}/tasks`, {
     method: 'POST',
     headers: {
@@ -289,7 +295,6 @@ export const changeUsername = async (formData: changeUsernameFormData, user: Use
 
   return resJSON;
 }
-
 
 export const changeTaskName = async (data: ChangeTaskNameFormData) => {
     const params = new URLSearchParams();

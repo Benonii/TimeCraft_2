@@ -80,7 +80,7 @@ export default function CreateTask() {
     })
 
     const mutation = useMutation({
-      mutationFn: (formData: NewTaskFormData) => createTask(formData, user),
+      mutationFn: (formData: NewTaskFormData) => createTask(formData),
       onSuccess: (response: NewTaskResponseData) => {
         console.log('New task created successfully', response);
         setMessage(response.message);
@@ -103,6 +103,7 @@ export default function CreateTask() {
     // console.log('Data:', transformedValues)
     try {
         mutation.mutate(transformedValues);
+        setId("")
     } catch(error) {
         console.error('Error submitting form:', error);
     }
