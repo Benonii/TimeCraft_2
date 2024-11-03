@@ -26,7 +26,7 @@ import { MessageResponseData, TtotFormData, TtotReport,
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getTtot } from '@/src/lib/functions';
+import { getTtot } from '../../../lib/functions';
 
 
 

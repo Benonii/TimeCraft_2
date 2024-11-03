@@ -7,7 +7,7 @@ import {
     SelectTrigger, SelectValue,
   } from "../shadcn/Select";
 import { Skeleton } from "../shadcn/Skeleton";
-import getTasks from "../../lib/functions;"
+import { getTasks } from "../../lib/functions";
 
 
 function TaskPicker({ userId, onSelect }) {

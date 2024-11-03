@@ -28,7 +28,7 @@ import { NewUserFormData, NewUserResponseData,
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createUser } from '@/src/lib/functions';
+import { createUser } from '../../../lib/functions';
 
 export default function CreateUser() {
     const [ success, setSuccess ] = useState<boolean>(false);

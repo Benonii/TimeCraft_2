@@ -23,7 +23,7 @@ import ErrorAlert from '../ErrorAlert';
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createLog } from '@/src/lib/functions';
+import { createLog } from '../../../lib/functions';
 
 // Types
 import { CreateLogFormData, MessageResponseData } from '@/src/lib/types';

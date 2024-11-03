@@ -20,7 +20,7 @@ import { Link } from '@tanstack/react-router';
 import { ChangeTaskNameFormData, DeleteTask, MessageResponseData } from '@/src/lib/types';
 
 // Others
-import { changeTaskName, deleteTask, getTasks } from '@/src/lib/functions';
+import { changeTaskName, deleteTask, getTasks } from '../../lib/functions';
 
 
 function TasksTable({ userId }) {
