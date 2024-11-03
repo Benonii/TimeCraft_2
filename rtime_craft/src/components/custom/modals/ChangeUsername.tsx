@@ -2,25 +2,15 @@ import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
 import { Button } from '../../shadcn/Button';
 import { 
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage
-} from '../../shadcn/Form';
+    Form, FormControl, FormField,
+    FormItem, FormLabel, FormMessage } from '../../shadcn/Form';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { Input } from '../../shadcn/Input';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "../../shadcn/Dialog";
+    Dialog, DialogContent, DialogHeader,
+    DialogTitle, DialogTrigger } from "../../shadcn/Dialog";
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from '../../shadcn/Skeleton';
@@ -66,7 +56,6 @@ function ChangeUsername() {
             username: "",
         }
     })
-  
 
     const mutation = useMutation({
       mutationFn: (formData: changeUsernameFormData) => changeUsername(formData, user),
