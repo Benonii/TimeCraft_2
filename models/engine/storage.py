@@ -33,9 +33,7 @@ class Storage:
         ''' Insantization '''
 
         # We are using the dev database
-        self.__engine = create_engine('mysql+mysqldb:'
-                                      + '//tc_dev:tc_dev_pwd_4796@localhost'
-                                      + '/tc_dev_db')
+        self.__engine = create_engine(DATABASE_URL)
 
     def all_tasks(self, usr):
         ''' Query the current databse session all tasks belonging to the user
