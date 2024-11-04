@@ -346,6 +346,7 @@ export const deleteTask = async (data: DeleteTask) => {
 
 // Auth functions
 export const login = async (formData: LoginFormData) => {
+  console.log("API URL:", api);
   const params = new URLSearchParams();
   params.append('email', formData.email);
   params.append('password', formData.password);
