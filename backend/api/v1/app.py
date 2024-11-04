@@ -8,7 +8,6 @@ from flask_cors import CORS
 from flasgger import Swagger
 from flasgger.utils import swag_from
 from api.v1.actions import app_actions
-from rtime_craft.src import components
 
 
 # Initializinig app
