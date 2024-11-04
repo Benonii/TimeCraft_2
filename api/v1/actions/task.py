@@ -54,8 +54,9 @@ def new_task():
 def all_tasks():
     """Gets all tasks associated with the user"""
     user_id = request.form.get('userId')
+    print("User ID:", user_id)
     if not user_id:
-            return jsonify({"message": "User ID not provided"}), 400
+        return jsonify({"message": "User ID not provided"}), 400
     
     try: 
         tasks = storage.get_task_by_user_id(user_id)
