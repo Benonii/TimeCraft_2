@@ -18,7 +18,7 @@ app.config['JSONIFY_PRETTYPRINT-REGULAR'] = True
 app.register_blueprint(app_actions, url_prefix="/tc/v1")
 
 # Setting up Cross-Origin-Resource_Sharing properly
-CORS(app, resources={r"/tc/v1/*": {"origins": "http://localhost:3000"}})
+CORS(app, resources={r"/tc/v1/*": {"origins": "https://timecraft-2.vercel.app"}})
 
 
 # Closes the Database session when necessary
