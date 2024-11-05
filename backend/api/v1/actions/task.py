@@ -43,7 +43,7 @@ def new_task():
         storage.new(new_task)
         storage.save()
 
-        return jsonify({'message': 'Task created successfully', 'data': {'task_id': new_task.id}}), 201
+        return jsonify({'message': 'Task created successfully', 'data': {'task_id': new_task.unique_id}}), 201
     except IntegrityError as e:
         storage.rollback()
         return jsonify({'message': 'Task name has to be unique. Please try again'}), 400

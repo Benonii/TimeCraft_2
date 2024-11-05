@@ -11,7 +11,7 @@ class DailyLog(BaseModel, Base):
     month = Column(String(60), nullable=False)
     day = Column(Integer, nullable=False)
     year = Column(Integer, nullable=False)
-    task_id = Column(String(128), ForeignKey("tasks.id"), nullable=False)
+    task_id = Column(String(128), ForeignKey("tasks.unique_id"), nullable=False)
     time_on_task = Column(Float, nullable=False, default=0)
     time_wasted = Column(Float, nullable=False, default=0)
     # Day of Week
