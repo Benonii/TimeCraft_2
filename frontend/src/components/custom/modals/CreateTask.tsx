@@ -66,7 +66,7 @@ export default function CreateTask() {
   // console.log("User ID:", user.id)
   
     const newTaskSchema = z.object({
-      userId: user ? z.string().nullable() : z.string().length(36), // Allow null if logged in
+      userId: user ? z.string().nullable() : z.string().length(8), // Allow null if logged in
       taskName: z.string().min(2, "Task name should be longer than 2 characters"),
       dailyGoal: z.coerce.number().min(1).max(23)
     })

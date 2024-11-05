@@ -57,8 +57,8 @@ function GetTotalTimeOnTask() {
     }
 
     const ttotReportSchema = z.object({
-        userId: user ? z.string().nullable() : z.string().length(36),
-        taskId: user ? z.string().nullable() : z.string().length(36),
+        userId: user ? z.string().nullable() : z.string().length(8),
+        taskId: user ? z.string().nullable() : z.string().length(8),
         taskName: user ? z.string().min(2) : z.string().nullable(),
     })
 

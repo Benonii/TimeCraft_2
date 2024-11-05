@@ -55,7 +55,7 @@ function GetTotalProductiveTime() {
     }
     
     const tptReportSchema = z.object({
-        userId: user ? z.string().nullable() : z.string().length(36),
+        userId: user ? z.string().nullable() : z.string().length(8),
     })
 
     const form = useForm<z.infer<typeof tptReportSchema>>({
