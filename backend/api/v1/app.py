@@ -17,7 +17,7 @@ app.config['JSONIFY_PRETTYPRINT-REGULAR'] = True
 # Registering a bluepring on app
 app.register_blueprint(app_actions, url_prefix="/tc/v1")
 
-# Setting up Cross-Origin-Resource_Sharing prophttp://127.0.0.1:3000erly
+# Setting up Cross-Origin-Resource_Sharing properly
 CORS(app, resources={r"/tc/v1/*": {"origins": "https://timecraft-2.vercel.app"}})
 
 

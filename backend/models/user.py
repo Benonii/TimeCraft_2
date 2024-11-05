@@ -3,6 +3,7 @@
 
 from models.basemodel import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel, Base):
@@ -15,3 +16,5 @@ class User(BaseModel, Base):
     number_of_work_days = Column(Integer, nullable=False)
     total_productive_time = Column(Float, nullable=False, default=0)
     total_wasted_time = Column(Float, nullable=False, default=0)
+    tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
+

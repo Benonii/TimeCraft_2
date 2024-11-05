@@ -15,4 +15,6 @@ class Task(BaseModel, Base):
     daily_goal = Column(Float, nullable=False)
     weekly_goal = Column(Float, nullable=False)
     user_id = Column(String(60), ForeignKey("users.unique_id"), nullable=False)
-    logs = relationship("DailyLog", backref="tasks", cascade="delete")
+    user = relationship("User", back_populates="tasks")
+    logs = relationship("DailyLog", back_populates="task", cascade="all, delete-orphan")
+
