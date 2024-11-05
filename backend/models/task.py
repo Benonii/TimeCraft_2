@@ -14,5 +14,5 @@ class Task(BaseModel, Base):
     total_time_on_task = Column(Float, default=0)
     daily_goal = Column(Float, nullable=False)
     weekly_goal = Column(Float, nullable=False)
-    user_id = Column(String(60), ForeignKey("users.id"), nullable=False)
+    user_id = Column(String(60), ForeignKey("users.unique_id"), nullable=False)
     logs = relationship("DailyLog", backref="tasks", cascade="delete")
