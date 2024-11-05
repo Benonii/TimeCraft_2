@@ -14,7 +14,7 @@ import ErrorAlert from '../components/custom/ErrorAlert';
 import { useState } from 'react';
 
 // Types
-import { LoginFormData, User, MessageResponseData,
+import { LoginFormData, MessageResponseData,
     LoginResponseData 
   } from '../lib/types';
 

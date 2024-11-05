@@ -1,10 +1,9 @@
 // Hooks
-import {useState} from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from "react-hook-form";
 
 // Components
-import { Button } from '../components/shadcn/Button';
 import { 
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
@@ -18,6 +17,7 @@ import TaskPicker from '../components/custom/TaskPicker';
 import { Link } from '@tanstack/react-router';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
+import LoadingButton from '../components/custom/LoadingButton';
 
 // Types
 import { CreateLogFormData, MessageResponseData } from '../lib/types';
@@ -29,7 +29,6 @@ import { createLog } from '../lib/functions';
 
 
 function Trackers() {
-      const api = process.env.REACT_APP_API_URL;
       const [ success, setSuccess ] = useState<boolean>(false);
       const [ message, setMessage ] = useState<string>("");
       const [ error, setError ] = useState<boolean>(false);
@@ -80,31 +79,23 @@ function Trackers() {
         }
       })
 
-      type FormData = {
-        userId: string | null,
-        taskId: string | null,
-        taskName: string | null,
-        timeOnTask: number,
-        timeWasted: number,
+    const mutation = useMutation({
+      mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
+      onSuccess: (response: MessageResponseData) => {
+        console.log('New Log created successfully', response);
+        setMessage(response.message);
+        handleSuccess();
+      },
+      onError: (error: MessageResponseData) => {
+        console.error('Failed to create Log', error);
+        setMessage(error.message);
+        handleError();
       }
-
-      type ResponseData = {
-        message: string,
-      }
-
-      const mutation = useMutation({
-        mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
-        onSuccess: (response: MessageResponseData) => {
-          console.log('New Log created successfully', response);
-          setMessage(response.message);
-          handleSuccess();
-        },
-        onError: (error: MessageResponseData) => {
-          console.error('Failed to create Log', error);
-          setMessage(error.message);
-          handleError();
-        }
     });
+
+    useEffect(() => {
+      setLoading(mutation.isPending);
+    }, [mutation])
 
     async function onSubmit(values: z.infer<typeof newLogSchema>) {
       const transformedValues = {
@@ -243,9 +234,11 @@ function Trackers() {
                             />
                             </div>
                             <div className="flex justify-center w-full mt-[-5px]">
-                              <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                                  Log
-                              </Button>
+                              <LoadingButton
+                                type="submit"
+                                isLoading={loading}
+                                text="Create"
+                              />
                             </div>
                           </form>
                         </Form>

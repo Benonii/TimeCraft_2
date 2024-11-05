@@ -1,10 +1,9 @@
 // Hooks
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 
 // Components
-import { Button } from '../../shadcn/Button';
 import { 
     Form, FormControl, FormField, FormItem,
     FormLabel, FormMessage 
@@ -19,6 +18,7 @@ import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
+import LoadingButton from '../LoadingButton';
 
 // Others
 import { z } from "zod";
@@ -32,6 +32,7 @@ import { CreateLogFormData, MessageResponseData } from '@/src/lib/types';
 export default function CreateLog() {
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
+    const [ loading, setLoading ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
 
     // Get user from localstorage
@@ -92,6 +93,10 @@ export default function CreateLog() {
         handleError();
       }
   });
+
+  useEffect(() => {
+    setLoading(mutation.isPending);
+  }, [mutation])
 
   async function onSubmit(values: z.infer<typeof newLogSchema>) {
     const transformedValues = {
@@ -235,9 +240,11 @@ export default function CreateLog() {
                         )}
                     />
                     <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Log
-                        </Button>
+                      <LoadingButton
+                          type="submit"
+                          isLoading={loading}
+                          text="Create"
+                      />
                     </div>
                 </form>
             </Form>
