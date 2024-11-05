@@ -17,6 +17,7 @@ import {
 import { DatePicker } from '../../shadcn/DatePicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
+import LoadingButton from '../LoadingButton';
 
 // Types
 import { WeeklyReport, WeeklyReportResponseData, DailyReportFromData, MessageResponseData } from '@/src/lib/types';
@@ -139,9 +140,11 @@ function GetWeeklyReport() {
                 )}
             />
             <div className="flex justify-center w-full">
-                <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                    Get report
-                </Button>
+              <LoadingButton
+                type="submit"
+                isLoading={loading}
+                text="Create"
+              />
             </div>
         </form>
       </Form>

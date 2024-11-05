@@ -8,7 +8,8 @@ import { Button } from '../../shadcn/Button';
 import { 
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
-} from '../../shadcn/Form';
+  } from '../../shadcn/Form';
+import LoadingButton from '../LoadingButton';
 
 import { Input } from '../../shadcn/Input';
 import {
@@ -33,7 +34,6 @@ import { getDailyReport } from '../../../lib/functions';
 
 
 function GetDailyReport() {
-    const api = process.env.REACT_APP_API_URL;
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ error, setError ] = useState<boolean>(false);
@@ -143,9 +143,11 @@ function GetDailyReport() {
                 )}
             />
             <div className="flex justify-center w-full">
-                <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                    Get report
-                </Button>
+              <LoadingButton
+                type="submit"
+                isLoading={loading}
+                text="Create"
+              />
             </div>
         </form>
       </Form>

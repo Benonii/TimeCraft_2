@@ -1,10 +1,9 @@
 // Hooks
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from "react-hook-form";
 
 // Components
-import { Button } from '../../shadcn/Button';
 import { 
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
@@ -21,6 +20,7 @@ import ErrorAlert from '../ErrorAlert';
 import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
 import { createTask } from '../../../lib/functions';
+import LoadingButton from '../LoadingButton';
 
 // Types
 import { NewTaskFormData, NewTaskResponseData, MessageResponseData } from '@/src/lib/types';
@@ -33,6 +33,7 @@ export default function CreateTask() {
     const [ success, setSuccess ] = useState<boolean>(false);
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
+    const [ loading, setLoading ] = useState<boolean>(false);
     const [ id, setId ] = useState<string>("");
 
 
@@ -93,6 +94,10 @@ export default function CreateTask() {
         handleError();
       }
     });
+
+    useEffect(() => {
+      setLoading(mutation.isPending);
+    }, [mutation])
 
   async function onSubmit(values: z.infer<typeof newTaskSchema>) {
     const transformedValues = {
@@ -201,9 +206,11 @@ export default function CreateTask() {
                         )}
                     />
                     <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Create
-                        </Button>
+                      <LoadingButton
+                          type="submit"
+                          isLoading={loading}
+                          text="Create"
+                      />
                     </div>
                 </form>
             </Form>
