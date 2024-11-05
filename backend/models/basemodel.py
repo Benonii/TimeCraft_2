@@ -2,6 +2,7 @@
 """This module defines a base class for all models in our hbnb clone"""
 
 import uuid
+import string
 import secrets
 import models
 from datetime import datetime
@@ -21,7 +22,7 @@ class BaseModel:
     def __generate_id__(self, length=8):
         """ Creates an 8 digit secure ID """
         chars = string.ascii_letters + string.digits + string.punctuation
-        return ''.join(secrets.choice(characters) for _ in range(length))
+        return ''.join(secrets.choice(chars) for _ in range(length))
 
     def __init__(self, **kwargs):
         """Instantiates a new model"""

@@ -48,7 +48,8 @@ def new_user():
         storage.rollback()
         return jsonify({'message': 'The username already exists. Please use a different one'}), 400
 
-    except e:
+    except Exception as e:
+        storage.rollback()
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 
@@ -73,10 +74,12 @@ def signup():
 
         return jsonify({ 'message': 'User signed up successfully!'}), 201
 
-    except IntegrityError as e:
+    except IntegrityError:
         storage.rollback()
         return jsonify({'message': 'The username/email already exists. Please use a different one'}), 400
-    except e:
+    except Exception as e:
+        print(e)
+        storage.rollback()
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 
@@ -121,7 +124,6 @@ def get_session_user():
     """ Gets a user for the session """
     return jsonify({"user_id": storage.user_id})
 
-
 @app_actions.route('/switch_user', methods=['POST'], strict_slashes=False)
 def switch_user():
     """ Changes the user for the session """
@@ -160,7 +162,8 @@ def update_user() :
         storage.rollback()
         return jsonify({'message': 'The username is taken. Please change it and try again'} ), 400
     except Exception as e:
-        print(e)
+        storage.rollback()
+        # print(e)
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 
