@@ -107,7 +107,7 @@ class Storage:
     
     def get_task_id_by_task_name(self, task_name):
         ''' Get task's Id by task name'''
-        return self.__session.query(Task).filter(Task.task_name == task_name).first().id
+        return self.__session.query(Task).filter(Task.task_name == task_name).first().unique_id
 
     def get_logs_of_the_day(self, log_date=None):
         """ Gets a log(or all logs) from the list of logs """
