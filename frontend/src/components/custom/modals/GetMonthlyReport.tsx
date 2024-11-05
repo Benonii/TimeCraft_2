@@ -72,7 +72,7 @@ function GetMonthlyReport() {
     const mutation = useMutation({
         mutationFn: (formData: MonthlyReportFormData) => getMonthlyReport(formData, user),
         onSuccess: (data: MonthlyReportResponseData) => {
-            console.log("Here is your report:", data)
+            // console.log("Here is your report:", data)
             setReport(data.report)
             setSuccess(true);
         },

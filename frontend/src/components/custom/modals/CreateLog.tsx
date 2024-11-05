@@ -83,7 +83,7 @@ export default function CreateLog() {
     const mutation = useMutation({
       mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
       onSuccess: (response: MessageResponseData) => {
-        console.log('New Log created successfully', response);
+        // console.log('New Log created successfully', response);
         setMessage(response.message);
         handleSuccess();
       },

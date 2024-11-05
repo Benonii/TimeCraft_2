@@ -55,7 +55,7 @@ function Signup () {
     const mutation = useMutation({
         mutationFn: (FormData: SignupFormData) => signup(FormData),
         onSuccess: (response: MessageResponseData) => {
-            console.log('Signup successful', response);
+            // console.log('Signup successful', response);
             router.navigate({ to: '/user/login' })
         },
         onError: (errorResponse: MessageResponseData) => {

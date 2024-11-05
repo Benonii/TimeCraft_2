@@ -55,7 +55,7 @@ function Login () {
     const mutation = useMutation({
         mutationFn: (formData: LoginFormData) => login(formData),
         onSuccess: (response: LoginResponseData) => {
-            console.log('Login successful', response);
+            // console.log('Login successful', response);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             router.navigate({ to: '/' })
@@ -72,7 +72,7 @@ function Login () {
     }, [mutation]);
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
-        console.log(values);
+        // console.log(values);
         try {
             mutation.mutate(values);
         } catch(error) {
