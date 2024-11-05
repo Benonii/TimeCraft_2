@@ -14,7 +14,7 @@ function LoadingButton({ isLoading, text }) {
         )}
       >
         {isLoading ? (
-          <span className='flex items-center gap-2'>
+          <span className='flex items-center justify-center'>
             <svg
               className='animate-spin h-5 w-5 text-white'
               xmlns="http://www.w3.org/2000/svg"
@@ -35,7 +35,6 @@ function LoadingButton({ isLoading, text }) {
                 d='M4 12a8 8 0 018-8v8h8a8 8 0 01-8 8 8 8 0 01-8-8z'
               ></path>
             </svg>
-            Loading...
           </span>
         ): (
           text
