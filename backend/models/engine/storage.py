@@ -143,15 +143,15 @@ class Storage:
         )
 
         with self.__session as session:
-            self.session.execute(update_query)
-            self.session.commit()
+            session.execute(update_query)
+            session.commit()
 
 
     def change_task_name(self, new_name, task_id):
         ''' Change task name of a task '''
         update_query = (
             update(Task)
-            .where(Task.id == task_id)
+            .where(Task.unique_id == task_id)
             .values(task_name = new_name)
         )
 

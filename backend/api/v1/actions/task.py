@@ -56,7 +56,7 @@ def new_task():
 def all_tasks():
     """Gets all tasks associated with the user"""
     user_id = request.form.get('userId')
-    print("User ID:", user_id)
+    # print("User ID:", user_id)
     if not user_id:
         return jsonify({"message": "User ID not provided"}), 400
     
@@ -66,7 +66,7 @@ def all_tasks():
 
         user_tasks = [{
             'name': task.task_name,
-            'id': task.id,
+            'id': task.unique_id,
             'ttot': task.total_time_on_task
         } for task in tasks]
 
