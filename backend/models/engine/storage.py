@@ -46,13 +46,13 @@ class Storage:
         usr_id = usr.id
 
         # Gets all Tasks in storage
-        tasks = self.__session.query(Task)
+        tasks = self.__session.query(Task).filter(Task.id == usr_id)
 
         # Filter the tasks assigned to our user
-        for task in tasks:
-            if task.user_id == usr_id:
-                task_list.append(task)
-        return task_list
+        # for task in tasks:
+        #     if task.user_id == usr_id:
+        #         task_list.append(task)
+        return tasks
 
     def total_time_on_task(self, usr, task):
         ''' Gets the total time spent across all tasks OR
@@ -75,7 +75,7 @@ class Storage:
 
         if user_id:
             for user in users:
-                if user.id == user_id:
+                if user.unique_id == user_id:
                     return user
             return None
 
@@ -138,7 +138,7 @@ class Storage:
         ''' Change username of a user '''
         update_query = (
             update(User)
-            .where(User.id == user_id)
+            .where(User.unique_id == user_id)
             .values(username=username)
         )
 
