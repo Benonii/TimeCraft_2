@@ -201,9 +201,8 @@ function GetDailyReport() {
             reportContent
             ) : loading ? (
                 <div className='flex flex-col gap-2 items-justify'>
-                  <Skeleton className="w-[500px] h-[400px] rounded-full ml-20" />
+                  <Skeleton className="w-[400px] h-[200px] rounded-lg ml-10 mb-10" />
                 </div>
-
               ) : (
                 formContent
             ) 
