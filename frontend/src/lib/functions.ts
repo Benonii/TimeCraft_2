@@ -344,6 +344,29 @@ export const deleteTask = async (data: DeleteTask) => {
     return resJSON;      
 }
 
+export const deleteUser = async (data: DeleteTask) => {
+  // console.log("ID:", data.id)
+  const params = new URLSearchParams();
+  params.append("taskId", data.id);
+
+  // console.log("Params", params.toString())
+  const res = await fetch( `${api}/user/delete`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params.toString(),
+  })
+
+  const resJSON = await res.json();
+  if (!res.ok) {
+    // console.log(response)
+    throw new Error(resJSON.message || 'An error occured');
+  }
+
+  return resJSON;      
+}
+
 // Auth functions
 export const login = async (formData: LoginFormData) => {
   console.log("API URL:", api);
