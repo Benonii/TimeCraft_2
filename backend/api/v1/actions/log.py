@@ -61,8 +61,12 @@ def new_log():
     user.save()
 
     # Creates a new log object and saves it
-    new_log = DailyLog(**log_dict)
-    storage.new(new_log)
-    storage.save()
+    try:
+        new_log = DailyLog(**log_dict)
+        storage.new(new_log)
+        storage.save()
 
-    return jsonify({'message': 'Log created successfully'})
+        return jsonify({'message': 'Log created successfully'})
+    except:
+        storage.rollback()
+        return jsonify({'message': 'Unknown error occured. Please try again'}), 500
