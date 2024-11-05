@@ -143,7 +143,7 @@ function GetMonthlyReport() {
               <LoadingButton
                 type="submit"
                 isLoading={loading}
-                text="Create"
+                text="Get report"
               />
             </div>
         </form>
