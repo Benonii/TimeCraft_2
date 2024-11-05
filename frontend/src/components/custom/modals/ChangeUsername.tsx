@@ -17,6 +17,7 @@ import {
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from '../../shadcn/Skeleton';
+import LoadingButton from '../LoadingButton'; 
 
 // Others
 import { z } from "zod";
@@ -98,7 +99,14 @@ function ChangeUsername() {
 
   return (
     <div>
-      <Dialog>
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) {
+            form.reset();     // Reset form when dialog closes
+            setMessage("");   // Clear any existing messages
+          }
+        }}
+      >
         <DialogTrigger 
           className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300'
         >
@@ -144,9 +152,11 @@ function ChangeUsername() {
                       )}
                     />
                     <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 px-2 text-white md:w-36 md:h-14 text-lg md:text-xl font-madimi hover:bg-yellow-300'>
-                            Save changes
-                        </Button>
+                      <LoadingButton
+                        type="submit"
+                        isLoading={loading}
+                        text="Get report"
+                      />
                     </div>
                 </form>
             </Form>
