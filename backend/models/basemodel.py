@@ -2,6 +2,7 @@
 """This module defines a base class for all models in our hbnb clone"""
 
 import uuid
+import secrets
 import models
 from datetime import datetime
 from sqlalchemy.orm import declarative_base
@@ -11,10 +12,16 @@ Base = declarative_base()
 
 
 class BaseModel:
-    """A base class for all hbnb modeles"""
+    """A base class for all timecraft modeles"""
     id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
+    created_at = Column(DateTime, nullable=False, default=datetime.now())
+    updated_at = Column(DateTime, nullable=False, default=datetime.now())
+    unique_id = Column(String(8), unique=True)
+
+    def __generate_id__(self, length=8):
+        """ Creates an 8 digit secure ID """
+        chars = string.ascii_letters + string.digits + string.punctuation
+        return ''.join(secrets.choice(characters) for _ in range(length))
 
     def __init__(self, **kwargs):
         """Instantiates a new model"""
@@ -24,6 +31,8 @@ class BaseModel:
             self.created_at = datetime.now()
         if not kwargs.get('updated_at'):
             self.updated_at = datetime.now()
+        
+        self.unique_id = self.__generate_id__()
 
         self.__dict__.update(kwargs)
 
