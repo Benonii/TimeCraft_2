@@ -180,6 +180,10 @@ class Storage:
 
         # Starts the session
         self.__session = Session()
+    
+    def rollback(self):
+        ''' Roll back the current session in case of error '''
+        self.__session.rollback()
 
     def close(self):
         ''' Closes the current session '''

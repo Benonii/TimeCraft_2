@@ -45,6 +45,7 @@ def new_user():
         return jsonify({'message': 'User created successfully!', 'data': {'user_id': new_user.id} }), 201
 
     except IntegrityError as e:
+        storage.rollback()
         return jsonify({'message': 'The username already exists. Please use a different one'}), 400
 
     except e:
@@ -73,6 +74,7 @@ def signup():
         return jsonify({ 'message': 'User signed up successfully!'}), 201
 
     except IntegrityError as e:
+        storage.rollback()
         return jsonify({'message': 'The username/email already exists. Please use a different one'}), 400
     except e:
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
@@ -155,6 +157,7 @@ def update_user() :
         storage.change_username(username, user_id)
         return jsonify({ 'message': 'User updated successfully!'}), 200
     except IntegrityError as e:
+        storage.rollback()
         return jsonify({'message': 'The username is taken. Please change it and try again'} ), 400
     except Exception as e:
         print(e)
@@ -179,5 +182,6 @@ def delete_user():
         storage.save()
         return jsonify({'message': 'User deleted successfully!'}), 200
     except Exception as e:
-        print(e)
+        storage.rollback()
+        # print(e)
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
