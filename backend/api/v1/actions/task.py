@@ -45,6 +45,7 @@ def new_task():
 
         return jsonify({'message': 'Task created successfully', 'data': {'task_id': new_task.id}}), 201
     except IntegrityError as e:
+        storage.rollback()
         return jsonify({'message': 'Task name has to be unique. Please try again'}), 400
     except Exception as e:
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
@@ -122,10 +123,12 @@ def update_task():
         storage.change_task_name(new_name, task_id)
         return jsonify({ 'message': 'Task updated successfully' }), 200
     except IntegrityError as e:
-        print(e)
+        # print(e)
+        storage.rollback()
         return jsonify({ 'message': "A task with this name already exists. Please change it and try again" }), 400
     except Exception as e:
-        print(e)
+        # print(e)
+        storage.rollback()
         return jsonify({ 'message': 'Unknown error occured. Please try again' }), 500
 
 @app_actions.route("/tasks/delete", methods=['DELETE'], strict_slashes=False)
@@ -142,5 +145,6 @@ def delete_task():
         storage.delete(task)
         return jsonify({'message': 'Task deleted successfully!'}), 200
     except Exception as e:
-        print(e)
+        # print(e)
+        storage.rollback()
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
