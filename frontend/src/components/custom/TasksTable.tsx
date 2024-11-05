@@ -53,7 +53,7 @@ function TasksTable({ userId }) {
     const changeTaskMutation = useMutation({
         mutationFn: (formData: ChangeTaskNameFormData) => changeTaskName(formData),
         onSuccess: (response: MessageResponseData) => {
-            console.log('Task updated successfully', response);
+            // console.log('Task updated successfully', response);
             setMessage(response.message);
             handleSuccess();
         },
@@ -67,7 +67,7 @@ function TasksTable({ userId }) {
     const delteTaskMutation = useMutation({
         mutationFn: (data: DeleteTask) => deleteTask(data),
         onSuccess: (response: MessageResponseData) => {
-            console.log('Task deleted successfully', response);
+            // console.log('Task deleted successfully', response);
             setMessage(response.message);
             handleSuccess();
         },

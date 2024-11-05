@@ -72,7 +72,7 @@ function GetWeeklyReport() {
     const mutation = useMutation({
         mutationFn: (formData: DailyReportFromData) => getWeeklyReport(formData, user),
         onSuccess: (data: WeeklyReportResponseData) => {
-            console.log("Here is your report:", data )
+            // console.log("Here is your report:", data )
             setReport(data.report);
             setSuccess(true);
         },

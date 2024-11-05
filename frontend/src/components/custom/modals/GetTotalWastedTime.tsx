@@ -70,7 +70,7 @@ function GetTotalWastedTime() {
     const mutation = useMutation({
         mutationFn: (FormData: TptFormData) => getTwt(FormData, user),
         onSuccess: (data: TwtReportResponseData) => {
-            console.log("Here is your report:", data )
+            // console.log("Here is your report:", data )
             setReport(data.report);
             setSuccess(true);
         },

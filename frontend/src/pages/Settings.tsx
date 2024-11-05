@@ -2,6 +2,7 @@
 import { useState  } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useNavigate } from '@tanstack/react-router';
 
 // Components
 import Header from '../components/custom/Header';
@@ -12,6 +13,7 @@ import DeleteUserAlert from '../components/custom/DeleteUserAlert';
 import ManageTasks from '../components/custom/modals/ManageTasks';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
+
 
 // Types
 import { DeleteTask, MessageResponseData } from '../lib/types';
@@ -25,6 +27,7 @@ export default function Settings() {
   const [ success, setSuccess ] = useState<boolean>(false);
   const [ message, setMessage ] = useState<string>("");
   const [ error, setError ] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   // Get user from local storage
   const user = (() => {
@@ -41,8 +44,8 @@ export default function Settings() {
     setSuccess(true);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    // navigate({ to: '/' }); // Redirect user before closing alert
-    // setTimeout(() => setSuccess(false), 3000); // Reset alert state
+    navigate({ to: '/' }); // Redirect user before closing alert
+    setTimeout(() => setSuccess(false), 3000); // Reset alert state
 }
 
   const handleError = () => {
@@ -98,7 +101,7 @@ export default function Settings() {
                     <h4 className='text-gray-600 text-xl font-semibold dark:text-gray-500'>Profile</h4>
                     <ChangeUsername />
                     <ManageTasks />
-                    <DeleteUserAlert handleDelete={() => {mutation.mutate(user.id)}}/>
+                    <DeleteUserAlert handleDelete={() => {mutation.mutate({id: user.id})}}/>
                   </>
                 )}
             </div>

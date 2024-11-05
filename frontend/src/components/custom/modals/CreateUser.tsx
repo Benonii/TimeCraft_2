@@ -80,7 +80,7 @@ export default function CreateUser() {
     const mutation = useMutation({
       mutationFn: (formData: NewUserFormData ) => createUser(formData, user),
       onSuccess: (response: NewUserResponseData) => {
-      console.log('New user created successfully', response);
+      // console.log('New user created successfully', response);
       setMessage(response.message);
       setId(response.data.user_id);
       handleSuccess();
@@ -104,7 +104,7 @@ export default function CreateUser() {
         weekly_hours_goal: Number(values.weekly_hours_goal),
         work_days: Number(values.work_days),
     };
-    console.log('Data:', transformedValues)
+    // console.log('Data:', transformedValues)
     try {
         mutation.mutate(transformedValues);
         setId("");

@@ -72,7 +72,7 @@ function ChangeUsername() {
     const mutation = useMutation({
       mutationFn: (formData: changeUsernameFormData) => changeUsername(formData, user),
       onSuccess: (data: MessageResponseData, formData) => {
-        console.log("Here is your report:", data )
+        // console.log("Here is your report:", data )
         localStorage.setItem('user', JSON.stringify({...user, username: formData?.username }))
         setMessage(data.message);
         handleSuccess();
@@ -89,7 +89,7 @@ function ChangeUsername() {
     }, [mutation])
 
     const onSubmit = async (values: z.infer<typeof changeUsernameSchema>) => {
-        console.log('Data:', values)
+        // console.log('Data:', values)
         try {
             mutation.mutate(values);
         } catch(error) {
