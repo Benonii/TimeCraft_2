@@ -171,6 +171,7 @@ def update_user() :
 def delete_user():
     ''' Delete the user '''
     user_id = request.form.get('userId')
+    print("User Id:", user_id)
 
     if not user_id:
         return jsonify({'message': "User Id is required"}), 400
@@ -186,5 +187,5 @@ def delete_user():
         return jsonify({'message': 'User deleted successfully!'}), 200
     except Exception as e:
         storage.rollback()
-        # print(e)
+        print(e)
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500

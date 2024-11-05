@@ -2,6 +2,7 @@
 
 from models.basemodel import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from datetime import datetime
 
 
@@ -14,6 +15,6 @@ class DailyLog(BaseModel, Base):
     task_id = Column(String(128), ForeignKey("tasks.unique_id"), nullable=False)
     time_on_task = Column(Float, nullable=False, default=0)
     time_wasted = Column(Float, nullable=False, default=0)
-    # Day of Week
     day_of_week = Column(String(55), nullable=False)
     date = Column(String(60), nullable=True)
+    task = relationship("Task", back_populates="logs")
