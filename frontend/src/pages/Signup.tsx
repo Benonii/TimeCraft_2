@@ -1,5 +1,5 @@
 // Hooks
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, Link } from '@tanstack/react-router';
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import {
 } from '../components/shadcn/Form';
 import { Input } from '../components/shadcn/Input';
 import ErrorAlert from '../components/custom/ErrorAlert';
+import LoadingButton from '../components/custom/LoadingButton';
 
 // Types
 import { SignupFormData, MessageResponseData } from '../lib/types';
@@ -26,6 +27,7 @@ import { signup } from '../lib/functions';
 function Signup () {
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
+    const [ loading, setLoading ] = useState<boolean>(false);
 
     const handleError = () => {
 
@@ -67,6 +69,10 @@ function Signup () {
         }
     });
 
+    useEffect(() => {
+        setLoading(mutation.isPending);
+    })
+
     async function onSubmit(values: z.infer<typeof signupSchema>) {
         const transformedValues = {
             ...values,
@@ -90,7 +96,7 @@ function Signup () {
             <hr className='mt-5 dark:border-gray-300' />
 
             <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
-                Welcome back!
+                Welcome!
             </h3>
             <div className='flex w-full justify-center items-center'>
                 {error && (
@@ -186,9 +192,11 @@ function Signup () {
                         )}
                     />
                     <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Sign up
-                        </Button>
+                      <LoadingButton
+                        type="submit"
+                        isLoading={loading}
+                        text="Signup"
+                      />
                     </div>
                 </form>
             </Form>

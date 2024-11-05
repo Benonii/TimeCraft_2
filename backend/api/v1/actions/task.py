@@ -46,7 +46,7 @@ def new_task():
         return jsonify({'message': 'Task created successfully', 'data': {'task_id': new_task.id}}), 201
     except IntegrityError as e:
         return jsonify({'message': 'Task name has to be unique. Please try again'}), 400
-    except e:
+    except Exception as e:
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 

@@ -11,7 +11,8 @@ import {
   } from '../components/shadcn/Form';
 import { Input } from '../components/shadcn/Input';
 import ErrorAlert from '../components/custom/ErrorAlert';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import LoadingButton from '../components/custom/LoadingButton';
 
 // Types
 import { LoginFormData, MessageResponseData,
@@ -27,6 +28,7 @@ import { login } from '../lib/functions';
 function Login () {
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
+    const [ loading, setLoading ] = useState<boolean>(false);
     const router = useRouter();
 
     const handleError = () => {
@@ -64,6 +66,10 @@ function Login () {
             handleError()
         }
     });
+
+    useEffect(() => {
+        setLoading(mutation.isPending);
+    }, [mutation]);
 
     async function onSubmit(values: z.infer<typeof loginSchema>) {
         console.log(values);
@@ -120,9 +126,11 @@ function Login () {
                         )}
                     />
                     <div className="flex justify-center w-full">
-                        <Button type="submit" className='bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300'>
-                            Login
-                        </Button>
+                      <LoadingButton
+                        type="submit"
+                        isLoading={loading}
+                        text="Login"
+                      />
                     </div>
                 </form>
             </Form>
