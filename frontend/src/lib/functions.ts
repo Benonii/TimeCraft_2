@@ -347,7 +347,7 @@ export const deleteTask = async (data: DeleteTask) => {
 export const deleteUser = async (data: DeleteTask) => {
   // console.log("ID:", data.id)
   const params = new URLSearchParams();
-  params.append("taskId", data.id);
+  params.append("userId", data.id);
 
   // console.log("Params", params.toString())
   const res = await fetch( `${api}/user/delete`, {
