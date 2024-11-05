@@ -31,9 +31,9 @@ function TaskPicker({ userId, onSelect }) {
               {isLoading ? (
                 <SelectItem key="loading" value="loading" disabled>
                   <div className='flex flex-col gap-2 items-justify'>
-                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
-                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
-                    <Skeleton className="w-[100px] h-[20px] rounded-full ml-20" />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
                 </div>
                 </SelectItem>
               ) : isError ? (
