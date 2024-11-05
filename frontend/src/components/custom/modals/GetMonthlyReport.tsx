@@ -54,7 +54,7 @@ function GetMonthlyReport() {
     }
     
     const monthlyReportSchema = z.object({
-        userId: user ? z.string().nullable() : z.string().length(36),
+        userId: user ? z.string().nullable() : z.string().length(8),
         month: z.string().min(3),
     })
 

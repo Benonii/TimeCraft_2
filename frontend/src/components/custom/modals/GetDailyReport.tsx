@@ -61,7 +61,7 @@ function GetDailyReport() {
     }
 
     const dailyReportSchema = z.object({
-        userId: user ? z.string().nullable() : z.string().length(36),
+        userId: user ? z.string().nullable() : z.string().length(8),
         date: z.date(),
     })
 

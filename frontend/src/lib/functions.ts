@@ -42,7 +42,7 @@ export const createTask = async (formData: NewTaskFormData) => {
   params.append('taskName', formData.taskName);
   params.append('dailyGoal', String(formData.dailyGoal));
 
-  console.log("Params", params.toString());
+  // console.log("Params", params.toString());
 
   const response = await fetch(`${api}/tasks/create`, {
     method: 'POST',
