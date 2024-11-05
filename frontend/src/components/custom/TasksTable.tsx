@@ -137,7 +137,7 @@ function TasksTable({ userId }) {
                         )}
                     </TableCell>
                     <TableCell className='max-w-52 text-xs'>{task.id}</TableCell>
-                    <TableCell className='text-green-700 dark:text-green-500 text-lg'>{task.ttot} hours</TableCell>
+                    <TableCell className='text-green-700 dark:text-green-500 text-lg'>{task.ttot.toFixed(2)} hours</TableCell>
                     <TableCell onClick={() => {delteTaskMutation.mutate({ id: task.id }) }}>
                         <Trash2 className='w-4 h-4 hover:text-red-700 dark:hover:text-red-500' />
                     </TableCell>
