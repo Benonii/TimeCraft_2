@@ -10,7 +10,7 @@ function LoadingButton({ isLoading, text }) {
         disabled={isLoading}
         className={cn(
           'bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300',
-          isLoading ?? "bg-gray-400 cursor-not-allowed"
+          isLoading ?? "cursor-not-allowed"
         )}
       >
         {isLoading ? (
