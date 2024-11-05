@@ -48,6 +48,7 @@ def new_task():
         storage.rollback()
         return jsonify({'message': 'Task name has to be unique. Please try again'}), 400
     except Exception as e:
+        storage.rollback()
         return jsonify({'message': 'Unkown error occured. Please try again'}), 500
 
 
