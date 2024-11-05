@@ -17,7 +17,7 @@ import ErrorAlert from '../components/custom/ErrorAlert';
 import { DeleteTask, MessageResponseData } from '../lib/types';
 
 // Others
-import { deleteTask } from '../lib/functions';
+import { deleteUser } from '../lib/functions';
 
 
 export default function Settings() {
@@ -54,7 +54,7 @@ export default function Settings() {
   }
 
   const mutation = useMutation({
-    mutationFn: (formData: DeleteTask) => deleteTask(formData),
+    mutationFn: (formData: DeleteTask) => deleteUser(formData),
     onSuccess: (data: MessageResponseData) => {
       setMessage(data.message)
       handleSuccess();
