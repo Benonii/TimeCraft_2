@@ -237,7 +237,7 @@ function Trackers() {
                               <LoadingButton
                                 type="submit"
                                 isLoading={loading}
-                                text="Create"
+                                text="Log"
                               />
                             </div>
                           </form>

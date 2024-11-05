@@ -243,7 +243,7 @@ export default function CreateLog() {
                       <LoadingButton
                           type="submit"
                           isLoading={loading}
-                          text="Create"
+                          text="Log"
                       />
                     </div>
                 </form>
