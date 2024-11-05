@@ -42,7 +42,7 @@ def new_user():
         storage.new(new_user)
         storage.save()
         
-        return jsonify({'message': 'User created successfully!', 'data': {'user_id': new_user.id} }), 201
+        return jsonify({'message': 'User created successfully!', 'data': {'user_id': new_user.unique_id} }), 201
 
     except IntegrityError as e:
         storage.rollback()
@@ -104,7 +104,7 @@ def login():
     returning_user = {
         'email': user.email,
         'username': user.username,
-        'id': user.id,
+        'id': user.unique_id,
         'tpt': user.total_productive_time,
         'twt': user.total_wasted_time,
     }

@@ -21,7 +21,7 @@ class BaseModel:
 
     def __generate_id__(self, length=8):
         """ Creates an 8 digit secure ID """
-        chars = string.ascii_letters + string.digits + string.punctuation
+        chars = string.ascii_lowercase + string.digits
         return ''.join(secrets.choice(chars) for _ in range(length))
 
     def __init__(self, **kwargs):
