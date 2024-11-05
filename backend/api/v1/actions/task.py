@@ -142,6 +142,9 @@ def delete_task():
 
     task = storage.get_task(task_id)
 
+    if not task:
+        return jsonify({'message': "Couldn't find a task with that ID"}), 404
+
     try:
         storage.delete(task)
         return jsonify({'message': 'Task deleted successfully!'}), 200
