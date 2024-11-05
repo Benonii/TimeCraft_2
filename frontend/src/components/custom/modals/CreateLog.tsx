@@ -63,7 +63,7 @@ export default function CreateLog() {
   
     const newLogSchema = z.object({
       userId: user ? z.string().nullable() : z.string().length(8), // Allow null if logged in
-      taskId: user ? z.string().nullable() : z.string().length(36),
+      taskId: user ? z.string().nullable() : z.string().length(8),
       taskName: user ? z.string().min(2) : z.string().nullable(),
       timeOnTask: z.coerce.number().gt(0),
       timeWasted: z.coerce.number().gt(0),
