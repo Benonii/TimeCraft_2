@@ -155,7 +155,7 @@ function ChangeUsername() {
                       <LoadingButton
                         type="submit"
                         isLoading={loading}
-                        text="Get report"
+                        text="Confirm"
                       />
                     </div>
                 </form>
