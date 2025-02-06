@@ -13,14 +13,14 @@ from models.user import User
 from models.task import Task
 from models.dailylog import DailyLog
 from contextlib import contextmanager
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()  # Load environment variables from .env file
+# load_dotenv()  # Load environment variables from .env file
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# DATABASE_URL = os.getenv("DATABASE_URL")
 
-if DATABASE_URL is None:
-    raise ValueError("No DATABASE_URL found in environment variables")
+# if DATABASE_URL is None:
+  #  raise ValueError("No DATABASE_URL found in environment variables")
 
 class Storage:
     ''' This class defines handles the storage of our data '''
@@ -33,7 +33,11 @@ class Storage:
         ''' Insantization '''
 
         # We are using the dev database
-        self.__engine = create_engine(DATABASE_URL)
+        # self.__engine = create_engine(DATABASE_URL)
+        #         # We are using the dev database
+        self.__engine = create_engine('mysql+mysqldb:'
+                                      + '//tc_dev:tc_dev_pwd_4796@localhost'
+                                      + '/tc_dev_db')
 
     def all_tasks(self, usr):
         ''' Query the current databse session all tasks belonging to the user
