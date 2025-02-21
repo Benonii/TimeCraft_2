@@ -1,0 +1,84 @@
+""" Handles authentication """
+
+from v2 import router
+from flask import jsonify, request, abort
+from models.user import User
+from flasgger.utils import swag_from
+from jose import jwt, JWTError
+from passlib.context import CryptContext
+from datetime import timedelta, datetime
+from sqlalchemy.exc import IntegrityError
+from os import environ
+from auth.functions import get_user_by_email, get_user_by_id, create_access_token
+from auth.validation import LoginRequest, SignupRequest
+from v2.engine import storage
+
+secret_key = environ.get('SECRET_KEY')
+algorithm = environ.get('ALGORITHM')
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
+
+@router.route('/login', methods=['POST'], strict_slashes=False)
+@swag_from('auth/login.yml', methods=['POST'])
+def login():
+    """ Login a user """
+    try:
+        login_data = LoginRequest.model_validate(request.form)
+    except ValueError as e:
+        abort(400, description=str(e))
+
+    user_from_db = get_user_by_email(login_data.email)
+
+    if not user_from_db:
+        abort(404, description="User not found!")
+
+    if not bcrypt_context.verify(login_data.password, user_from_db.password):
+        abort(401, description="Invalid password!")
+    
+    email, username, id, total_productive_time, total_wasted_time = user_from_db
+
+    token = create_access_token(email, id, timedelta(minutes=20))
+
+    return jsonify({
+        'message': 'Login successful!',
+        'data': {
+            'token': token,
+            'user': {
+                'email': email,
+                'username': username,
+                'id': id,
+                'total_productive_time': total_productive_time,
+                'total_wasted_time': total_wasted_time
+            }
+        }
+    }), 200
+
+
+@router.route('/signup', methods=['POST'], strict_slashes=False)
+@swag_from('auth/signup.yml', methods=['POST'])
+def signup():
+    """ Signup a user """
+    try:
+        signup_data = SignupRequest.model_validate(request.form)
+    except ValueError as e:
+        abort(400, description=str(e))
+
+    new_user = User(
+        email=signup_data.email,
+        password=bcrypt_context.hash(signup_data.password),
+        username=signup_data.username,
+        weekly_work_hours_goal=signup_data.weekly_work_hours_goal,
+        number_of_work_days=signup_data.number_of_work_days
+    )
+
+    try:
+        new_user.save()
+    except IntegrityError:
+        storage.rollback()
+        abort(400, description="User already exists!")
+    except Exception as e:
+        storage.rollback()
+        abort(500, description=str(e))
+
+    return jsonify({ 'message': 'User signed up successfully!'}), 200

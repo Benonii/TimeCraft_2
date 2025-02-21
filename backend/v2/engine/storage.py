@@ -26,7 +26,7 @@ class Storage:
     ''' This class defines handles the storage of our data '''
 
     __engine = None
-    __session = None
+    session = None
     user_id = None
 
     def __init__(self):
@@ -48,7 +48,7 @@ class Storage:
         usr_id = usr.id
 
         # Gets all Tasks in storage
-        tasks = self.__session.query(Task).filter(Task.id == usr_id)
+        tasks = self.session.query(Task).filter(Task.id == usr_id)
 
         # Filter the tasks assigned to our user
         # for task in tasks:
@@ -73,7 +73,7 @@ class Storage:
         """ Get a user(Users) from the list of users """
 
         # Get all User objects in storage
-        users = self.__session.query(User)
+        users = self.session.query(User)
 
         if user_id:
             for user in users:
@@ -86,13 +86,13 @@ class Storage:
     
     def get_user_by_email(self, email):
         ''' Get user byy email address '''
-        return self.__session.query(User).filter(User.email == email).first()
+        return self.session.query(User).filter(User.email == email).first()
 
     def get_task(self, task_id=None):
         """ Get a task(or all tasks) from the list of tasks """
 
         # Get all Task objects in storage
-        tasks = self.__session.query(Task)
+        tasks = self.session.query(Task)
 
         if task_id:
             for task in tasks:
@@ -105,17 +105,17 @@ class Storage:
     
     def get_task_by_user_id(self, user_id):
         ''' Get a task by user Id '''
-        return self.__session.query(Task).filter(Task.user_id == user_id)
+        return self.session.query(Task).filter(Task.user_id == user_id)
     
     def get_task_id_by_task_name(self, task_name):
         ''' Get task's Id by task name'''
-        return self.__session.query(Task).filter(Task.task_name == task_name).first().unique_id
+        return self.session.query(Task).filter(Task.task_name == task_name).first().unique_id
 
     def get_logs_of_the_day(self, log_date=None):
         """ Gets a log(or all logs) from the list of logs """
 
         # Get all Log objects in storarge
-        logs = self.__session.query(DailyLog)
+        logs = self.session.query(DailyLog)
         logs_of_the_day = []
 
         if log_date:
@@ -130,7 +130,7 @@ class Storage:
 
     def new(self, obj):
         ''' Adds a new object to the session '''
-        self.__session.add(obj)
+        self.session.add(obj)
 
     def set_user_id(self, user_id):
         ''' Sets a user id for the session '''
@@ -144,7 +144,7 @@ class Storage:
             .values(username=username)
         )
 
-        with self.__session as session:
+        with self.session as session:
             session.execute(update_query)
             session.commit()
 
@@ -157,19 +157,19 @@ class Storage:
             .values(task_name = new_name)
         )
 
-        with self.__session as session:
+        with self.session as session:
             session.execute(update_query)
             session.commit()
 
     def save(self):
         ''' Saves all changes made in the session '''
-        self.__session.commit()
+        self.session.commit()
 
     def delete(self, obj):
         ''' Deletes an object from the database '''
         if obj:
-            # with self.__session as session:
-            self.__session.delete(obj)
+            # with self.session as session:
+            self.session.delete(obj)
 
     def reload(self):
         ''' Creates all tables in the database and the current db session '''
@@ -181,12 +181,12 @@ class Storage:
         Session = scoped_session(session_factory)
 
         # Starts the session
-        self.__session = Session()
+        self.session = Session()
     
     def rollback(self):
         ''' Roll back the current session in case of error '''
-        self.__session.rollback()
+        self.session.rollback()
 
     def close(self):
         ''' Closes the current session '''
-        self.__session.close()
+        self.session.close()

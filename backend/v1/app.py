@@ -15,10 +15,10 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT-REGULAR'] = True
 
 # Registering a bluepring on app
-app.register_blueprint(app_actions, url_prefix="/tc/v1")
+app.register_blueprint(app_actions, url_prefix="/api")
 
 # Setting up Cross-Origin-Resource_Sharing properly
-CORS(app, resources={r"/tc/v1/*": {"origins": "https://timecraft-2.vercel.app"}})
+CORS(app, resources={r"/api*": {"origins": "*"}})
 
 
 # Closes the Database session when necessary
@@ -57,5 +57,5 @@ if __name__ == "__main__":
     if not host:
         host = '0.0.0.0'
     if not port:
-        port = 5001
+        port = 5000
     app.run(host=host, port=port, threaded=True, debug=True)
