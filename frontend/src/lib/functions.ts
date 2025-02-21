@@ -7,7 +7,7 @@ import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
 
 // API URL
-const api = process.env.REACT_APP_API_URL;
+const api = 'http://127.0.0.1:5000/tc/v1';
 
 
 // Create functions
@@ -397,7 +397,7 @@ export const signup = async (formData: SignupFormData) => {
   params.append('weekly_hours', String(formData.weekly_hours))
   params.append('work_days', String(formData.work_days))
   params.append('password', formData.password)
-  const response = await fetch(`${api}/signup`, {
+  const response = await fetch(`http://127.0.0.1:5000/tc/v1/signup`, {
       method: 'POST',
       headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
