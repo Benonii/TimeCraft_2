@@ -1,0 +1,64 @@
+""" This module contains the SQLAlchemy BaseModel """
+
+import uuid
+import string
+import secrets
+from engine import storage
+from datetime import datetime
+from sqlalchemy.orm import declarative_base
+from sqlalchemy import String, Column, Integer, DateTime
+
+Base = declarative_base()
+
+
+class BaseModel:
+    """ This class is the base model for all models in the project """
+    id = Column(String(60), primary_key=True)
+    created_at = Column(DateTime, nullable=False, default=datetime.now())
+    updated_at = Column(DateTime, nullable=False, default=datetime.now())
+    unique_id = Column(String(8), unique=True)
+
+    def __generate_id__(self, length=8):
+        """ Creates an 8 digit secure ID """
+        chars = string.ascii_lowercase + string.digits
+        return ''.join(secrets.choice(chars) for _ in range(length))
+    
+    def __init__(self, **kwargs):
+        """ Instantiates a new model """
+        # Set core fields with defaults
+        self.id = str(uuid.uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.unique_id = self.__generate_id__()
+
+        # Filter out protected attributes from kwargs
+        protected = {'id', 'created_at', 'updated_at', 'unique_id'}
+        filtered_kwargs = {k: v for k, v in kwargs.items() if k not in protected}
+        
+        # Update remaining attributes
+        self.__dict__.update(filtered_kwargs)
+
+    def __str__(self):
+        """ Returns a string representation of the model """
+        filtered_dict = {k: v for k, v in self.__dict__.items() if v}
+        return f'[{type(self).__name__}] ({self.id}) {filtered_dict}'
+    
+    def save(self):
+        """ Saves the model to the database """
+        self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
+
+    def to_dict(self):
+        """ Converts the model to a dictionary """
+        dictionary = {}
+        for key, value in self.__dict__.items():
+            if value is not None:
+                dictionary[key] = value
+
+        dictionary['__class__'] = self.__class__.__name__
+        return dictionary
+    
+    def delete(self):
+        """ Deletes the model from the database """
+        storage.delete(self)
