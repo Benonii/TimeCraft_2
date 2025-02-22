@@ -1,6 +1,6 @@
 ''' This module contains the class Task '''
 
-from models.Basemodel import BaseModel, Base
+from v2.models.Basemodel import BaseModel, Base
 from sqlalchemy import Column, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 

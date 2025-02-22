@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ''' This module contains the class User '''
 
-from models.Basemodel import BaseModel, Base
+from v2.models.Basemodel import BaseModel, Base
 from sqlalchemy import Column, String, Float, Integer
 from sqlalchemy.orm import relationship
 

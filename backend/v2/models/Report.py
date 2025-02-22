@@ -1,6 +1,6 @@
 ''' This module contains the class Report '''
 
-from models.Basemodel import BaseModel, Base
+from v2.models.Basemodel import BaseModel, Base
 from sqlalchemy import Column, DateTime, String, Float, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
