@@ -1,0 +1,20 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "bcrypt>=4.2.1",
+    "dotenv>=0.9.9",
+    "flasgger>=0.9.7.1",
+    "flask-cors>=5.0.0",
+    "flask[standard]>=3.1.0",
+    "mysqlclient>=2.2.7",
+    "passlib>=1.7.4",
+    "psycopg2>=2.9.10",
+    "pydantic[email,timezone]>=2.10.6",
+    "python-jose>=3.4.0",
+    "sqlalchemy>=2.0.38",
+    "uvicorn>=0.34.0",
+]
