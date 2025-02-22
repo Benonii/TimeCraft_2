@@ -8,10 +8,10 @@ import sqlalchemy
 from sqlalchemy import (create_engine, update)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.basemodel import Base
-from models.user import User
-from models.task import Task
-from models.dailylog import DailyLog
+from v2.models.Basemodel import Base
+from v2.models.User import User
+from v2.models.Task import Task
+from v2.models.Report import Report
 from contextlib import contextmanager
 from dotenv import load_dotenv
 
@@ -115,7 +115,7 @@ class Storage:
         """ Gets a log(or all logs) from the list of logs """
 
         # Get all Log objects in storarge
-        logs = self.session.query(DailyLog)
+        logs = self.session.query(Report)
         logs_of_the_day = []
 
         if log_date:
