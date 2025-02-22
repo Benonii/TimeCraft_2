@@ -2,9 +2,8 @@
 
 from v2 import router
 from flask import jsonify, request, abort
-from models.user import User
+from v2.models.User import User
 from flasgger.utils import swag_from
-from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from sqlalchemy.exc import IntegrityError

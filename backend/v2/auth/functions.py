@@ -1,5 +1,5 @@
 from v2.engine import storage
-from models.user import User
+from v2.models.User import User
 from datetime import datetime
 from jose import jwt
 from os import environ
