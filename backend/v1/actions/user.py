@@ -3,7 +3,7 @@
 
 from models import storage
 from models.user import User
-from api.v1.actions import app_actions
+from v1.actions import app_actions
 from flasgger.utils import swag_from
 from flask import jsonify, request, abort
 from jose import jwt, JWTError
