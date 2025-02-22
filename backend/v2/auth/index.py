@@ -9,14 +9,18 @@ from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from sqlalchemy.exc import IntegrityError
 from os import environ
-from auth.functions import get_user_by_email, get_user_by_id, create_access_token
-from auth.validation import LoginRequest, SignupRequest
+from v2.auth.functions import get_user_by_email, get_user_by_id, create_access_token
+from v2.auth.validation import LoginRequest, SignupRequest
 from v2.engine import storage
 
 secret_key = environ.get('SECRET_KEY')
 algorithm = environ.get('ALGORITHM')
 
-bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+bcrypt_context = CryptContext(
+    schemes=['bcrypt'],
+    deprecated='auto',
+    bcrypt__default_rounds=12 
+)
 
 
 @router.route('/login', methods=['POST'], strict_slashes=False)
@@ -24,7 +28,8 @@ bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 def login():
     """ Login a user """
     try:
-        login_data = LoginRequest.model_validate(request.form)
+        data = request.get_json() if request.is_json else request.form
+        login_data = LoginRequest.model_validate(data)
     except ValueError as e:
         abort(400, description=str(e))
 
@@ -36,20 +41,18 @@ def login():
     if not bcrypt_context.verify(login_data.password, user_from_db.password):
         abort(401, description="Invalid password!")
     
-    email, username, id, total_productive_time, total_wasted_time = user_from_db
-
-    token = create_access_token(email, id, timedelta(minutes=20))
+    token = create_access_token(user_from_db.email, user_from_db.id, timedelta(minutes=20))
 
     return jsonify({
         'message': 'Login successful!',
         'data': {
             'token': token,
             'user': {
-                'email': email,
-                'username': username,
-                'id': id,
-                'total_productive_time': total_productive_time,
-                'total_wasted_time': total_wasted_time
+                'email': user_from_db.email,
+                'username': user_from_db.username,
+                'id': user_from_db.id,
+                'total_productive_time': user_from_db.total_productive_time,
+                'total_wasted_time': user_from_db.total_wasted_time
             }
         }
     }), 200
@@ -60,7 +63,8 @@ def login():
 def signup():
     """ Signup a user """
     try:
-        signup_data = SignupRequest.model_validate(request.form)
+        data = request.get_json() if request.is_json else request.form
+        signup_data = SignupRequest.model_validate(data)
     except ValueError as e:
         abort(400, description=str(e))
 

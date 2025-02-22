@@ -1,7 +1,7 @@
 from v2.engine import storage
 from models.user import User
-from datetime import datetime, timedelta
-import jwt
+from datetime import datetime
+from jose import jwt
 from os import environ
 
 SECRET_KEY = environ.get('SECRET_KEY')
