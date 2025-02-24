@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Flask App """
 
-from v2.engine import storage
+from v2.models import storage
 from os import environ
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
