@@ -8,7 +8,7 @@ import sqlalchemy
 from sqlalchemy import (create_engine, update)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from v2.models.Basemodel import Base
+from v2.models.base import Base
 from v2.models.User import User
 from v2.models.Task import Task
 from v2.models.Report import Report
