@@ -1,5 +1,6 @@
-from v2.engine import storage
+from v2.models import storage
 from v2.models.User import User
+from v2.models.Profile import Profile
 from datetime import datetime
 from jose import jwt
 from os import environ
@@ -10,7 +11,15 @@ ALGORITHM = environ.get('ALGORITHM')
 
 def get_user_by_email(email):
     """ Get a user by email """
-    return storage.session.query(User).filter(User.email == email).first()
+    user = storage.session.query(User).filter(User.email == email).first()
+    if user:
+        profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
+        print("==============Profile===============", profile)
+
+    return {
+        **user.to_dict(),
+        **profile.to_dict()
+    } if user and profile else {}
 
 
 def get_user_by_id(user_id):
