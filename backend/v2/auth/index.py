@@ -12,6 +12,7 @@ from os import environ
 from v2.auth.functions import get_user_by_email, get_user_by_id, create_access_token
 from v2.auth.validation import LoginRequest, SignupRequest
 from v2.models import storage
+from v2.utils.middleware import auth_middleware
 
 secret_key = environ.get('SECRET_KEY')
 algorithm = environ.get('ALGORITHM')
@@ -112,3 +113,31 @@ def signup():
         abort(500, description=str(e))
 
     return jsonify({ 'message': 'User signed up successfully!'}), 200
+
+
+@router.route('/me', methods=['GET'], strict_slashes=False)
+@auth_middleware
+def get_current_user():
+    """Get the current authenticated user's profile"""
+    user = request.user
+    
+    # Create a serializable dictionary with user data
+    user_data = {
+        'email': user['email'],
+        'full_name': user['full_name'],
+        'id': user['id'],
+        'username': user['username'],
+    }
+    
+    return jsonify({
+        'message': 'User retrieved successfully',
+        'data': user_data
+    }), 200
+
+
+# @router.route('/logout', methods=['GET'], strict_slashes=False)
+# @auth_middleware
+# @swag_from('auth/logout.yml', methods=['POST'])
+# def logout():
+#     """ Logout a user """
+#     return jsonify({ 'message': 'Logout successful!'}), 200
