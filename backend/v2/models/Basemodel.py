@@ -3,20 +3,36 @@
 import uuid
 import string
 import secrets
-from v2.engine import storage
+from v2 import models
 from datetime import datetime
-from sqlalchemy.orm import declarative_base
-from sqlalchemy import String, Column, Integer, DateTime
+from sqlalchemy import String, Column, DateTime
+from v2.models.base import Base
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.ext.declarative import AbstractConcreteBase
 
-Base = declarative_base()
 
-
-class BaseModel:
+class BaseModel(AbstractConcreteBase):
     """ This class is the base model for all models in the project """
-    id = Column(String(60), primary_key=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.now())
-    updated_at = Column(DateTime, nullable=False, default=datetime.now())
-    unique_id = Column(String(8), unique=True)
+    
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
+    
+    @declared_attr
+    def id(cls):
+        return Column(String(60), primary_key=True)
+    
+    @declared_attr
+    def created_at(cls):
+        return Column(DateTime, nullable=False, default=datetime.now())
+    
+    @declared_attr
+    def updated_at(cls):
+        return Column(DateTime, nullable=False, default=datetime.now())
+    
+    @declared_attr
+    def unique_id(cls):
+        return Column(String(8), unique=True)
 
     def __generate_id__(self, length=8):
         """ Creates an 8 digit secure ID """
@@ -35,8 +51,7 @@ class BaseModel:
         protected = {'id', 'created_at', 'updated_at', 'unique_id'}
         filtered_kwargs = {k: v for k, v in kwargs.items() if k not in protected}
         
-        # Update remaining attributes
-        self.__dict__.update(filtered_kwargs)
+        super().__init__(**filtered_kwargs)
 
     def __str__(self):
         """ Returns a string representation of the model """
@@ -46,8 +61,8 @@ class BaseModel:
     def save(self):
         """ Saves the model to the database """
         self.updated_at = datetime.now()
-        storage.new(self)
-        storage.save()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """ Converts the model to a dictionary """
@@ -61,4 +76,4 @@ class BaseModel:
     
     def delete(self):
         """ Deletes the model from the database """
-        storage.delete(self)
+        models.storage.delete(self)

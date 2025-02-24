@@ -1,6 +1,8 @@
 ''' This module contains the class Task '''
 
-from v2.models.Basemodel import BaseModel, Base
+from v2.models.Basemodel import BaseModel
+from v2.models.base import Base
+from v2.models.Profile import Profile
 from sqlalchemy import Column, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -12,6 +14,6 @@ class Task(BaseModel, Base):
     total_time_on_task = Column(Float, nullable=False, default=0)
     daily_goal = Column(Float, nullable=False)
     weekly_goal = Column(Float, nullable=False)
-    user_id = Column(String(60), ForeignKey("user.id"), nullable=False)
-    user = relationship("User", back_populates="task", useList=False)
+    user_id = Column(String(60), ForeignKey("profile.id"), nullable=False)
+    user = relationship("Profile", back_populates="tasks")
     reports = relationship("Report", back_populates="task", cascade="all, delete-orphan")
