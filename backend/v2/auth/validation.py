@@ -15,6 +15,7 @@ class LoginRequest(BaseModel):
 
 class SignupRequest(BaseModel):
     email: EmailStr
+    full_name: str
     password: str
     username: str
     weekly_work_hours_goal: Annotated[int, Field(gt=0)]  # positive integer
