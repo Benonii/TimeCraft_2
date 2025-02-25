@@ -1,31 +1,31 @@
 #!/usr/bin/python3
 """ Flask App """
 
+
 from v2.models import storage
 from os import environ
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
-from v2 import router
+from . import router
 
 
-# Initializinig app
+
+# Initializing app
 app = Flask(__name__)
-app.config['JSONIFY_PRETTYPRINT-REGULAR'] = True
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
-# Registering a bluepring on app
+# Registering blueprint on app
 app.register_blueprint(router, url_prefix="/api")
 
-# Setting up Cross-Origin-Resource_Sharing properly
-CORS(app, resources={r"/api*": {"origins": "*"}})
-
+# Setting up Cross-Origin-Resource-Sharing properly
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Closes the Database session when necessary
 @app.teardown_appcontext
 def close_db(error):
     """ Terminate database session """
     storage.close()
-
 
 # Handles 404 errors
 @app.errorhandler(404)
@@ -38,8 +38,7 @@ def not_found(error):
     """
     return make_response(jsonify({'error': "NOT FOUND"}), 404)
 
-
-# Documentaiton tool
+# Documentation tool
 app.config['SWAGGER'] = {
     'title': 'TimeCraft',
     'uiversion': 3
@@ -47,14 +46,9 @@ app.config['SWAGGER'] = {
 
 Swagger(app)
 
-
 # Run the Flask app
 if __name__ == "__main__":
     """ Main Function """
-    host = environ.get('HBNB_API_HOST')
-    port = environ.get('HBNB_API-PORT')
-    if not host:
-        host = '0.0.0.0'
-    if not port:
-        port = 5000
-    app.run(host=host, port=port, threaded=True, debug=True)
+    host = environ.get('HBNB_API_HOST', '0.0.0.0')
+    port = environ.get('HBNB_API_PORT', 5000)
+    app.run(host=host, port=int(port), threaded=True, debug=True)

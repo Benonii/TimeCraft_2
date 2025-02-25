@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
 from v2.models.base import Base
 from v2.models.User import User
-from v2.models.Task import Task
+from v2.models.Activity import Activity
 from v2.models.Report import Report
 from contextlib import contextmanager
 from dotenv import load_dotenv
@@ -48,24 +48,24 @@ class Storage:
         usr_id = usr.id
 
         # Gets all Tasks in storage
-        tasks = self.session.query(Task).filter(Task.id == usr_id)
+        activities = self.session.query(Activity).filter(Activity.id == usr_id)
 
         # Filter the tasks assigned to our user
         # for task in tasks:
         #     if task.user_id == usr_id:
         #         task_list.append(task)
-        return tasks
+        return activities
 
-    def total_time_on_task(self, usr, task):
+    def total_time_on_task(self, usr, activity):
         ''' Gets the total time spent across all tasks OR
             total time spent on one task if task is specified '''
-        tasks = self.all_tasks(usr)
+        activities = self.all_tasks(usr)
         total_time_on_task = 0
 
         # Goes through all the tasks related to the user
-        for tsk in tasks:
-            if tsk.id == task.id:
-                return task.total_time_on_task
+        for act in activities:
+            if act.id == activity.id:
+                return act.total_time_on_task
 
         return total_time_on_task
 
@@ -92,24 +92,24 @@ class Storage:
         """ Get a task(or all tasks) from the list of tasks """
 
         # Get all Task objects in storage
-        tasks = self.session.query(Task)
+        activities = self.session.query(Activity)
 
-        if task_id:
-            for task in tasks:
-                if task.unique_id == task_id:
-                    return task
+        if activity_id:
+            for activity in activities:
+                if activity.unique_id == activity_id:
+                    return activity
             return None
 
         # If noto Task ID is given, return all Task objects(for internal use)
-        return tasks
+        return activities
     
     def get_task_by_user_id(self, user_id):
         ''' Get a task by user Id '''
-        return self.session.query(Task).filter(Task.user_id == user_id)
+        return self.session.query(Activity).filter(Activity.user_id == user_id)
     
     def get_task_id_by_task_name(self, task_name):
         ''' Get task's Id by task name'''
-        return self.session.query(Task).filter(Task.task_name == task_name).first().unique_id
+        return self.session.query(Activity).filter(Activity.task_name == task_name).first().unique_id
 
     def get_logs_of_the_day(self, log_date=None):
         """ Gets a log(or all logs) from the list of logs """
@@ -152,8 +152,8 @@ class Storage:
     def change_task_name(self, new_name, task_id):
         ''' Change task name of a task '''
         update_query = (
-            update(Task)
-            .where(Task.unique_id == task_id)
+            update(Activity)
+            .where(Activity.unique_id == activity_id)
             .values(task_name = new_name)
         )
 

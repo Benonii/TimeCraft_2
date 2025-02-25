@@ -41,7 +41,7 @@ def auth_middleware(f):
             
             # Get user from database
             current_user = get_user_by_email(payload.get('email'))
-            print("==============Current User===============", current_user)
+            
             if not current_user:
                 abort(401, description="Invalid token: User not found")
                 

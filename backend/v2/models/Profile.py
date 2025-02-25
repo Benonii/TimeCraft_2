@@ -4,7 +4,7 @@
 from v2.models.Basemodel import BaseModel
 from v2.models.base import Base
 from v2.models.User import User
-from sqlalchemy import Column, ForeignKey, String, Float, Integer
+from sqlalchemy import Column, ForeignKey, String, Float, Integer, DateTime
 from sqlalchemy.orm import relationship
 
 
@@ -21,5 +21,6 @@ class Profile(BaseModel, Base):
     number_of_work_days = Column(Integer, nullable=False)
     total_productive_time = Column(Float, nullable=False, default=0)
     total_wasted_time = Column(Float, nullable=False, default=0)
-    tasks = relationship("Task", back_populates="user", cascade="all, delete-orphan")
+    activities = relationship("Activity", back_populates="user", cascade="all, delete-orphan")
     user = relationship("User", back_populates="profile", uselist=False)
+    deleted = Column(DateTime, nullable=True)

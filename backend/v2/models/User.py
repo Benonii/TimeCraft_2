@@ -3,7 +3,7 @@
 
 from v2.models.Basemodel import BaseModel
 from v2.models.base import Base
-from sqlalchemy import Column, String, Float, Integer, Table
+from sqlalchemy import Column, String, Float, Integer, Table, DateTime
 from sqlalchemy.orm import relationship
 
 
@@ -14,3 +14,4 @@ class User(BaseModel, Base):
     email = Column(String(128), nullable=True, unique=True)
     password = Column(String(255), nullable=True)
     profile = relationship("Profile", back_populates="user", uselist=False)
+    deleted = Column(DateTime, nullable=True)

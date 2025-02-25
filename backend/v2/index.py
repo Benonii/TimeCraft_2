@@ -1,4 +1,4 @@
-from v2 import router
+from . import router
 from flask import jsonify
 
 @router.route('/', methods=['GET'], strict_slashes=False)

@@ -77,7 +77,7 @@ def signup():
         abort(400, description=str(e))
 
     # First check if user already exists
-    existing_user = storage.get_user_by_email(signup_data.email)
+    existing_user = get_user_by_email(signup_data.email)
     if existing_user:
         abort(400, description="User with this email already exists!")
 
