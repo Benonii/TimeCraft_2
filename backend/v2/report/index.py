@@ -4,6 +4,7 @@ from v2 import router
 from flask import jsonify, request
 from v2.utils.middleware import auth_middleware
 from v2.report.validation import CreateReportRequest
+from v2.report.schemas import ReportResponse
 from v2.report.functions import (
     get_activity_by_id,
     create_new_report,
@@ -38,22 +39,12 @@ def create_report():
             comment=report_data.comment
         )
             
-        # Convert report to dictionary for response
-        report_dict = {
-            'id': new_report.id,
-            'unique_id': new_report.unique_id,
-            'activity_id': activity.unique_id,
-            'date': new_report.date.isoformat(),
-            'time_on_task': new_report.time_on_task,
-            'time_wasted': new_report.time_wasted,
-            'comment': new_report.comment,
-            'created_at': new_report.created_at.isoformat(),
-            'updated_at': new_report.updated_at.isoformat()
-        }
+        # Use ReportResponse for serialization
+        report_response = ReportResponse.model_validate(new_report)
         
         return jsonify({
             'message': 'Report created successfully',
-            'data': report_dict
+            'data': report_response.model_dump()
         }), 201
         
     except ValueError as e:
@@ -121,15 +112,29 @@ def get_report():
                 }), 400
             
         # Get reports within date range
-        response = get_reports_in_range(
+        reports = get_reports_in_range(
             user_id=request.user['id'],
             start_date=start_date_dt,
             end_date=end_date_dt
         )
+
+        print("==============Reports===============", reports)
+        
+        # Convert reports to response format
+        # response = {
+        #     activity_id: {
+        #         'activity_name': activity_data['activity_name'],
+        #         'reports': [
+        #             ReportResponse.model_validate(report).model_dump()
+        #             for report in activity_data['reports']
+        #         ]
+        #     }
+        #     for activity_id, activity_data in reports.items()
+        # }
         
         return jsonify({
             'message': 'Reports retrieved successfully',
-            'data': response
+            'data': reports
         }), 200
         
     except Exception as e:

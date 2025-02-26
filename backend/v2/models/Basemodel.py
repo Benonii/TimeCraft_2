@@ -69,7 +69,10 @@ class BaseModel(AbstractConcreteBase):
         dictionary = {}
         for key, value in self.__dict__.items():
             if value is not None:
-                dictionary[key] = value
+                if isinstance(value, datetime):
+                    dictionary[key] = value.isoformat()
+                else:
+                    dictionary[key] = value
 
         dictionary['__class__'] = self.__class__.__name__
         return dictionary

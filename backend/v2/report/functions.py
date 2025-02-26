@@ -32,14 +32,19 @@ def get_activity_reports(
     end_date: datetime
 ) -> List[Report]:
     """Get all reports for an activity within a date range"""
-    return storage.session.query(Report).filter(
-        Report.activity_id == activity.id,
-        Report.deleted.is_(None),
-        and_(
-            Report.date >= start_date,
-            Report.date <= end_date
-        )
+    activity_dict = activity.to_dict()
+    reports = storage.session.query(Report).filter(
+        Report.activity_id == activity_dict['id'],
+        Report.deleted == None,
+        # and_(
+        #     Report.date >= start_date,
+        #     Report.date <= end_date
+        # )
     ).all()
+
+    # print("==============Reports===============", reports)
+
+    return reports
 
 
 def create_new_report(
@@ -72,43 +77,45 @@ def create_new_report(
         raise e
 
 
-def process_activity_reports(
-    reports: List[Report]
-) -> Tuple[float, float, List[ReportResponse], ActivityDailyStats]:
-    """Process reports for an activity and return stats"""
-    if not reports:
-        return 0.0, 0.0, [], None
+# def process_activity_reports(
+#     reports: List[Report]
+# ) -> Tuple[float, float, List[ReportResponse], Dict]:
+#     """Process reports for an activity and return stats"""
+#     if not reports:
+#         return 0.0, 0.0, [], None
     
-    # Calculate totals
-    activity_productive_time = sum(r.time_on_task for r in reports)
-    activity_wasted_time = sum(r.time_wasted for r in reports)
+#     # Calculate totals
+#     activity_productive_time = sum(r.time_on_task for r in reports)
+#     activity_wasted_time = sum(r.time_wasted for r in reports)
     
-    # Convert reports to response format
-    report_list = [
-        ReportResponse(
-            id=r.id,
-            unique_id=r.unique_id,
-            date=r.date,
-            time_on_task=r.time_on_task,
-            time_wasted=r.time_wasted,
-            comment=r.comment
-        ) for r in reports
-    ]
+#     # Convert reports to response format
+#     report_list = [
+#         ReportResponse(
+#             id=r.id,
+#             unique_id=r.unique_id,
+#             date=r.date,
+#             time_on_task=r.time_on_task,
+#             time_wasted=r.time_wasted,
+#             comment=r.comment
+#         ) for r in reports
+#     ]
+
+#     print("==============Report List===============", report_list)
     
-    # Create activity stats
-    activity_stats = ActivityDailyStats(
-        activity_name=reports[0].activity.name,
-        total_time_on_task=activity_productive_time,
-        total_time_wasted=activity_wasted_time,
-        reports=report_list
-    )
+#     # Create activity stats as a dictionary instead of ActivityDailyStats instance
+#     activity_stats = {
+#         'activity_name': reports[0].activity.name,
+#         'total_time_on_task': activity_productive_time,
+#         'total_time_wasted': activity_wasted_time,
+#         'reports': report_list  # Assuming ReportResponse has a to_dict method
+#     }
     
-    return (
-        activity_productive_time,
-        activity_wasted_time,
-        report_list,
-        activity_stats
-    )
+#     return (
+#         activity_productive_time,
+#         activity_wasted_time,
+#         report_list,
+#         activity_stats
+#     )
 
 
 def get_reports_in_range(
@@ -127,18 +134,25 @@ def get_reports_in_range(
     
     # For each activity, get and process its reports
     for activity in activities:
+        activity_dict = activity.to_dict()
         reports = get_activity_reports(activity, start_date, end_date)
-        
+
         if reports:
-            # Process the reports
-            productive_time, wasted_time, _, activity_stats = process_activity_reports(reports)
+            report_list = [report.to_dict() for report in reports]
+
+            print("==============Report List===============", report_list)
+            productive_time = sum(report.time_on_task for report in reports)
+            wasted_time = sum(report.time_wasted for report in reports)
             
             # Update totals
             total_productive_time += productive_time
             total_wasted_time += wasted_time
             
             # Add to activities data
-            activities_data[activity.unique_id] = activity_stats
+            activities_data[activity.name] = {
+                'total_time_on_task': productive_time,
+                'total_time_wasted': wasted_time,
+            }
     
     # Create final response
     return {
