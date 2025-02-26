@@ -16,6 +16,7 @@ dependencies = [
     "psycopg2>=2.9.10",
     "pydantic[email,timezone]>=2.10.6",
     "python-jose>=3.4.0",
+    "pytz>=2025.1",
     "sqlalchemy>=2.0.38",
     "uvicorn>=0.34.0",
 ]

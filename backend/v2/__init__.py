@@ -8,6 +8,7 @@ router = Blueprint('actions', __name__)
 # Import all the views(actions)
 from v2.auth.index import *
 from v2.activity.index import *
+from v2.report.index import *
 
 # Add a test route to verify blueprint is working
 @router.route('/', methods=['GET'])
