@@ -43,7 +43,7 @@ def login():
     if not bcrypt_context.verify(login_data.password, user_from_db['password']):
         abort(401, description="Invalid password!")
     
-    token = create_access_token(user_from_db['email'], user_from_db['id'], timedelta(minutes=20))
+    token = create_access_token(user_from_db['email'], user_from_db['unique_id'], timedelta(minutes=20))
 
     return jsonify({
         'message': 'Login successful!',
@@ -52,7 +52,7 @@ def login():
             'user': {
                 'email': user_from_db['email'],
                 'full_name': user_from_db['full_name'],
-                'id': user_from_db['id'],
+                'id': user_from_db['unique_id'],
                 'total_productive_time': user_from_db['total_productive_time'],
                 'total_wasted_time': user_from_db['total_wasted_time'],
                 'weekly_work_hours_goal': user_from_db['weekly_work_hours_goal'],
@@ -125,7 +125,7 @@ def get_current_user():
     user_data = {
         'email': user['email'],
         'full_name': user['full_name'],
-        'id': user['id'],
+        'id': user['unique_id'],
         'username': user['username'],
     }
     
