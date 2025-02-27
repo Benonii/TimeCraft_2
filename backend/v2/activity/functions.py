@@ -3,12 +3,14 @@ from v2.models import storage
 
 def get_activity_by_name(user_id, name):
     """Get an activity by name for a specific user"""
-    return storage.session.query(Activity).filter(
+    print("====user_id, name=====", user_id, name)
+    activity = storage.session.query(Activity).filter(
         Activity.user_id == user_id,
         Activity.name == name,
         Activity.deleted == None
     ).first()
-
+    print("====activity=====", activity)
+    return activity
 
 def get_all_activities(user_id):
     """Get all activities for a specific user"""
