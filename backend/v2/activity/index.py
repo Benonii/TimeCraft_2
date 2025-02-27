@@ -21,28 +21,30 @@ def create_task():
     try:
         # Validate request data
         data = request.get_json() if request.is_json else request.form
-        activity_data = CreateTaskRequest.model_validate(data)
-        
         # Check if user already has an activity with this name
-        existing_activity = get_activity_by_name(request.user['id'], activity_data.task_name)
+        existing_activity = get_activity_by_name(request.user['id'], data['task_name'])
+        print("====existing_activity=====", existing_activity)
         
         if existing_activity:
-            abort(400, description="You already have an activity with this name")
+            return jsonify({
+                'message': 'You already have an activity with this name'
+            }), 400
         
         # Create new task
         new_activity = Activity(
-            name=activity_data.task_name,
-            description=activity_data.description,
-            daily_goal=activity_data.daily_goal,
-            weekly_goal=activity_data.weekly_goal,
+            name=data['task_name'],
+            description=data['description'],
+            daily_goal=data['daily_goal'],
+            weekly_goal=data['weekly_goal'],
             user_id=request.user['id'],  # Link task to current user's profile
             total_time_on_task=0
         )
         
         try:
             new_activity.save()
-        except IntegrityError:
+        except IntegrityError as e:
             storage.rollback()
+            print("================ERROR=================\n", e)
             return jsonify({
                 'message': 'An activity with this name already exists'
             }), 400
