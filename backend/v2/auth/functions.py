@@ -26,7 +26,7 @@ def get_user_by_email(email: str) -> dict:
 
 def get_user_by_username(username: str) -> dict:
     """ Get a user by username """
-    user = storage.session.query(User).filter(User.username == username).first()
+    user = storage.session.query(Profile).filter(Profile.username == username).first()
     if user:
         profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
     return {
