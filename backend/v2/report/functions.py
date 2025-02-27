@@ -1,12 +1,13 @@
 """Database query functions for report operations"""
 
+from sqlalchemy import DateTime
 from v2.models import storage
+from v2.models.Profile import Profile
 from v2.models.Report import Report
 from v2.models.Activity import Activity
-from sqlalchemy import and_
-from datetime import datetime
-from typing import Dict, List, Tuple, Optional
-from v2.report.validation import ReportResponse, ActivityDailyStats
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
+import pytz
 
 
 def get_activity_by_id(activity_id: str, user_id: str) -> Optional[Activity]:
@@ -17,6 +18,12 @@ def get_activity_by_id(activity_id: str, user_id: str) -> Optional[Activity]:
         Activity.deleted.is_(None)
     ).first()
 
+def get_profile_by_id(user_id: str) -> Optional[Profile]:
+    """Get a profile by ID"""
+    return storage.session.query(Profile).filter(
+        Profile.user_id == user_id,
+        Profile.deleted.is_(None)
+    ).first()
 
 def get_user_activities(user_id: str) -> List[Activity]:
     """Get all activities for a user"""
@@ -32,17 +39,11 @@ def get_activity_reports(
     end_date: datetime
 ) -> List[Report]:
     """Get all reports for an activity within a date range"""
-    activity_dict = activity.to_dict()
     reports = storage.session.query(Report).filter(
-        Report.activity_id == activity_dict['id'],
+        Report.activity_id == activity.id,
         Report.deleted == None,
-        # and_(
-        #     Report.date >= start_date,
-        #     Report.date <= end_date
-        # )
+        Report.date.between(start_date, end_date)
     ).all()
-
-    # print("==============Reports===============", reports)
 
     return reports
 
@@ -77,47 +78,6 @@ def create_new_report(
         raise e
 
 
-# def process_activity_reports(
-#     reports: List[Report]
-# ) -> Tuple[float, float, List[ReportResponse], Dict]:
-#     """Process reports for an activity and return stats"""
-#     if not reports:
-#         return 0.0, 0.0, [], None
-    
-#     # Calculate totals
-#     activity_productive_time = sum(r.time_on_task for r in reports)
-#     activity_wasted_time = sum(r.time_wasted for r in reports)
-    
-#     # Convert reports to response format
-#     report_list = [
-#         ReportResponse(
-#             id=r.id,
-#             unique_id=r.unique_id,
-#             date=r.date,
-#             time_on_task=r.time_on_task,
-#             time_wasted=r.time_wasted,
-#             comment=r.comment
-#         ) for r in reports
-#     ]
-
-#     print("==============Report List===============", report_list)
-    
-#     # Create activity stats as a dictionary instead of ActivityDailyStats instance
-#     activity_stats = {
-#         'activity_name': reports[0].activity.name,
-#         'total_time_on_task': activity_productive_time,
-#         'total_time_wasted': activity_wasted_time,
-#         'reports': report_list  # Assuming ReportResponse has a to_dict method
-#     }
-    
-#     return (
-#         activity_productive_time,
-#         activity_wasted_time,
-#         report_list,
-#         activity_stats
-#     )
-
-
 def get_reports_in_range(
     user_id: str,
     start_date: datetime,
@@ -134,13 +94,9 @@ def get_reports_in_range(
     
     # For each activity, get and process its reports
     for activity in activities:
-        activity_dict = activity.to_dict()
         reports = get_activity_reports(activity, start_date, end_date)
 
         if reports:
-            report_list = [report.to_dict() for report in reports]
-
-            print("==============Report List===============", report_list)
             productive_time = sum(report.time_on_task for report in reports)
             wasted_time = sum(report.time_wasted for report in reports)
             
@@ -161,4 +117,42 @@ def get_reports_in_range(
         'total_productive_time': total_productive_time,
         'total_wasted_time': total_wasted_time,
         'activities': activities_data
-    } 
+    }
+
+
+def format_dates(start_date: str | None, end_date: str | None) -> tuple[datetime, datetime]:
+    """Format start and end dates for report queries
+    
+    If no dates provided, defaults to today.
+    If only start_date, end_date will be start_date + 1 day.
+    Dates should be in YYYY-MM-DD format.
+    
+    Returns:
+        Tuple of (start_date, end_date) as UTC datetimes
+    """
+    # If no dates provided, use today as default
+    if not start_date and not end_date:
+        end_date = datetime.now(pytz.UTC).replace(
+            hour=23, minute=59, second=59, microsecond=999999
+        )
+        start_date = end_date.replace(
+            hour=0, minute=0, second=0, microsecond=0
+        )
+        return start_date, end_date
+
+    # Parse date strings (expecting YYYY-MM-DD format)
+    if not start_date:
+        raise ValueError('start_date is required if end_date is provided')
+    start = datetime.strptime(start_date, '%Y-%m-%d').replace(
+        hour=0, minute=0, second=0, microsecond=0, tzinfo=pytz.UTC
+    )
+
+    if end_date:
+        end = datetime.strptime(end_date, '%Y-%m-%d').replace(
+            hour=23, minute=59, second=59, microsecond=999999, tzinfo=pytz.UTC
+        )
+    else:
+        # If no end_date provided, set it to one day after start_date
+        end = start + timedelta(days=1)
+
+    return start, end
