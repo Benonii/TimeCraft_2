@@ -4,14 +4,13 @@ from v2 import router
 from flask import jsonify, request
 from v2.utils.middleware import auth_middleware
 from v2.report.validation import CreateReportRequest
-from v2.report.schemas import ReportResponse
 from v2.report.functions import (
+    format_dates,
     get_activity_by_id,
     create_new_report,
+    get_profile_by_id,
     get_reports_in_range
 )
-from datetime import datetime, timedelta
-import pytz
 
 
 @router.route('/report', methods=['POST'])
@@ -38,13 +37,26 @@ def create_report():
             time_wasted=report_data.time_wasted,
             comment=report_data.comment
         )
-            
+
+        profile = get_profile_by_id(request.user['id'])
+        profile.total_productive_time = profile.total_productive_time + report_data.time_on_task
+        profile.total_wasted_time = profile.total_wasted_time + report_data.time_wasted
+
+        profile.save()
         # Use ReportResponse for serialization
-        report_response = ReportResponse.model_validate(new_report)
+        # report_response = ReportResponse.model_dump(new_report)
         
         return jsonify({
             'message': 'Report created successfully',
-            'data': report_response.model_dump()
+            'data': {
+                'id': new_report.id,
+                'unique_id': new_report.unique_id,
+                'activity_id': new_report.activity_id,
+                'date': new_report.date,
+                'time_on_task': new_report.time_on_task,
+                'time_wasted': new_report.time_wasted,
+                'comment': new_report.comment
+            }
         }), 201
         
     except ValueError as e:
@@ -58,84 +70,39 @@ def create_report():
 def get_report():
     """Get all reports within a date range grouped by activity"""
     try:
-        # Get date range from query parameters
-        start_date = request.args.get('start_date')
-        end_date = request.args.get('end_date')
-        
-        # If no dates provided, use today as default
-        if not start_date and not end_date:
-            end_date_dt = datetime.now(pytz.UTC).replace(
-                hour=23, minute=59, second=59, microsecond=999999
+        try:
+            start_date, end_date = format_dates(
+                request.args.get('start_date'),
+                request.args.get('end_date')
             )
-            start_date_dt = end_date_dt.replace(
-                hour=0, minute=0, second=0, microsecond=0
-            )
-        else:
-            try:
-                # Parse date strings (expecting YYYY-MM-DD format)
-                if start_date:
-                    start_date_dt = datetime.strptime(start_date, '%Y-%m-%d')
-                    start_date_dt = start_date_dt.replace(
-                        hour=0, minute=0, second=0, microsecond=0, tzinfo=pytz.UTC
-                    )
-                else:
-                    return jsonify({
-                        'message': 'start_date is required if end_date is provided'
-                    }), 400
 
-                if end_date:
-                    end_date_dt = datetime.strptime(end_date, '%Y-%m-%d')
-                    end_date_dt = end_date_dt.replace(
-                        hour=23, minute=59, second=59, microsecond=999999, tzinfo=pytz.UTC
-                    )
-                else:
-                    return jsonify({
-                        'message': 'end_date is required if start_date is provided'
-                    }), 400
-                
-                # Validate date range
-                if end_date_dt < start_date_dt:
-                    return jsonify({
-                        'message': 'end_date cannot be before start_date'
-                    }), 400
-                
-                # Limit the date range to prevent excessive queries
-                max_days = 366  # Maximum one year of data
-                if (end_date_dt - start_date_dt).days > max_days:
-                    return jsonify({
-                        'message': f'Date range cannot exceed a year'
-                    }), 400
-                
-            except ValueError:
+            # Validate date range
+            if end_date < start_date:
                 return jsonify({
-                    'message': 'Invalid date format. Use YYYY-MM-DD'
+                    'message': 'end_date cannot be before start_date'
                 }), 400
-            
+
+            # Limit the date range to prevent excessive queries
+            max_days = 366  # Maximum one year of data
+            if (end_date - start_date).days > max_days:
+                return jsonify({
+                    'message': 'Date range cannot exceed a year'
+                }), 400
+        except ValueError:
+            return jsonify({
+                'message': 'Invalid date format. Use YYYY-MM-DD'
+        }), 400
+
         # Get reports within date range
         reports = get_reports_in_range(
             user_id=request.user['id'],
-            start_date=start_date_dt,
-            end_date=end_date_dt
+            start_date=start_date,
+            end_date=end_date
         )
 
-        print("==============Reports===============", reports)
-        
-        # Convert reports to response format
-        # response = {
-        #     activity_id: {
-        #         'activity_name': activity_data['activity_name'],
-        #         'reports': [
-        #             ReportResponse.model_validate(report).model_dump()
-        #             for report in activity_data['reports']
-        #         ]
-        #     }
-        #     for activity_id, activity_data in reports.items()
-        # }
-        
         return jsonify({
             'message': 'Reports retrieved successfully',
             'data': reports
         }), 200
-        
     except Exception as e:
         return jsonify({'message': str(e)}), 500
