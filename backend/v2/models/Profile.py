@@ -9,9 +9,9 @@ from sqlalchemy.orm import relationship
 
 
 class Profile(BaseModel, Base):
-    ''' This class is the represantation for the User object '''
+    ''' This class is the representation for the Profile object '''
     __tablename__ = "profile"
-    user_id = Column(String(60), ForeignKey('user.id'), nullable=False)
+    user_id = Column(String(60), ForeignKey('user.id'), nullable=False, unique=True)
     full_name = Column(String(128), nullable=False)
     username = Column(String(128), nullable=False, unique=True)
     profile_picture_url = Column(String(256), nullable=False)
@@ -21,6 +21,6 @@ class Profile(BaseModel, Base):
     number_of_work_days = Column(Integer, nullable=False)
     total_productive_time = Column(Float, nullable=False, default=0)
     total_wasted_time = Column(Float, nullable=False, default=0)
-    activities = relationship("Activity", back_populates="user", cascade="all, delete-orphan")
+    activities = relationship("Activity", back_populates="user", primaryjoin="and_(Profile.user_id==Activity.user_id, Activity.deleted==None)")
     user = relationship("User", back_populates="profile", uselist=False)
     deleted = Column(DateTime, nullable=True)
