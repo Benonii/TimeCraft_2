@@ -10,7 +10,7 @@ from sqlalchemy.orm import relationship
 class Activity(BaseModel, Base):
     ''' This class is the represantation for the Task object '''
     __tablename__ = "activity"
-    name = Column(String(128), nullable=False, unique=True)
+    name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     total_time_on_task = Column(Float, nullable=False, default=0)
     daily_goal = Column(Float, nullable=False)
