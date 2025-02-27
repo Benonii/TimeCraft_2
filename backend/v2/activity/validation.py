@@ -9,7 +9,6 @@ class CreateActivityRequest(BaseModel):
     description: str = Field(..., min_length=1, max_length=1024)
     daily_goal: float = Field(..., gt=0)
     weekly_goal: float = Field(..., gt=0)
-    user_id: str = Field(..., min_length=1, max_length=36)
     
     @field_validator('weekly_goal')
     @classmethod
