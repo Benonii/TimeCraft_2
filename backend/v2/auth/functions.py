@@ -9,12 +9,11 @@ SECRET_KEY = environ.get('SECRET_KEY')
 ALGORITHM = environ.get('ALGORITHM')
 
 
-def get_user_by_email(email):
+def get_user_by_email(email: str) -> dict:
     """ Get a user by email """
     user = storage.session.query(User).filter(User.email == email).first()
     if user:
         profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
-        print("==============Profile===============", profile)
 
     return {
         **user.to_dict(),
@@ -22,17 +21,27 @@ def get_user_by_email(email):
     } if user and profile else {}
 
 
-def get_user_by_id(user_id):
+def get_user_by_username(username: str) -> dict:
+    """ Get a user by username """
+    user = storage.session.query(User).filter(User.username == username).first()
+    if user:
+        profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
+    return {
+        **user.to_dict(),
+        **profile.to_dict()
+    } if user and profile else {}
+
+def get_user_by_id(user_id: str) -> User:
     """ Get a user by id """
     return storage.session.query(User).filter(User.id == user_id).first()
 
 
-def create_access_token(email, id, expires_delta):
+def create_access_token(email: str, unique_id: str, expires_delta: datetime):
     """ Create an access token """
     expire = datetime.now() + expires_delta
     encode = {
         'email': email,
-        'id': id,
+        'id': unique_id,
         'exp': expire.timestamp() 
     }
 

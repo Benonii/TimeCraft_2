@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from datetime import timedelta, datetime
 from sqlalchemy.exc import IntegrityError
 from os import environ
-from v2.auth.functions import get_user_by_email, get_user_by_id, create_access_token
+from v2.auth.functions import get_user_by_email, get_user_by_id, create_access_token, get_user_by_username
 from v2.auth.validation import LoginRequest, SignupRequest
 from v2.models import storage
 from v2.utils.middleware import auth_middleware
@@ -32,16 +32,16 @@ def login():
         data = request.get_json() if request.is_json else request.form
         login_data = LoginRequest.model_validate(data)
     except ValueError as e:
-        abort(400, description=str(e))
+        return jsonify({ 'message': str(e) }), 400
 
-    user_from_db = get_user_by_email(login_data.email)
+    user_from_db = get_user_by_email(login_data.email) or get_user_by_username(login_data.email)
 
     if not user_from_db:
-        abort(404, description="User not found!")
+        return jsonify({ 'message': "User not found!" }), 404
 
 
     if not bcrypt_context.verify(login_data.password, user_from_db['password']):
-        abort(401, description="Invalid password!")
+        return jsonify({ 'message': "Invalid password!" }), 401
     
     token = create_access_token(user_from_db['email'], user_from_db['unique_id'], timedelta(minutes=20))
 
@@ -74,12 +74,12 @@ def signup():
         data = request.get_json() if request.is_json else request.form
         signup_data = SignupRequest.model_validate(data)
     except ValueError as e:
-        abort(400, description=str(e))
+        return jsonify({ 'message': str(e) }), 400
 
     # First check if user already exists
     existing_user = get_user_by_email(signup_data.email)
     if existing_user:
-        abort(400, description="User with this email already exists!")
+        return jsonify({ 'message': "User with this email already exists!" }), 400
 
     try:
         hashed_password = bcrypt_context.hash(signup_data.password)
@@ -107,10 +107,10 @@ def signup():
         
     except IntegrityError as e:
         storage.rollback()
-        abort(400, description="Username already exists!")
+        return jsonify({ 'message': "Username already exists!" }), 400
     except Exception as e:
         storage.rollback()
-        abort(500, description=str(e))
+        return jsonify({ 'message': str(e) }), 500
 
     return jsonify({ 'message': 'User signed up successfully!'}), 200
 
@@ -133,11 +133,3 @@ def get_current_user():
         'message': 'User retrieved successfully',
         'data': user_data
     }), 200
-
-
-# @router.route('/logout', methods=['GET'], strict_slashes=False)
-# @auth_middleware
-# @swag_from('auth/logout.yml', methods=['POST'])
-# def logout():
-#     """ Logout a user """
-#     return jsonify({ 'message': 'Logout successful!'}), 200

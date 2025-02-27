@@ -21,8 +21,14 @@ class SignupRequest(BaseModel):
     weekly_work_hours_goal: Annotated[int, Field(gt=0)]  # positive integer
     number_of_work_days: Annotated[int, Field(ge=1, le=7)]  # integer between 1 and 7
 
-    @field_validator('password', 'username')
-    def fields_must_not_be_empty(cls, v):
+    @field_validator('username')
+    def username_validator(cls, v):
         if not v.strip():
-            raise ValueError('Field cannot be empty')
+            raise ValueError('Username cannot be empty')
+        return v
+
+    @field_validator('password')
+    def password_length_validator(cls, v):
+        if len(v) < 8:
+            raise ValueError('Password must be at least 8 characters long')
         return v
