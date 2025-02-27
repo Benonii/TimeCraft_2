@@ -15,10 +15,13 @@ def get_user_by_email(email: str) -> dict:
     if user:
         profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
 
-    return {
-        **user.to_dict(),
-        **profile.to_dict()
-    } if user and profile else {}
+    if user and profile:
+        user_dict = user.to_dict()
+        profile_dict = profile.to_dict()
+        # Ensure we keep the user's ID, not the profile's
+        profile_dict['id'] = user_dict['id']
+        return {**user_dict, **profile_dict}
+    return {}
 
 
 def get_user_by_username(username: str) -> dict:
@@ -36,12 +39,12 @@ def get_user_by_id(user_id: str) -> User:
     return storage.session.query(User).filter(User.id == user_id).first()
 
 
-def create_access_token(email: str, unique_id: str, expires_delta: datetime):
+def create_access_token(email: str, id: str, expires_delta: datetime):
     """ Create an access token """
     expire = datetime.now() + expires_delta
     encode = {
         'email': email,
-        'id': unique_id,
+        'id': id,
         'exp': expire.timestamp() 
     }
 
