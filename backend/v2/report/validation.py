@@ -30,6 +30,7 @@ class ReportResponse(BaseModel):
     """Schema for individual report in response"""
     id: str
     unique_id: str
+    activity_id: str
     date: datetime
     time_on_task: float
     time_wasted: float
@@ -40,11 +41,10 @@ class ActivityDailyStats(BaseModel):
     activity_name: str
     total_time_on_task: float
     total_time_wasted: float
-    reports: List[ReportResponse]
 
 class DailyReportResponse(BaseModel):
     """Schema for complete daily report response"""
     date: datetime
     total_productive_time: float
     total_wasted_time: float
-    activities: Dict[str, ActivityDailyStats] 
+    activities: Dict[str, ActivityDailyStats]
