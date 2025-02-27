@@ -2,28 +2,26 @@
 
 from datetime import datetime
 from v2.activity.functions import get_activity_by_id
-from v2.activity.validation import UpdateTaskRequest
+from v2.activity.validation import CreateActivityRequest, UpdateActivityRequest
 from v2.activity.functions import get_activity_by_name, get_all_activities
 from v2 import router
 from flask import jsonify, request, abort
 from v2.models.Activity import Activity
 from v2.models import storage
 from v2.utils.middleware import auth_middleware
-from v2.activity.validation import CreateTaskRequest
 from flasgger.utils import swag_from
 from sqlalchemy.exc import IntegrityError
 
 
 @router.route('/activity', methods=['POST'], strict_slashes=False)
 @auth_middleware
-def create_task():
+def create_activity():
     """Create a new activity for the authenticated user"""
     try:
-        # Validate request data
         data = request.get_json() if request.is_json else request.form
+        validated_data = CreateActivityRequest.model_validate(data)
         # Check if user already has an activity with this name
-        existing_activity = get_activity_by_name(request.user['id'], data['task_name'])
-        print("====existing_activity=====", existing_activity)
+        existing_activity = get_activity_by_name(request.user['id'], validated_data.name)
         
         if existing_activity:
             return jsonify({
@@ -32,22 +30,16 @@ def create_task():
         
         # Create new task
         new_activity = Activity(
-            name=data['task_name'],
-            description=data['description'],
-            daily_goal=data['daily_goal'],
-            weekly_goal=data['weekly_goal'],
+            name=validated_data.name,
+            description=validated_data.description,
+            daily_goal=validated_data.daily_goal,
+            weekly_goal=validated_data.weekly_goal,
             user_id=request.user['id'],  # Link task to current user's profile
             total_time_on_task=0
         )
         
         try:
             new_activity.save()
-        except IntegrityError as e:
-            storage.rollback()
-            print("================ERROR=================\n", e)
-            return jsonify({
-                'message': 'An activity with this name already exists'
-            }), 400
         except Exception as e:
             storage.rollback()
             return jsonify({
@@ -73,9 +65,13 @@ def create_task():
         }), 201
         
     except ValueError as e:
-        abort(400, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 400
     except Exception as e:
-        abort(500, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 500
 
 
 @router.route('/activity', methods=['GET'], strict_slashes=False)
@@ -107,7 +103,9 @@ def get_activities():
         }), 200
         
     except Exception as e:
-        abort(500, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 500
 
 
 @router.route('/activity/<activity_id>', methods=['GET'], strict_slashes=False)
@@ -142,7 +140,9 @@ def get_activity(activity_id):
         }), 200
         
     except Exception as e:
-        abort(500, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 500
 
 
 @router.route('/activity/<activity_id>', methods=['PATCH'], strict_slashes=False)
@@ -152,9 +152,7 @@ def update_activity(activity_id):
     try:
         # Get and validate request data
         data = request.get_json() if request.is_json else request.form
-        update_data = UpdateTaskRequest.model_validate(data)
-
-        print("================UPDATE DATA=================\n", update_data)
+        update_data = UpdateActivityRequest.model_validate(data)
         
         # Query the activity
         updated_activity = get_activity_by_id(activity_id)
@@ -163,11 +161,15 @@ def update_activity(activity_id):
             abort(404, description="Activity not found")
             
         # Check if name is being updated and conflicts with existing activity
-        if hasattr(update_data, 'name') and update_data.name == updated_activity.name:
-            abort(400, description="You already have an activity with this name")
+        if hasattr(update_data, 'name') and update_data.name != updated_activity.name:
+            # Check if any other activity exists with this name for the user
+            existing_activity = get_activity_by_name(updated_activity.user_id, update_data.name)
+            if existing_activity:
+                return jsonify({
+                    'message': "You already have an activity with this name"
+                }), 400
 
         # Update only provided fields
-        print("================UPDATE DATA NAME EXISTS=================\n", update_data.name != None)
         if update_data.name:
             updated_activity.name = update_data.name
         if update_data.description:
@@ -176,18 +178,17 @@ def update_activity(activity_id):
             updated_activity.daily_goal = update_data.daily_goal
         if update_data.weekly_goal:
             updated_activity.weekly_goal = update_data.weekly_goal
-            
+        if update_data.total_time_on_task:
+            updated_activity.total_time_on_task = update_data.total_time_on_task
         updated_activity.updated_at = datetime.now()
         
         try:
             updated_activity.save()
-        except IntegrityError:
-            storage.rollback()
-            abort(400, description="An activity with this name already exists")
         except Exception as e:
             storage.rollback()
-            print("================ERROR=================\n", e)
-            abort(500, description=str(e))
+            return jsonify({
+                'message': str(e)
+            }), 500
             
         # Convert updated activity to dictionary
         activity_dict = {
@@ -208,9 +209,13 @@ def update_activity(activity_id):
         }), 200
         
     except ValueError as e:
-        abort(400, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 400
     except Exception as e:
-        abort(500, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 500
 
 
 @router.route('/activity/<activity_id>', methods=['DELETE'], strict_slashes=False)
@@ -222,7 +227,9 @@ def delete_activity(activity_id):
         activity = get_activity_by_id(activity_id)
         
         if not activity:
-            abort(404, description="Activity not found")
+            return jsonify({
+                'message': "Activity not found"
+            }), 404
             
         # Soft delete the activity
         activity.deleted = datetime.now()
@@ -233,6 +240,8 @@ def delete_activity(activity_id):
         }), 200
         
     except Exception as e:
-        abort(500, description=str(e))
+        return jsonify({
+            'message': str(e)
+        }), 500
 
 

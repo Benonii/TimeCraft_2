@@ -1,18 +1,17 @@
 from v2.models.Activity import Activity
 from v2.models import storage
 
-def get_activity_by_name(user_id, name):
+
+def get_activity_by_name(user_id: str, name: str) -> Activity:
     """Get an activity by name for a specific user"""
-    print("====user_id, name=====", user_id, name)
-    activity = storage.session.query(Activity).filter(
+    return storage.session.query(Activity).filter(
         Activity.user_id == user_id,
         Activity.name == name,
         Activity.deleted == None
     ).first()
-    print("====activity=====", activity)
-    return activity
 
-def get_all_activities(user_id):
+
+def get_all_activities(user_id: str) -> list[Activity]:
     """Get all activities for a specific user"""
     return storage.session.query(Activity).filter(
         Activity.user_id == user_id,
@@ -20,7 +19,7 @@ def get_all_activities(user_id):
     ).all()
 
 
-def get_activity_by_id(activity_id):
+def get_activity_by_id(activity_id: str) -> Activity:
     """Get an activity by ID"""
     return storage.session.query(Activity).filter(
         Activity.unique_id == activity_id,
