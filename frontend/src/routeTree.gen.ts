@@ -14,7 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as TrackersImport } from './routes/trackers'
 import { Route as SettingsImport } from './routes/settings'
-import { Route as NewTaskImport } from './routes/new/newTask'
+import { Route as NewActivityImport } from './routes/new/newActivity'
 import { Route as NewLogImport } from './routes/new/newLog'
 import { Route as NewUserImport } from './routes/new/newUser'
 import { Route as DailyReportImport } from './routes/reports/dailyReport'
@@ -45,8 +45,8 @@ const SettingsRoute = SettingsImport.update({
     getParentRoute: () => rootRoute,
 } as any);
 
-const NewTaskRoute = NewTaskImport.update({
-  path: '/new/task',
+const NewActivityRoute = NewActivityImport.update({
+  path: '/new/activity',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -135,11 +135,11 @@ declare module '@tanstack/react-router' {
         preLoaderRoute: typeof TrackersImport
         parentRoute: typeof rootRoute
     }
-    '/new/task': {
-      id: '/new/task'
-      path: '/new/task'
-      fullPath: '/new/task'
-      preLoaderRoute: typeof NewTaskImport
+    '/new/activity': {
+      id: '/new/activity'
+      path: '/new/activity'
+      fullPath: '/new/activity'
+      preLoaderRoute: typeof NewActivityImport
       parentRoute: typeof rootRoute
     }
     '/new/log': {
@@ -235,7 +235,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/trackers': typeof TrackersRoute
   '.settings': typeof SettingsRoute
-  '/new/task': typeof NewTaskRoute
+  '/new/activity': typeof NewActivityRoute
   '/new/log': typeof NewLogRoute
   '/new/user': typeof NewUserRoute
   '/reports/daily': typeof DailyReportRoute
@@ -255,7 +255,7 @@ export const routeTree = rootRoute
     IndexRoute,
     TrackersRoute,
     SettingsRoute,
-    NewTaskRoute,
+    NewActivityRoute,
     NewLogRoute,
     NewUserRoute,
     DailyReportRoute,

@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import { Link } from '@tanstack/react-router';
-import CreateTask from '../components/custom/modals/CreateTask'
+import CreateActivity from '../components/custom/modals/CreateActivity'
 
-export default function NewTask() {
+export default function NewActivity() {
   // Get user from local storage
   const user = localStorage.getItem('user');
 
@@ -24,14 +24,14 @@ export default function NewTask() {
             </p>
           )}
           <p className='ml-3 mt-5 font-monomaniac text-gray-600 mx-5 max-w-[700px] md:text-2xl dark:text-gray-400'>
-            You can create a new Task and the app will record time spent on that task separately. <br /><br />
-            Typically, a task would be a repeating activity. (Exercise, study, code, read). <br /><br />
+            You can create a new Activity and the app will record time spent on that activity separately. <br /><br />
+            Typically, an activity would be a repeating activity. (Exercise, study, code, read). <br /><br />
 
-            You can create multiple tasks. But make sure they all have different names :)
+            You can create multiple activities. But make sure they all have different names :)
           </p>
         </div>
         <div className='flex justify-center absolute left-24 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          <CreateTask />
+          <CreateActivity />
         </div>
       </div>
     </div>

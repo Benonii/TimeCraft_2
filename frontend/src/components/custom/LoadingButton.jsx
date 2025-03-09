@@ -3,7 +3,7 @@ import { Button } from '../shadcn/Button';
 import { cn } from '../../lib/utils';
 
 
-function LoadingButton({ isLoading, text }) {
+function LoadingButton({ isLoading, text, ...props }) {
   return (
     <div>
       <Button
@@ -12,6 +12,7 @@ function LoadingButton({ isLoading, text }) {
           'bg-yellow1 text-white md:w-36 md:h-14 text-xl md:text-2xl font-madimi hover:bg-yellow-300',
           isLoading ?? "cursor-not-allowed"
         )}
+        {...props}
       >
         {isLoading ? (
           <span className='flex items-center justify-center'>

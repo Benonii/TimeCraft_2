@@ -28,7 +28,7 @@ export default function Home() {
           </p>
         </div>
         <div className='flex justify-center absolute left-24 mt-48 md:mt-0 w-[73%] ml-1 max-w-[700px]'>
-          <Link to={user ? '/new/task' : '/new/user'}>
+          <Link to={user ? '/new/activity' : '/new/user'}>
             <Button variant='default' 
               className='bg-yellow1 px-4 py-2 rounded-md shadow-lg font-madimi text-white md:text-3xl md:px-7 md:py-6 h-fit hover:bg-yellow-300'>
               Get started

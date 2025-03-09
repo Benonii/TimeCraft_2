@@ -2,7 +2,7 @@
 
 // Types
 import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
-         MonthlyReportFormData, NewTaskFormData, NewUserFormData, 
+         MonthlyReportFormData, NewActivityFormData, NewUserFormData, 
          User, TptFormData, TtotFormData, ChangeTaskNameFormData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
 
@@ -36,21 +36,16 @@ return resJSON;
 }
 
 
-export const createTask = async (formData: NewTaskFormData) => {
-  console.log("Form data:", formData)
-  const params = new URLSearchParams();
-  params.append('userId', formData.userId);
-  params.append('taskName', formData.taskName);
-  params.append('dailyGoal', String(formData.dailyGoal));
-
-  // console.log("Params", params.toString());
-
-  const response = await fetch(`${api}/tasks/create`, {
+export const createActivity = async (formData: NewActivityFormData) => {
+  const token = localStorage.getItem('token');
+  console.log("====+Token=========", token)
+  const response = await fetch(`${api}/activity`, {
     method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
-        body: params.toString(),
+        body: JSON.stringify(formData),
   })
 
   const resJSON = await response.json();

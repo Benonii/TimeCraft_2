@@ -28,9 +28,10 @@ export type NewUserFormData = {
     work_days: number,
 }
 
-export type NewTaskFormData = {
-    userId: string,
-    taskName: string,
+export type NewActivityFormData = {
+    uniqueID?: string,
+    name: string,
+    description?: string,
     dailyGoal: number,
 }
 
@@ -78,7 +79,6 @@ export type SignupFormData = {
     confirmPassword: string,
 }
 
-
 // Response data types
 export type MessageResponseData = {
     message: string
@@ -91,11 +91,19 @@ export type NewUserResponseData = {
     }
 }
 
-export type NewTaskResponseData = {
+export type NewActivityResponseData = {
     message: string,
     data: {
-      task_id: string
-    }
+        created_at: string,
+        daily_goal: number,
+        description: string,
+        id: string,
+        name: string,
+        total_time_on_task: number,
+        unique_id: string,
+        updated_at: string,
+        weekly_goal: number
+    },
 }
 
 export type DailyReport = {
