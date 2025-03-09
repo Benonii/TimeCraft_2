@@ -1,6 +1,7 @@
 """Task routes"""
 
 from datetime import datetime
+from v2.report.functions import get_profile_by_id
 from v2.activity.functions import get_activity_by_id
 from v2.activity.validation import CreateActivityRequest, UpdateActivityRequest
 from v2.activity.functions import get_activity_by_name, get_all_activities
@@ -19,6 +20,7 @@ def create_activity():
     """Create a new activity for the authenticated user"""
     try:
         data = request.get_json() if request.is_json else request.form
+        user_profile = get_profile_by_id(request.user['id'])
         validated_data = CreateActivityRequest.model_validate(data)
         # Check if user already has an activity with this name
         existing_activity = get_activity_by_name(request.user['id'], validated_data.name)
@@ -33,7 +35,7 @@ def create_activity():
             name=validated_data.name,
             description=validated_data.description,
             daily_goal=validated_data.daily_goal,
-            weekly_goal=validated_data.weekly_goal,
+            weekly_goal=int(validated_data.daily_goal) * int(user_profile.number_of_work_days),
             user_id=request.user['id'],  # Link task to current user's profile
             total_time_on_task=0
         )

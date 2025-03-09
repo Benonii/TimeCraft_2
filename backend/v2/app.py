@@ -7,7 +7,7 @@ from os import environ
 from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
-from . import router
+from v2 import router
 from v2.auth.index import auth_router
 
 
@@ -50,6 +50,6 @@ Swagger(app)
 # Run the Flask app
 if __name__ == "__main__":
     """ Main Function """
-    host = environ.get('HBNB_API_HOST', '0.0.0.0')
-    port = environ.get('HBNB_API_PORT', 5000)
-    app.run(host=host, port=int(port), threaded=True, debug=True)
+    host = '0.0.0.0'  # Listen on all available interfaces
+    port = 5001
+    app.run(host=host, port=port, threaded=True, debug=True)
