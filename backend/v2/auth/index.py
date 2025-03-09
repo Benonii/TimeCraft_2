@@ -1,7 +1,7 @@
 """ Handles authentication """
 
 from v2 import router
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, Blueprint
 from v2.models.User import User
 from v2.models.Profile import Profile
 from flasgger.utils import swag_from
@@ -14,6 +14,9 @@ from v2.auth.validation import LoginRequest, SignupRequest
 from v2.models import storage
 from v2.utils.middleware import auth_middleware
 
+# Create a Blueprint for auth routes
+auth_router = Blueprint('auth', __name__, url_prefix='/api/auth')
+
 secret_key = environ.get('SECRET_KEY')
 algorithm = environ.get('ALGORITHM')
 
@@ -24,7 +27,7 @@ bcrypt_context = CryptContext(
 )
 
 
-@router.route('/login', methods=['POST'], strict_slashes=False)
+@auth_router.route('/login', methods=['POST'], strict_slashes=False)
 @swag_from('auth/login.yml', methods=['POST'])
 def login():
     """ Login a user """
@@ -67,7 +70,7 @@ def login():
     }), 200
 
 
-@router.route('/signup', methods=['POST'], strict_slashes=False)
+@auth_router.route('/signup', methods=['POST'], strict_slashes=False)
 @swag_from('auth/signup.yml', methods=['POST'])
 def signup():
     """ Signup a user """
@@ -116,7 +119,7 @@ def signup():
     return jsonify({ 'message': 'User signed up successfully!'}), 200
 
 
-@router.route('/me', methods=['GET'], strict_slashes=False)
+@auth_router.route('/me', methods=['GET'], strict_slashes=False)
 @auth_middleware
 def get_current_user():
     """Get the current authenticated user's profile"""

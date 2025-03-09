@@ -8,7 +8,7 @@ from flask import Flask, make_response, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
 from . import router
-
+from v2.auth.index import auth_router
 
 
 # Initializing app
@@ -17,6 +17,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Registering blueprint on app
 app.register_blueprint(router, url_prefix="/api")
+app.register_blueprint(auth_router)
 
 # Setting up Cross-Origin-Resource-Sharing properly
 CORS(app, resources={r"/api/*": {"origins": "*"}})
