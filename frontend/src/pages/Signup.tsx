@@ -42,9 +42,10 @@ function Signup () {
         resolver: zodResolver(signupSchema),
         defaultValues: {
             email: "",
+            full_name: "",
             username: "",
-            weekly_hours: 0,
-            work_days: 0,
+            weekly_work_hours_goal: 0,
+            number_of_work_days: 0,
             password: "",
             confirmPassword: "",
         }
@@ -59,8 +60,8 @@ function Signup () {
             router.navigate({ to: '/user/login' })
         },
         onError: (errorResponse: MessageResponseData) => {
-            console.error('Signup failed', error);
-            setMessage(errorResponse.message);
+            console.error('Signup failed', errorResponse?.message);
+            setMessage('An error occured. Please try again.');
             handleError();
             window.scrollTo({
                 top: 0,
@@ -76,8 +77,8 @@ function Signup () {
     async function onSubmit(values: z.infer<typeof signupSchema>) {
         const transformedValues = {
             ...values,
-            weekly_hours: Number(values.weekly_hours),
-            work_days: Number(values.work_days),
+            weekly_work_hours_goal: Number(values.weekly_work_hours_goal),
+            number_of_work_days: Number(values.number_of_work_days),
         };
         // console.log('Data:', transformedValues)
         try {
@@ -120,6 +121,19 @@ function Signup () {
                     />
                     <FormField
                         control={form.control}
+                        name="full_name"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Full Name</FormLabel>
+                                <FormControl>
+                                    <Input id='full_name' placeholder='John Doe' className='text-lg' {...field} />
+                                </FormControl>
+                                <FormMessage className='text-xs text-red-500' />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
                         name="username"
                         render={({ field }) => (
                             <FormItem>
@@ -133,31 +147,31 @@ function Signup () {
                     />
                     <FormField
                         control={form.control}
-                        name="weekly_hours"
+                        name="weekly_work_hours_goal"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
-                                  Weekly work hours goal
+                                    Weekly work hours goal
                                 </FormLabel>
                                 <FormControl>
                                     <Input id='weekly-hours' type='number' placeholder='60' className='text-lg' {...field} />
                                 </FormControl>
-                                <FormMessage className='text-xs text-red-600 '/>
+                                <FormMessage className='text-xs text-red-600' />
                             </FormItem>
                         )}
                     />
                     <FormField
                         control={form.control}
-                        name="work_days"
+                        name="number_of_work_days"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300' >
+                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
                                     Number of work days
                                 </FormLabel>
                                 <FormControl>
-                                  <Input id='work-days' type='number' placeholder='5' className='text-lg' {...field} />
+                                    <Input id='work-days' type='number' placeholder='5' className='text-lg' {...field} />
                                 </FormControl>
-                                <FormMessage className='text-xs text-red-600 '/>
+                                <FormMessage className='text-xs text-red-600' />
                             </FormItem>
                         )}
                     />
