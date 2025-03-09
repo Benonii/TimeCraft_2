@@ -14,7 +14,7 @@ import {
     Dialog, DialogContent, DialogDescription,
     DialogHeader, DialogTitle, DialogTrigger,
   } from "../../shadcn/Dialog";
-import TaskPicker from '../TaskPicker';
+import TaskPicker from '../ActivityPicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
 import LoadingButton from '../LoadingButton';

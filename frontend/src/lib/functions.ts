@@ -1,7 +1,7 @@
 // Hooks
 
 // Types
-import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
+import { changeUsernameFormData, CreateReportFormData, DailyReportFromData,
          MonthlyReportFormData, NewActivityFormData, NewUserFormData, 
          User, TptFormData, TtotFormData, ChangeTaskNameFormData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
@@ -58,26 +58,18 @@ return resJSON
 };
 
 
-export const createLog = async (formData: CreateLogFormData, user: User) => {
-    const params = new URLSearchParams();
-    if (user) {
-      params.append('userId', user.id);
-      params.append('taskName', formData.taskName !)
-    } else {
-      params.append('userId', formData.userId !);
-      params.append('taskId', formData.taskId !);
-    }
-    params.append('timeOnTask', String(formData.timeOnTask));
-    params.append('timeWasted', String(formData.timeWasted));
-
-    console.log("Params", params.toString())
-    const response = await fetch(`${api}/new_log`, {
+export const createReport = async (formData: CreateReportFormData) => {
+    const token = localStorage.getItem('token');
+    
+    const response = await fetch(`${api}/report`, {
       method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            },
-          body: params.toString(),
-    })
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      }
+    )
 
     const resJSON = await response.json();
         if (!response.ok) {
@@ -247,17 +239,14 @@ export const getTtot = async (formData: TtotFormData, user: User) => {
 }
 
 
-export const getTasks = async (id: string) => {
-  const params = new URLSearchParams();
-  params.append('userId', id);
-
-  // console.log("Params:", params.toString())
-  const res = await fetch( `${api}/tasks`, {
-    method: 'POST',
+export const getActivities = async (id: string) => {
+  const token = localStorage.getItem('token');
+  const res = await fetch( `${api}/activity`, {
+    method: 'GET',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': `Bearer ${token}`,
     },
-    body: params.toString(),
   })
 
   if (!res.ok) {

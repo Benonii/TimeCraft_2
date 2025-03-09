@@ -13,19 +13,19 @@ import Timer from '../components/custom/Timer';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
 import StopWatch from "../components/custom/Stopwatch";
-import TaskPicker from '../components/custom/TaskPicker';
+import ActivityPicker from '../components/custom/ActivityPicker';
 import { Link } from '@tanstack/react-router';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
 import LoadingButton from '../components/custom/LoadingButton';
 
 // Types
-import { CreateLogFormData, MessageResponseData } from '../lib/types';
+import { CreateReportFormData, MessageResponseData } from '../lib/types';
 
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { createLog } from '../lib/functions';
+import { createReport } from '../lib/functions';
 
 
 function Trackers() {
@@ -61,26 +61,26 @@ function Trackers() {
       }
 
       const newLogSchema = z.object({
-          userId: user ? z.string().nullable() : z.string().length(8), // Allow null if logged in
-          taskId: user ? z.string().nullable() : z.string().length(8),
-          taskName: user ? z.string().min(2) : z.string().nullable(),
-          timeOnTask: z.coerce.number().gt(0).max(24),
-          timeWasted: z.coerce.number().gt(0).max(23),
+        activityId: user ? z.string().nullable() : z.string().length(8),
+        date: z.date(),
+        timeOnTask: z.coerce.number().gt(0),
+        timeWasted: z.coerce.number().gt(0),
+        comment: z.string().optional(),
       })
-
+  
       const form = useForm<z.infer<typeof newLogSchema>>({
         resolver: zodResolver(newLogSchema),
         defaultValues: {
-          userId: user ? null : "",
-          taskId: user ? null : "",
-          taskName: user ? "" : null,
+          activityId: user ? null : "",
+          date: new Date(),
           timeOnTask: 0,
           timeWasted: 0,
+          comment: "",
         }
       })
 
     const mutation = useMutation({
-      mutationFn: (formData: CreateLogFormData) => createLog(formData, user),
+      mutationFn: (formData: CreateReportFormData) => createReport(formData),
       onSuccess: (response: MessageResponseData) => {
         // console.log('New Log created successfully', response);
         setMessage(response.message);
@@ -99,10 +99,11 @@ function Trackers() {
 
     async function onSubmit(values: z.infer<typeof newLogSchema>) {
       const transformedValues = {
-          ...values,
-          timeOnTask: Number(values.timeOnTask),
-          timeWasted: Number(values.timeWasted),
-      };
+        ...values,
+        activity_id: values.activityId,
+        time_on_task: Number(values.timeOnTask),
+        time_wasted: Number(values.timeWasted),
+    };
       // console.log('Data:', transformedValues)
       try {
           mutation.mutate(transformedValues);
@@ -135,64 +136,24 @@ function Trackers() {
                       <div className='flex items-center text-gray-600 font-semibold'>
                         <Form {...form}>
                           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mt-5'>
-                            {!user && (
-                              <FormField
-                                control={form.control}
-                                name="userId"
-                                render={({ field }) => (
+                            <FormField
+                              control={form.control}
+                              name="activityId"
+                              render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
-                                    <FormControl>
-                                      <Input
-                                        id='user-id'
-                                        placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                        className='text-lg' {...field}
-                                        value={field.value ?? undefined}
-                                      />
-                                    </FormControl>
-                                    <FormMessage className='text-xs text-redd-500' />
+                                      <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
+                                         Task name
+                                      </FormLabel>
+                                      <FormControl aria-disabled={true}>
+                                        <ActivityPicker 
+                                          userId={user?.id}
+                                          onSelect={(value: string) => form.setValue('activityId', value)}
+                                        />
+                                      </FormControl>
+                                      <FormMessage className='text-xs text-red-600 '/>
                                   </FormItem>
-                                )}
-                              />
-                            )}
-                            {user ? (
-                              <FormField
-                                control={form.control}
-                                name="taskName"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
-                                       Task name
-                                    </FormLabel>
-                                    <FormControl aria-disabled={true}>
-                                      <TaskPicker
-                                        userId={user?.id}
-                                        onSelect={(value: string) => form.setValue('taskName', value)}
-                                      />
-                                    </FormControl>
-                                    <FormMessage className='text-xs text-red-600 '/>
-                                  </FormItem>
-                                )}
-                              />
-                            ) : (
-                              <FormField
-                                control={form.control}
-                                name="taskId"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Task ID</FormLabel>
-                                    <FormControl>
-                                      <Input
-                                        id='user-id'
-                                        placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                        className='text-lg' {...field}
-                                        value={field.value ?? undefined} />
-                                    </FormControl>
-                                    <FormMessage className='text-xs text-redd-500' />
-                                  </FormItem>
-                                )}
-                              />
-                            )}
+                              )}
+                            />                            
                             {success && (
                               <>
                                 <SuccessAlert content={message} />

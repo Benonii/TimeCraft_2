@@ -14,12 +14,12 @@ export type changeUsernameFormData = {
     username: string 
 }
 
-export type CreateLogFormData = {
-    userId: string | null,
-    taskId: string | null,
-    taskName: string | null,
-    timeOnTask: number,
-    timeWasted: number,
+export type CreateReportFormData = {
+    activity_id: string | null,
+    time_on_task: number,
+    time_wasted: number,
+    comment?: string,
+    date: Date,
 }
 
 export type NewUserFormData = {

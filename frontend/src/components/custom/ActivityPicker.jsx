@@ -7,25 +7,24 @@ import {
     SelectTrigger, SelectValue,
   } from "../shadcn/Select";
 import { Skeleton } from "../shadcn/Skeleton";
-import { getTasks } from "../../lib/functions";
+import { getActivities } from "../../lib/functions";
 
 
-function TaskPicker({ userId, onSelect }) {
+function ActivityPicker({ userId, onSelect }) {
   const { data, isLoading, isError} = useQuery({
     queryKey: ['tasks', userId],
     queryFn:  ({ queryKey }) => {
       const [, userId ] = queryKey;
-      return getTasks(userId);
+      return getActivities(userId);
     },
     enabled: !!userId,
   });
 
-  // console.log("Tasks:", data )
   return (
     <div>
         <Select onValueChange={onSelect}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a task..."/>
+              <SelectValue placeholder="Select an activity..."/>
             </SelectTrigger>
             <SelectContent className='dark:bg-black'>
               {isLoading ? (
@@ -37,12 +36,12 @@ function TaskPicker({ userId, onSelect }) {
                 </div>
                 </SelectItem>
               ) : isError ? (
-                <SelectItem key="loading" value="error" disabled>Error fetching tasks</SelectItem>
+                <SelectItem key="loading" value="error" disabled>Error fetching activities</SelectItem>
               ) : (
                 data ? (
-                  data.task_names.map((name, index) => (
-                    <SelectItem key={index} value={name}>
-                      {name}
+                  data.data?.map((activity) => (
+                    <SelectItem key={activity.unique_id} value={activity.unique_id}>
+                      {activity.name}
                     </SelectItem>
                   ))
                 ) : (
@@ -55,4 +54,4 @@ function TaskPicker({ userId, onSelect }) {
   )
 }
 
-export default TaskPicker
+export default ActivityPicker

@@ -20,7 +20,7 @@ import { Link } from '@tanstack/react-router';
 import { ChangeTaskNameFormData, DeleteTask, MessageResponseData } from '@/src/lib/types';
 
 // Others
-import { changeTaskName, deleteTask, getTasks } from '../../lib/functions';
+import { changeTaskName, deleteTask, getActivities } from '../../lib/functions';
 
 
 function TasksTable({ userId }) {
@@ -81,7 +81,7 @@ function TasksTable({ userId }) {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['tasks', userId],
-        queryFn:  () => getTasks(userId),
+        queryFn:  () => getActivities(userId),
         enabled: !!userId,
     });
 
