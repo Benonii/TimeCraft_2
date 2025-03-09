@@ -7,7 +7,8 @@ import { changeUsernameFormData, CreateLogFormData, DailyReportFromData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
 
 // API URL
-const api = 'http://127.0.0.1:5000/tc/v1';
+const api = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api';
+console.log("====API====", api);
 
 
 // Create functions
@@ -369,16 +370,12 @@ export const deleteUser = async (data: DeleteTask) => {
 
 // Auth functions
 export const login = async (formData: LoginFormData) => {
-  console.log("API URL:", api);
-  const params = new URLSearchParams();
-  params.append('email', formData.email);
-  params.append('password', formData.password);
-  const response = await fetch(`${api}/login`, {
+  const response = await fetch(`${api}/auth/login`, {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
       },
-      body: params.toString(),
+      body: JSON.stringify(formData),
   })
 
   const resJSON = await response.json();
@@ -391,18 +388,12 @@ return resJSON;
 }
 
 export const signup = async (formData: SignupFormData) => {
-  const params = new URLSearchParams();
-  params.append('email', formData.email);
-  params.append('username', formData.username);
-  params.append('weekly_hours', String(formData.weekly_hours))
-  params.append('work_days', String(formData.work_days))
-  params.append('password', formData.password)
-  const response = await fetch(`http://127.0.0.1:5000/tc/v1/signup`, {
+  const response = await fetch(`${api}/auth/signup`, {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json'
       },
-      body: params.toString()
+      body: JSON.stringify(formData)
   })
 
   const resJSON = await response.json();
