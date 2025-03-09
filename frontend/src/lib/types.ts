@@ -70,9 +70,10 @@ export type LoginFormData = {
 
 export type SignupFormData = {
     email: string,
+    full_name: string,
     username: string,
-    weekly_hours: number,
-    work_days: number,
+    weekly_work_hours_goal: number,
+    number_of_work_days: number,
     password: string,
     confirmPassword: string,
 }
