@@ -1,0 +1,39 @@
+# Use Python 3.11 slim image (more stable than 3.13 alpha)
+FROM python:3.11-slim
+
+# Set working directory to backend directory
+WORKDIR /backend
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    FLASK_APP=v2/app.py \
+    FLASK_ENV=development \
+    PYTHONPATH=/backend
+
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        postgresql-client \
+        libpq-dev \
+        build-essential \
+        pkg-config \
+        gcc \
+        python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip and install build tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Copy the entire project first since we're using parent context
+COPY . .
+
+# Install required packages
+RUN cd v2 && pip install --no-cache-dir -r requirements.txt
+
+# Expose port
+EXPOSE 5001
+
+# Command to run the application
+WORKDIR /backend
+CMD ["python", "-m", "v2.app"] 
