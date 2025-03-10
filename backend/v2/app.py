@@ -51,5 +51,5 @@ Swagger(app)
 if __name__ == "__main__":
     """ Main Function """
     host = '0.0.0.0'  # Listen on all available interfaces
-    port = 5001
-    app.run(host=host, port=port, threaded=True, debug=True)
+    port = int(environ.get('PORT', 5000))  # Use PORT from environment or default to 5001
+    app.run(host=host, port=port, threaded=True)

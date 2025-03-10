@@ -9,7 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     FLASK_APP=v2/app.py \
     FLASK_ENV=development \
-    PYTHONPATH=/backend
+    PYTHONPATH=/backend \
+    PIP_NO_CACHE_DIR=1
 
 # Install system dependencies
 RUN apt-get update \
@@ -25,11 +26,17 @@ RUN apt-get update \
 # Upgrade pip and install build tools
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Copy the entire project first since we're using parent context
-COPY . .
+# Copy only requirements first for better caching
+COPY v2/requirements.txt /backend/v2/
 
-# Install required packages
-RUN cd v2 && pip install --no-cache-dir -r requirements.txt
+# Debug: Show contents of directory and requirements file
+RUN ls -la /backend/v2/ && cat /backend/v2/requirements.txt
+
+# Install required packages with verbose output
+RUN pip install --verbose --no-cache-dir -r /backend/v2/requirements.txt
+
+# Copy the entire project
+COPY . .
 
 # Expose port
 EXPOSE 5001
