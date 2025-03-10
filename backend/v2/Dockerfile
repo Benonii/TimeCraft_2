@@ -2,14 +2,14 @@
 FROM python:3.11-slim
 
 # Set working directory to backend directory
-WORKDIR /backend
+WORKDIR /app
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    FLASK_APP=v2/app.py \
+    FLASK_APP=app.py \
     FLASK_ENV=development \
-    PYTHONPATH=/backend \
+    PYTHONPATH=/app \
     PIP_NO_CACHE_DIR=1
 
 # Install system dependencies
@@ -30,11 +30,17 @@ RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 COPY ./requirements.txt .
 
 # Install required packages with verbose output
-RUN pip install --verbose --no-cache-dir -r ./requirements.txt
+RUN pip install --verbose --no-cache-dir -r requirements.txt
+
+# Copy the application code
+COPY . /app/v2/
+
+# Create an empty __init__.py if it doesn't exist
+RUN touch /app/__init__.py
 
 # Expose port
 EXPOSE 5001
 
 # Command to run the application
-WORKDIR /backend
+WORKDIR /app
 CMD ["python", "-m", "v2.app"]
