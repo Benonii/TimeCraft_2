@@ -9,7 +9,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     FLASK_APP=v2/app.py \
     FLASK_ENV=development \
-    PYTHONPATH=/backend
+    PYTHONPATH=/backend \
+    PIP_NO_CACHE_DIR=1
 
 # Install system dependencies
 RUN apt-get update \
@@ -25,33 +26,21 @@ RUN apt-get update \
 # Upgrade pip and install build tools
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
-# Copy requirements first
-COPY v2/requirements.txt requirements.txt
+# Copy only requirements first for better caching
+COPY ./backend/v2/requirements.txt /backend/v2/
 
-# Install required packages one by one to identify any issues
-RUN pip install --no-cache-dir -r requirements.txt || ( \
-    echo "Failed to install requirements. Attempting individual installations..." && \
-    pip install alembic==1.13.1 && \
-    pip install bcrypt==4.1.2 && \
-    pip install python-dotenv==1.0.0 && \
-    pip install flasgger==0.9.7.1 && \
-    pip install flask-cors==4.0.0 && \
-    pip install flask==3.0.0 && \
-    pip install passlib==1.7.4 && \
-    pip install psycopg2-binary==2.9.9 && \
-    pip install "pydantic[email,timezone]==2.5.3" && \
-    pip install python-jose==3.3.0 && \
-    pip install pytz==2024.1 && \
-    pip install sqlalchemy==2.0.25 && \
-    pip install uvicorn==0.27.1 \
-    )
+# Debug: Show contents of directory and requirements file
+RUN ls -la /backend/v2/ && cat /backend/v2/requirements.txt
+
+# Install required packages with verbose output
+RUN pip install --verbose --no-cache-dir -r /backend/v2/requirements.txt
 
 # Copy the entire project
-COPY . .
+COPY ./backend /backend
 
 # Expose port
 EXPOSE 5001
 
 # Command to run the application
 WORKDIR /backend
-CMD ["python", "-m", "v2.app"] 
+CMD ["python", "-m", "v2.app"]
