@@ -27,16 +27,10 @@ RUN apt-get update \
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel
 
 # Copy only requirements first for better caching
-COPY ./backend/v2/requirements.txt /backend/v2/
-
-# Debug: Show contents of directory and requirements file
-RUN ls -la /backend/v2/ && cat /backend/v2/requirements.txt
+COPY ./requirements.txt .
 
 # Install required packages with verbose output
-RUN pip install --verbose --no-cache-dir -r /backend/v2/requirements.txt
-
-# Copy the entire project
-COPY ./backend /backend
+RUN pip install --verbose --no-cache-dir -r ./requirements.txt
 
 # Expose port
 EXPOSE 5001
