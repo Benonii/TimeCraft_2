@@ -96,43 +96,30 @@ export default function Navbar() {
               <MenubarMenu>
                 <MenubarTrigger className='py-5 text-white font-monomaniac text-2xl'><ChartNoAxesCombined className='w-10 h-10'/></MenubarTrigger>
                 <MenubarContent className='ml-16 mt-[-60px] bg-white w-40 dark:bg-black'>
-                  <Link to="/reports/daily">
+                  <Link to="/reports">
                     <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                      Daily report
+                      Reports
                     </MenubarItem>
                   </Link>
-                    <hr className='mx-2 mt-1'/>
-                    <Link to="/reports/weekly">
-                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                        Weekly report
-                      </MenubarItem>  
-                    </Link>
-                    <hr className='mx-2 mt-1'/>
-                    <Link to="/reports/monthly">
-                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                        Monthly report
-                      </MenubarItem>
-                    </Link>
-                    <hr className='mx-2 mt-1'/>
-                    <Link to="/reports/tpt">
-                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                        Total productive time
-                      </MenubarItem>
-                    </Link>
-                    <hr className='mx-2 mt-1'/>
-                    <Link to="/reports/twt">
-                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                        Total wasted time
-                      </MenubarItem> 
-                    </Link>
-
-                    <hr className='mx-2 mt-1'/>
-                    <Link to="/reports/ttot">
-                      <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                        Total time on task
-                      </MenubarItem>
-                    </Link>
-                  </MenubarContent>
+                  <hr className='mx-2 mt-1'/>
+                  <Link to="/reports/tpt">
+                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
+                      Total productive time
+                    </MenubarItem>
+                  </Link>
+                  <hr className='mx-2 mt-1'/>
+                  <Link to="/reports/twt">
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      Total wasted time
+                    </MenubarItem> 
+                  </Link>
+                  <hr className='mx-2 mt-1'/>
+                  <Link to="/reports/ttot">
+                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
+                      Total time on task
+                    </MenubarItem>
+                  </Link>
+                </MenubarContent>
               </MenubarMenu>
     
               <MenubarMenu>

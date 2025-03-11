@@ -5,11 +5,12 @@ import { changeUsernameFormData, CreateReportFormData, DailyReportFromData,
          MonthlyReportFormData, NewActivityFormData, NewUserFormData, 
          User, TptFormData, TtotFormData, ChangeTaskNameFormData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
+import { getDateRange } from "../utils/dateRanges";
+import { format } from 'date-fns';
 
 // API URL
 const api = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api';
 console.log("====API====", api);
-
 
 // Create functions
 export const createUser = async (formData: NewUserFormData, user: User) => {
@@ -82,90 +83,28 @@ export const createReport = async (formData: CreateReportFormData) => {
 
 
 // Get functions
-export const getDailyReport = async (formData: DailyReportFromData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('userId', user ? user.id : formData.userId)
-    const localDate = new Date(formData.date);
-    const year = localDate.getFullYear();
-    const month = String(localDate.getMonth() + 1).padStart(2, '0');
-    const day = String(localDate.getDate()).padStart(2, '0');
+export const getReport = async ({ startDate, endDate }: { startDate: Date, endDate: Date }) => {
+    const token = localStorage.getItem('token');
     
-    const formattedDate = `${year}-${month}-${day}`
-    // console.log(formattedDate);
-    params.append('date', formattedDate)
-    // console.log("Params:", params.toString());
-
-    const response = await fetch(`${api}/report/daily`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params.toString(),
-    })
-
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
-    }
-
-    return resJSON;
-}
-
-
-export const getWeeklyReport = async (formData: DailyReportFromData, user: User) => {
     const params = new URLSearchParams();
-    params.append('userId', user ? user.id : formData.userId)
-    const localDate = new Date(formData.date);
-    const year = localDate.getFullYear();
-    const month = String(localDate.getMonth() + 1).padStart(2, '0');
-    const day = String(localDate.getDate()).padStart(2, '0');
+    params.append('start_date', format(startDate, 'yyyy-MM-dd'));
+    params.append('end_date', format(endDate, 'yyyy-MM-dd'));
     
-    const formattedDate = `${year}-${month}-${day}`
-    // console.log(formattedDate);
-    params.append('date', formattedDate)
-    // console.log("Params:", params.toString());
-
-    const response = await fetch(`${api}/report/weekly`, {
-        method: 'POST',
+    const response = await fetch(`${api}/report?${params.toString()}`, {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params.toString(),
-    })
+            'Authorization': `Bearer ${token}`,
+        }
+    });
 
     const resJSON = await response.json();
     if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
+        console.log("========Error=========", resJSON.message)
+        throw new Error('An error occurred. Please try again.');
     }
 
     return resJSON;
-}
-
-
-export const getMonthlyReport = async (formData: MonthlyReportFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('userId', user ? user.id : formData.userId)
-    params.append('month', formData.month)
-    // console.log("Params:", params.toString());
-
-    const response = await fetch(`${api}/report/monthly`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params.toString(),
-    })
-
-    const resJSON = await response.json();
-    if (!response.ok) {
-      // console.log(response)
-      throw new Error(resJSON.message || 'An error occured');
-    }
-
-    return resJSON;
-}
+};
 
 
 export const getTpt = async (formData: TptFormData, user: User) => {

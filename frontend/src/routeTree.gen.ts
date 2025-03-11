@@ -17,9 +17,6 @@ import { Route as SettingsImport } from './routes/settings'
 import { Route as NewActivityImport } from './routes/new/newActivity'
 import { Route as NewLogImport } from './routes/new/newLog'
 import { Route as NewUserImport } from './routes/new/newUser'
-import { Route as DailyReportImport } from './routes/reports/dailyReport'
-import { Route as WeeklyReportImport } from './routes/reports/weeklyReport'
-import { Route as MonthlyReportImport } from './routes/reports/monthlyReport'
 import { Route as TPTImport } from './routes/reports/tpt'
 import { Route as TWTImport } from './routes/reports/twt'
 import { Route as TTOTImport } from './routes/reports/ttot'
@@ -27,6 +24,7 @@ import { Route as ProfileImport } from './routes/user/profile'
 // import { Route as AssignUserImport } from './routes/user/assignUser'
 import { Route as LoginImport } from './routes/user/login'
 import { Route as SignupImport } from './routes/user/signup'
+import { Route as ReportsImport } from './routes/reports'
 
 // Create/Update Routes
 
@@ -57,21 +55,6 @@ const NewLogRoute = NewLogImport.update({
 
 const NewUserRoute = NewUserImport.update({
   path: '/new/user',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DailyReportRoute = DailyReportImport.update({
-  path: '/reports/daily',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const WeeklyReportRoute = WeeklyReportImport.update({
-  path: '/reports/weekly',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const MonthlyReportRoute = MonthlyReportImport.update({
-  path: '/reports/monthly',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -107,6 +90,11 @@ const LoginRoute = LoginImport.update({
 
 const SignupRoute = SignupImport.update({
   path: '/user/signup',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ReportsRoute = ReportsImport.update({
+  path: '/reports',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -154,27 +142,6 @@ declare module '@tanstack/react-router' {
       path: '/new/user'
       fullPath: '/new/user'
       preLoaderRoute: typeof NewUserImport
-      parentRoute: typeof rootRoute
-    }
-    '/reports/daily': {
-      id: '/reports/daily'
-      path: '/reports/daily'
-      fullPath: '/reports/daily'
-      preLoaderRoute: typeof DailyReportImport
-      parentRoute: typeof rootRoute
-    }
-    '/reports/weekly': {
-      id: '/reports/weekly'
-      path: '/reports/weekly'
-      fullPath: '/reports/weekly'
-      preLoaderRoute: typeof WeeklyReportImport
-      parentRoute: typeof rootRoute
-    }
-    '/reports/monthly': {
-      id: '/reports/monthly'
-      path: '/reports/monthly'
-      fullPath: '/reports/monthly'
-      preLoaderRoute: typeof MonthlyReportImport
       parentRoute: typeof rootRoute
     }
     '/reports/tpt': {
@@ -226,6 +193,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -238,9 +212,6 @@ export interface FileRoutesByFullPath {
   '/new/activity': typeof NewActivityRoute
   '/new/log': typeof NewLogRoute
   '/new/user': typeof NewUserRoute
-  '/reports/daily': typeof DailyReportRoute
-  '/reports/weekly': typeof WeeklyReportRoute
-  '/reports/monthly': typeof MonthlyReportRoute
   '/reports/tpt': typeof TPTRoute
   '/reports/twt': typeof TWTRoute
   '/reports/ttot': typeof TTOTRoute
@@ -248,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/user/assign': typeof AssignUserRoute
   '/user/login': typeof LoginRoute
   '/user/signup': typeof SignupRoute
+  '/reports': typeof ReportsRoute
 }
 
 export const routeTree = rootRoute
@@ -258,16 +230,14 @@ export const routeTree = rootRoute
     NewActivityRoute,
     NewLogRoute,
     NewUserRoute,
-    DailyReportRoute,
-    WeeklyReportRoute,
-    MonthlyReportRoute,
     TPTRoute,
     TWTRoute,
     TTOTRoute,
     ProfileRoute,
     // AssignUserRoute,
     LoginRoute,
-    SignupRoute
+    SignupRoute,
+    ReportsRoute
   })
   ._addFileTypes<FileRouteTypes>()
 
