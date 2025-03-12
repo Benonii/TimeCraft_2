@@ -102,18 +102,6 @@ export default function Navbar() {
                     </MenubarItem>
                   </Link>
                   <hr className='mx-2 mt-1'/>
-                  <Link to="/reports/tpt">
-                    <MenubarItem className='font-monomaniac mt-2 ml-2'>
-                      Total productive time
-                    </MenubarItem>
-                  </Link>
-                  <hr className='mx-2 mt-1'/>
-                  <Link to="/reports/twt">
-                    <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
-                      Total wasted time
-                    </MenubarItem> 
-                  </Link>
-                  <hr className='mx-2 mt-1'/>
                   <Link to="/reports/ttot">
                     <MenubarItem className='font-monomaniac mt-2 ml-2 mb-2'>
                       Total time on task

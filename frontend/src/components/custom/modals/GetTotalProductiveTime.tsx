@@ -160,7 +160,7 @@ function GetTotalProductiveTime() {
           <DialogHeader>
             <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Total Productive time</DialogTitle>
             <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
-                Get your total productive time. Needs User Id if not signed in.
+                Get your total productive time.
             </DialogDescription>
           </DialogHeader>
           {error && (

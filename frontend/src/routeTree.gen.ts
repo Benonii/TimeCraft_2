@@ -58,16 +58,6 @@ const NewUserRoute = NewUserImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const TPTRoute = TPTImport.update({
-  path: '/reports/tpt',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const TWTRoute = TWTImport.update({
-  path: '/reports/twt',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const TTOTRoute = TTOTImport.update({
   path: '/reports/ttot',
   getParentRoute: () => rootRoute,
@@ -144,20 +134,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewUserImport
       parentRoute: typeof rootRoute
     }
-    '/reports/tpt': {
-      id: '/reports/tpt'
-      path: '/reports/tpt'
-      fullPath: '/reports/tpt'
-      preLoaderRoute: typeof TPTRoute
-      parentRoute: typeof rootRoute
-    }
-    '/reports/twt': {
-      id: '/reports/twt'
-      path: '/reports/twt'
-      fullPath: '/reports/twt'
-      preLoaderRoute: typeof TWTRoute
-      parentRoute: typeof rootRoute
-    }
     '/reports/ttot': {
       id: '/reports/ttot'
       path: '/reports/ttot'
@@ -212,8 +188,6 @@ export interface FileRoutesByFullPath {
   '/new/activity': typeof NewActivityRoute
   '/new/log': typeof NewLogRoute
   '/new/user': typeof NewUserRoute
-  '/reports/tpt': typeof TPTRoute
-  '/reports/twt': typeof TWTRoute
   '/reports/ttot': typeof TTOTRoute
   '/user/profile': typeof ProfileRoute
   '/user/assign': typeof AssignUserRoute
@@ -230,8 +204,6 @@ export const routeTree = rootRoute
     NewActivityRoute,
     NewLogRoute,
     NewUserRoute,
-    TPTRoute,
-    TWTRoute,
     TTOTRoute,
     ProfileRoute,
     // AssignUserRoute,
