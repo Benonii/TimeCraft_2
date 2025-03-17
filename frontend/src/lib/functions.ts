@@ -5,12 +5,23 @@ import { changeUsernameFormData, CreateReportFormData, DailyReportFromData,
          MonthlyReportFormData, NewActivityFormData, NewUserFormData, 
          User, TptFormData, TtotFormData, ChangeTaskNameFormData,
          DeleteTask, LoginFormData, SignupFormData } from "./types";
+import { useNavigate } from "@tanstack/react-router";
+
+// Other
 import { getDateRange } from "../utils/dateRanges";
 import { format } from 'date-fns';
 
 // API URL
 const api = process.env.REACT_APP_API_URL || 'http://127.0.0.1:5000/api';
-console.log("====API====", api);
+
+// Add this helper function
+const handle401Error = (response: Response) => {
+  if (response.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/user/login';  // Force redirect to login
+  }
+};
 
 // Create functions
 export const createUser = async (formData: NewUserFormData, user: User) => {
@@ -29,7 +40,7 @@ export const createUser = async (formData: NewUserFormData, user: User) => {
 
   const resJSON = await response.json();
   if (!response.ok) {
-    // console.log(response)
+    handle401Error(response);
     throw new Error(resJSON.message || 'An error occured');
   }
 
@@ -39,7 +50,6 @@ return resJSON;
 
 export const createActivity = async (formData: NewActivityFormData) => {
   const token = localStorage.getItem('token');
-  console.log("====+Token=========", token)
   const response = await fetch(`${api}/activity`, {
     method: 'POST',
         headers: {
@@ -51,7 +61,7 @@ export const createActivity = async (formData: NewActivityFormData) => {
 
   const resJSON = await response.json();
   if (!response.ok) {
-    // console.log(r)
+    handle401Error(response);
     throw new Error(resJSON.message || 'An error occured');
 }
 
@@ -74,7 +84,7 @@ export const createReport = async (formData: CreateReportFormData) => {
 
     const resJSON = await response.json();
         if (!response.ok) {
-          // console.log(response)
+          handle401Error(response);
           throw new Error(resJSON.message || 'An error occured');
         }
 
@@ -99,7 +109,8 @@ export const getReport = async ({ startDate, endDate }: { startDate: Date, endDa
 
     const resJSON = await response.json();
     if (!response.ok) {
-        console.log("========Error=========", resJSON.message)
+        handle401Error(response);
+        console.log("Error:", resJSON.message)
         throw new Error('An error occurred. Please try again.');
     }
 
@@ -122,7 +133,8 @@ export const getTpt = async (formData: TptFormData, user: User) => {
 
     const resJSON = await response.json();
     if (!response.ok) {
-      // console.log(response)
+      handle401Error(response);
+      console.log("Error:", resJSON.message)
       throw new Error(resJSON.message || 'An error occured');
     }
 
@@ -145,7 +157,8 @@ export const getTwt = async (formData: TptFormData, user: User) => {
 
     const resJSON = await response.json();
     if (!response.ok) {
-      // console.log(response)
+      handle401Error(response);
+      console.log("Error:", resJSON.message)
       throw new Error(resJSON.message || 'An error occured');
     }
 
@@ -170,7 +183,8 @@ export const getTtot = async (formData: TtotFormData, user: User) => {
 
     const resJSON = await response.json();
     if (!response.ok) {
-      // console.log(response)
+      handle401Error(response);
+      console.log("Error:", resJSON.message)
       throw new Error(resJSON.message || 'An error occured');
     }
 
@@ -189,6 +203,7 @@ export const getActivities = async (id: string) => {
   })
 
   if (!res.ok) {
+    handle401Error(res);
     throw new Error('Network Error');
   }
   return await res.json();
@@ -213,7 +228,8 @@ export const changeUsername = async (formData: changeUsernameFormData, user: Use
 
   const resJSON = await response.json();
   if (!response.ok) {
-    // console.log(response)
+    handle401Error(response);
+    console.log("Error:", resJSON.message)
     throw new Error(resJSON.message || 'An error occured');
   }
 
@@ -236,7 +252,8 @@ export const changeTaskName = async (data: ChangeTaskNameFormData) => {
   
     const resJSON = await res.json();
     if (!res.ok) {
-      // console.log(response)
+      handle401Error(res);
+      console.log("Error:", resJSON.message)
       throw new Error(resJSON.message || 'An error occured');
     }
 
@@ -261,7 +278,8 @@ export const deleteTask = async (data: DeleteTask) => {
   
     const resJSON = await res.json();
     if (!res.ok) {
-      // console.log(response)
+      handle401Error(res);
+      console.log("Error:", resJSON.message)
       throw new Error(resJSON.message || 'An error occured');
     }
 
@@ -284,7 +302,8 @@ export const deleteUser = async (data: DeleteTask) => {
 
   const resJSON = await res.json();
   if (!res.ok) {
-    // console.log(response)
+    handle401Error(res);
+    console.log("Error:", resJSON.message)
     throw new Error(resJSON.message || 'An error occured');
   }
 
@@ -303,8 +322,8 @@ export const login = async (formData: LoginFormData) => {
 
   const resJSON = await response.json();
   if (!response.ok) {
-    // console.log(response)
-    throw new Error(resJSON.message || 'An error occured');
+    console.log("Error:", resJSON.message)
+    throw new Error('An error occured. Please try again!');
   }
 
 return resJSON;
@@ -321,9 +340,10 @@ export const signup = async (formData: SignupFormData) => {
 
   const resJSON = await response.json();
   if (!response.ok) {
-    // console.log(response)
-    throw new Error(resJSON.message || 'An error occured');
+    console.log("Error:", resJSON.message)
+    throw new Error('An error occured. Please try again!.');
   }
 
-return resJSON;
+  return resJSON;
 }
+
