@@ -81,60 +81,65 @@ function Login () {
     }
 
     return (
-        <div className="flex flex-col justify-center max-w-[600px] min-h-full mx-auto mt-48 rounded-md shadow-lg min-w-56">
-            <h2 className="mt-10 text-center font-madimi font-semibold text-4xl dark:text-gray-300">
-                Log in
-            </h2>
-            <hr className='mt-5 dark:border-gray-300' />
+        <div className='flex flex-col items-center mt-20'>
+            <div className="max-w-[500px] w-[90vw] min-w-[300px] bg-white dark:bg-gray-900 rounded-xl 
+                shadow-lg border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl"
+            >
+                <h2 className="font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
+                    Log in
+                </h2>
 
-            <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
-                Welcome back!
-            </h3>
-            <div className='flex w-full justify-center items-center'>
-                {error && (
-                <ErrorAlert content={message} />
-                )}
+                <hr className='border-gray-200 dark:border-gray-700 mb-8' />
+
+                <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
+                    Welcome back!
+                </h3>
+                <div className='flex w-full justify-center items-center'>
+                    {error && (
+                    <ErrorAlert content={message} />
+                    )}
+                </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Email</FormLabel>
+                                    <FormControl>
+                                        <Input id='username' placeholder='username@123' className='text-lg' {...field} />
+                                    </FormControl>
+                                    <FormMessage className='text-xs text-redd-500' />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                      <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
+                                          Password
+                                      </FormLabel>
+                                      <FormControl>
+                                        <Input id='password' type='password' className='text-lg' {...field} />
+                                      </FormControl>
+                                      <FormMessage className='text-xs text-red-600 '/>
+                                  </FormItem>
+                            )}
+                        />
+                        <div className="flex justify-center w-full">
+                          <LoadingButton
+                            type="submit"
+                            isLoading={loading}
+                            text="Login"
+                          />
+                        </div>
+                    </form>
+                </Form>
+                <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
             </div>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Email</FormLabel>
-                                <FormControl>
-                                    <Input id='username' placeholder='username@123' className='text-lg' {...field} />
-                                </FormControl>
-                                <FormMessage className='text-xs text-redd-500' />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                  <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
-                                      Password
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='password' type='password' className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
-                    <div className="flex justify-center w-full">
-                      <LoadingButton
-                        type="submit"
-                        isLoading={loading}
-                        text="Login"
-                      />
-                    </div>
-                </form>
-            </Form>
-            <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
         </div>
     )
 }

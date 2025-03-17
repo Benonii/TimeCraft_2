@@ -69,44 +69,63 @@ export default function Settings() {
   })
 
   return (
-    <div>
+    <div className='flex flex-col items-center mt-20'>
       <Header />
       {success && (
-        <div className='flex justify-center items-center w-[70%] max-w-[400px] ml-20'>
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-50'>
           <SuccessAlert content={message} />
         </div>
       )}
       {error && (
-        <div className='flex justify-center intems-center w-[70%] max-w-[400px] '>
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-50'>
           <ErrorAlert content={message} />
         </div>
       )}
-      <div className="relative flex items-center mt-10 min-h-[900px]">
-        <Navbar className=''/>
-        <div className='absolute top-3 left-24 font-monomaniac'>
-            <h2 className='font-monomaniac text-2xl ml-4 md:text-4xl dark:text-gray-300'>Settings</h2>
-            <hr className='mt-2'/>
-            <div className='ml-5 mt-5'>
-                <h3 className='text-gray-600 text-xl font-semibold dark:text-gray-500'>Theme</h3>
-                <div className="flex justify-center gap-2 items-center">
-                    <h4 className='ml-5 text-gray-600 text-lg dark:text-gray-400'>Dark mode:</h4>
-                    <Switch 
-                      id="dark-mode"
-                      checked={isDarkMode}
-                      onCheckedChange={toggleDarkMode}
-                    />
+      <div className="flex min-h-full">
+        <div className="flex-1 flex justify-center items-start gap-5 p-6">
+          <Navbar className='mt-30' />
+          <div className="max-w-[700px] bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl w-[55vw] min-w-[250px]">
+            <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-8 dark:text-gray-300'>
+              Settings
+            </h2>
+
+            <div className="space-y-8">
+              {/* Theme Section */}
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <h3 className='font-madimi text-xl md:text-2xl text-gray-700 dark:text-gray-400 mb-4'>
+                  Theme
+                </h3>
+                <div className="flex items-center gap-4 px-6">
+                  <span className='font-monomaniac text-lg text-gray-600 dark:text-gray-400'>
+                    Dark mode
+                  </span>
+                  <Switch 
+                    id="dark-mode"
+                    checked={isDarkMode}
+                    onCheckedChange={toggleDarkMode}
+                  />
                 </div>
-                {user && (
-                  <>
-                    <h4 className='text-gray-600 text-xl font-semibold dark:text-gray-500'>Profile</h4>
-                    <ChangeUsername />
-                    <ManageTasks />
-                    <DeleteUserAlert handleDelete={() => {mutation.mutate({id: user.id})}}/>
-                  </>
-                )}
+              </div>
+
+              {/* Profile Section - Only shown when user is logged in */}
+              {user && (
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
+                  <h3 className='font-madimi text-xl md:text-2xl text-gray-700 dark:text-gray-400 mb-4'>
+                    Profile
+                  </h3>
+                  <div className="flex flex-col gap-4 px-6">
+                    <div className="flex flex-col gap-6">
+                      <ChangeUsername />
+                      <ManageTasks />
+                      <DeleteUserAlert handleDelete={() => {mutation.mutate({id: user.id})}} />
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
