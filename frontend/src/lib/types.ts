@@ -187,3 +187,10 @@ export type LoginResponseData = {
     message: string,
     data: {token : string, user: User}
 }
+
+export type CreateActivityFormData = {
+    name: string;
+    dailyGoal: number;
+    description?: string;
+    uniqueID?: string;
+};
