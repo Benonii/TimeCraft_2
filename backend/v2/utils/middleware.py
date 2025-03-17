@@ -24,10 +24,14 @@ def auth_middleware(f):
         auth_header = request.headers.get('Authorization')
         
         if not auth_header:
-            abort(401, description="Authorization header is missing")
+                return jsonify({
+                'message': 'Authorization header is missing'
+            }), 401
             
         if not auth_header.startswith('Bearer '):
-            abort(401, description="Invalid token format. Must be 'Bearer <token>'")
+            return jsonify({
+                'message': 'Invalid token format. Must be "Bearer <token>"'
+            }), 401
             
         token = auth_header.split(' ')[1]
         
@@ -43,15 +47,21 @@ def auth_middleware(f):
             current_user = get_user_by_email(payload.get('email'))
             
             if not current_user:
-                abort(401, description="Invalid token: User not found")
+                return jsonify({
+                    'message': 'Invalid token: User not found'
+                }), 401
                 
             # Add user to request context
             request.user = current_user
             
         except JWTError:
-            abort(401, description="Invalid or expired token")
+            return jsonify({
+                'message': 'Invalid or expired token'
+            }), 401
         except Exception as e:
-            abort(500, description=str(e))
+            return jsonify({
+                'message': str(e)
+            }), 500
             
         return f(*args, **kwargs)
     
