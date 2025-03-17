@@ -207,19 +207,18 @@ export const getActivities = async (id: string) => {
 
 
 // Update functions
-export const changeUsername = async (formData: changeUsernameFormData, user: User) => {
-  const params = new URLSearchParams();
-  params.append('username', formData.username);
-  params.append('userId', user.id);
+export const changeUsername = async (username: string) => {
+  const token = localStorage.getItem('token');
 
-  // console.log('Params:', params.toString());
-
-  const response = await fetch(`${api}/user/update`, {
-      method: 'POST',
+  const response = await fetch(`${api}/profile`, {
+      method: 'PATCH',
       headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/application/json',
+          'Authorization': `Bearer ${token}`,
       },
-      body: params.toString(),
+      body: JSON.stringify({
+        username
+      }),
   })
 
   const resJSON = await response.json();
