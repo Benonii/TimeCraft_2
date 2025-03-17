@@ -166,19 +166,15 @@ export const getTwt = async (formData: TptFormData, user: User) => {
 }
 
 
-export const getTtot = async (formData: TtotFormData, user: User) => {
-    const params = new URLSearchParams();
-    params.append('userId', user ? user.id : formData.userId)
-    user ? params.append('taskName', formData.taskName !)
-         : params.append('taskId', formData.taskId !) 
-    console.log("Params:", params.toString());
+export const getTotalTimeOnTask = async (taskID: string) => {
+    const token = localStorage.getItem('token');
 
-    const response = await fetch(`${api}/tasks/total`, {
-        method: 'POST',
+    const response = await fetch(`${api}/activity/${taskID}`, {
+        method: 'GET',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
-        body: params.toString(),
     })
 
     const resJSON = await response.json();

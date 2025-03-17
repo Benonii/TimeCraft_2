@@ -153,11 +153,6 @@ export type TwtReport = {
     twt: number
 }
 
-export type TtotReport = {
-    ttot: number
-    taskName: string
-}
-
 export type DailyReportResponseData = {
     report: DailyReport,
 }
@@ -180,17 +175,19 @@ export type TwtReportResponseData = {
 }
 
 export type TtotReportResponseData = {
-    report: TtotReport
+    data: {
+        name: string,
+        daily_goal: number,
+        total_time_on_task: number,
+        unique_id: string,
+        created_at: string,
+        updated_at: string,
+        weekly_goal: number,
+    },
+    message: string,
 }
 
 export type LoginResponseData = {
     message: string,
     data: {token : string, user: User}
 }
-
-export type CreateActivityFormData = {
-    name: string;
-    dailyGoal: number;
-    description?: string;
-    uniqueID?: string;
-};

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { format, parseISO, formatDistance } from 'date-fns';
 
 // Components
 import { Button } from '../../shadcn/Button';
@@ -18,16 +19,15 @@ import TaskPicker from '../ActivityPicker';
 import ErrorAlert from '../ErrorAlert';
 import { Skeleton } from "../../shadcn/Skeleton";
 import LoadingButton from '../LoadingButton';
+import { Progress } from '../../shadcn/Progress';
 
 // Types
-import { MessageResponseData, TtotFormData, TtotReport,
-         TtotReportResponseData }
-  from '@/src/lib/types';
+import { MessageResponseData, TtotReportResponseData } from '@/src/lib/types';
 
 // Others
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getTtot } from '../../../lib/functions';
+import { getTotalTimeOnTask } from '../../../lib/functions';
 
 
 
@@ -57,27 +57,23 @@ function GetTotalTimeOnTask() {
     }
 
     const ttotReportSchema = z.object({
-        userId: user ? z.string().nullable() : z.string().length(8),
-        taskId: user ? z.string().nullable() : z.string().length(8),
-        taskName: user ? z.string().min(2) : z.string().nullable(),
+        taskId: z.string().length(8),
     })
 
     const form = useForm<z.infer<typeof ttotReportSchema>>({
         resolver: zodResolver(ttotReportSchema),
         defaultValues: {
-            userId: user ? null : "",
-            taskId: user ? null : "",
-            taskName: user ? "" : null,
+            taskId: "",
         }
     })
   
-    const [ report, setReport ] = useState<TtotReport>();
+    const [ report, setReport ] = useState<TtotReportResponseData['data']>();
 
     const mutation = useMutation({
-        mutationFn: (formData: TtotFormData) => getTtot(formData, user),
+        mutationFn: (taskID: string) => getTotalTimeOnTask(taskID),
         onSuccess: (data: TtotReportResponseData) => {
-            // console.log("Here is your report:", data )
-            setReport(data.report);
+            console.log("Here is your report:", data.data )
+            setReport(data.data);
             setSuccess(true);
         },
         onError: (errorResponse: MessageResponseData) => {
@@ -92,86 +88,61 @@ function GetTotalTimeOnTask() {
     }, [mutation])
 
     const onSubmit = async (values: z.infer<typeof ttotReportSchema>) => {
-        // console.log('Data:', transformedValues)
-        const transformedValues = {
-            ...values,
-            userId: user ? user.id : values.userId, // Use userId from user object if logged in
-        };
-        // console.log('Data:', transformedValues)
         try {
-            mutation.mutate(transformedValues);
+            mutation.mutate(values.taskId);
         } catch(error) {
             console.error('Error submitting form:', error);
         }
     }
 
+    const formatDateSafely = (dateString: string | undefined) => {
+        if (!dateString) return 'N/A';
+        try {
+            return format(new Date(dateString), 'MMMM d, yyyy');
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return 'N/A';
+        }
+    };
+
+    const getTimeDifference = (dateString: string | undefined) => {
+        if (!dateString) return 'N/A';
+        try {
+            return formatDistance(new Date(dateString), new Date(), { addSuffix: true });
+        } catch (error) {
+            console.error('Error calculating time difference:', error);
+            return 'N/A';
+        }
+    };
+
     const formContent = (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
-              {!user && (
-                <FormField
-                  control={form.control}
-                  name="userId"
-                  render={({ field }) => (
-                      <FormItem>
-                          <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
-                          <FormControl>
-                              <Input 
-                                id='user-id'
-                                placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                className='text-lg' {...field}
-                                value={field.value ?? undefined} />
-                          </FormControl>
-                          <FormMessage className='text-xs text-red-500' />
-                      </FormItem>
+              <FormField
+                control={form.control}
+                name="taskId"
+                render={({ field }) => (
+                  <FormItem>
+                      <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
+                         Task name
+                      </FormLabel>
+                      <FormControl aria-disabled={true}>
+                        <TaskPicker
+                          userId={user?.id}
+                          onSelect={(value: string) => form.setValue('taskId', value)}
+                        />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600 '/>
+                  </FormItem>
                   )}
+              />
+              <div className="flex justify-center w-full">
+                <LoadingButton
+                  type="submit"
+                  isLoading={loading}
+                  text="Get report"
                 />
-              )}
-              {user ? (
-                <FormField
-                  control={form.control}
-                  name="taskName"
-                  render={({ field }) => (
-                      <FormItem>
-                          <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
-                             Task name
-                          </FormLabel>
-                          <FormControl aria-disabled={true}>
-                            <TaskPicker
-                              userId={user?.id}
-                              onSelect={(value: string) => form.setValue('taskName', value)}
-                            />
-                          </FormControl>
-                          <FormMessage className='text-xs text-red-600 '/>
-                      </FormItem>
-                  )}
-                />
-                ) : (
-                    <FormField
-                      control={form.control}
-                      name="taskId"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Task ID</FormLabel>
-                              <FormControl>
-                                  <Input
-                                    id='user-id'
-                                    placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                    className='text-lg' {...field}
-                                    value={field.value ?? undefined} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-redd-500' />
-                          </FormItem>
-                      )}
-                    />
-                )}
-                <div className="flex justify-center w-full">
-                  <LoadingButton
-                    type="submit"
-                    isLoading={loading}
-                    text="Get report"
-                  />
-                </div>
+              </div>
             </form>
         </Form>
     )
@@ -183,16 +154,53 @@ function GetTotalTimeOnTask() {
             dark:shadow-[0_4px_10px_0_rgba(0,0,0,0.25),0_0_10px_2px_rgba(250,204,21,0.2)]'
         >
             <h4 className='text-gray-700 dark:text-gray-300 mb-2'>
-                <span className='text-lg font-semibold'>Task:</span> {report?.taskName}
+                <span className='text-lg font-semibold'>Task:</span> {report?.name}
             </h4>
-            <h3 className='text-gray-700 dark:text-gray-300 mb-4'>
-                <span className='text-xl font-semibold'>Total time on task: </span> 
-                <span className='text-yellow1'>{report?.ttot} hours</span>
-            </h3>
+
+            <div className="space-y-6 mt-4">
+                {/* Time Stats */}
+                <div className="space-y-2">
+                    <h3 className='text-gray-700 dark:text-gray-300'>
+                        <span className='text-xl font-semibold'>Total time logged: </span> 
+                        <span className='text-yellow1'>{report?.total_time_on_task} hours</span>
+                    </h3>
+                    
+                    <p className='text-gray-600 dark:text-gray-400'>
+                        <span className='font-semibold'>Daily goal:</span> {report?.daily_goal} hours
+                    </p>
+                </div>
+
+                {/* Weekly Progress */}
+                <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                        <span className='text-gray-700 dark:text-gray-300 font-semibold'>
+                            Weekly Progress
+                        </span>
+                        <span className='text-gray-600 dark:text-gray-400'>
+                            {report?.total_time_on_task}/{report?.weekly_goal} hours
+                        </span>
+                    </div>
+                    <Progress 
+                        value={(report?.total_time_on_task! / report?.weekly_goal!) * 100} 
+                    >
+                      <div className="h-full bg-yellow1 dark:bg-yellow1"></div>
+                    </Progress>
+                </div>
+
+                {/* Creation Info */}
+                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        Created on {formatDateSafely(report?.created_at)}
+                    </p>
+                    <p className='text-sm text-gray-600 dark:text-gray-400'>
+                        Last updated {getTimeDifference(report?.updated_at)}
+                    </p>
+                </div>
+            </div>
 
             <Button
                 variant='outline'
-                className='mt-4 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
+                className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
                     dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
                     transition-colors duration-300'
                 onClick={() => {
