@@ -119,130 +119,140 @@ function GetReport() {
         });
     };
 
-    const formContent = (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mx-10 mt-5">
-                <FormField
-                    control={form.control}
-                    name="reportType"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
-                                Report Type
-                            </FormLabel>
-                            <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                            >
-                                <FormControl>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select a report type" />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem value="today">Today</SelectItem>
-                                    <SelectItem value="this_week">This Week</SelectItem>
-                                    <SelectItem value="this_month">This Month</SelectItem>
-                                    <SelectItem value="custom">Custom Range</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </FormItem>
-                    )}
-                />
-
-                {reportType === 'custom' && (
-                    <FormField
-                        control={form.control}
-                        name="dateRange"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
-                                    Date Range
-                                </FormLabel>
-                                <DateRangePicker 
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                />
-                            </FormItem>
-                        )}
-                    />
-                )}
-
-                <div className="flex justify-center w-full">
-                    <LoadingButton
-                        type="submit"
-                        isLoading={loading}
-                        text="Get Report"
-                    />
-                </div>
-            </form>
-        </Form>
-    );
-
-    const reportContent = (
-        <div className='flex flex-col ml-5 font-monomaniac border rounded-lg shadow-lg shadow-yellow1 p-4 mb-10'>
-            <h3 className='text-xl text-gray-700 dark:text-gray-300'>
-                <span className='text-2x'>Date Range:</span> {formatDate(data?.data?.start_date || '')} - {formatDate(data?.data?.end_date || '')}
-            </h3>
-            {data?.data?.activities && Object.entries(data.data.activities).map(([taskName, taskData]: [string, any]) => (
-                <div key={taskName}>
-                    <h4 className='ml-5 dark:text-gray-300'>
-                        <span className='text-lg'>Task:</span> {taskName}
-                    </h4>
-                    <h5 className='ml-10 dark:text-gray-400'>
-                        Productive time: <span className='text-green-700 dark:text-green-500'>
-                            {taskData.total_time_on_task.toFixed(2)} Hours
-                        </span>
-                    </h5>
-                </div>
-            ))}
-
-            <h4 className='ml-5 dark:text-gray-400'>
-                <span className='text-lg'>Total productive time:</span> 
-                <span className='text-green-700 dark:text-green-500'>
-                    {data?.data?.total_productive_time.toFixed(2)} hours
-                </span>
-            </h4>
-            <h4 className='ml-5 dark:text-gray-400'>
-                <span className='text-lg'>Total wasted time:</span> 
-                <span className='text-red-700 dark:text-red-500'>
-                    {data?.data?.total_wasted_time.toFixed(2)} hours
-                </span>
-            </h4>
-
-            <Button
-                variant='outline'
-                className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white hover:bg-yellow1 dark:text-gray-400 dark:hover:text-white dark:border-gray-400'
-                onClick={() => {
-                    setSuccess(false);
-                    setLoading(false);
-                }}
-            >
-                Back
-            </Button>
-        </div>
-    );
-
     return (
         <Dialog>
-            <DialogTrigger className="ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-300">
+            <DialogTrigger 
+                className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
+                    font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
+                    transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
+            >
                 Get Report
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
                 <DialogHeader>
-                    <DialogTitle className="font-monomaniac text-3xl text-center dark:text-gray-300">
+                    <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
                         Get Report
                     </DialogTitle>
-                    <DialogDescription className="text-left text-lg font-monomaniac dark:text-gray-400">
+                    <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
                         Select a report type or custom date range
                     </DialogDescription>
                 </DialogHeader>
+
                 {error && <ErrorAlert content={message} />}
-                {success ? reportContent : loading ? (
-                    <div className="flex flex-col gap-2 items-justify">
-                        <Skeleton className="w-[400px] h-[200px] rounded-lg ml-10 mb-10" />
+                
+                {success ? (
+                    <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
+                        bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg shadow-yellow1/70'>
+                        <h3 className='text-xl text-gray-700 dark:text-gray-300 mb-4'>
+                            <span className='font-semibold'>Date Range:</span> {formatDate(data?.data?.start_date || '')} - {formatDate(data?.data?.end_date || '')}
+                        </h3>
+                        
+                        {data?.data?.activities && Object.entries(data.data.activities).map(([taskName, taskData]: [string, any]) => (
+                            <div key={taskName} className="mb-3">
+                                <h4 className='text-gray-700 dark:text-gray-300 mb-1'>
+                                    <span className='font-semibold'>Task:</span> {taskName}
+                                </h4>
+                                <h5 className='pl-4 text-gray-600 dark:text-gray-400'>
+                                    Productive time: <span className='text-green-600 dark:text-green-500'>
+                                        {taskData.total_time_on_task.toFixed(2)} Hours
+                                    </span>
+                                </h5>
+                            </div>
+                        ))}
+
+                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <h4 className='text-gray-700 dark:text-gray-400 mb-2'>
+                                <span className='font-semibold'>Total productive time: </span>
+                                <span className='text-green-600 dark:text-green-500'>
+                                    {data?.data?.total_productive_time.toFixed(2)} hours
+                                </span>
+                            </h4>
+                            <h4 className='text-gray-700 dark:text-gray-400'>
+                                <span className='font-semibold'>Total wasted time: </span>
+                                <span className='text-red-600 dark:text-red-500'>
+                                    {data?.data?.total_wasted_time.toFixed(2)} hours
+                                </span>
+                            </h4>
+                        </div>
+
+                        <Button
+                            variant='outline'
+                            className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-orange3 
+                                dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
+                                transition-colors duration-300'
+                            onClick={() => {
+                                setSuccess(false);
+                                setLoading(false);
+                            }}
+                        >
+                            Back
+                        </Button>
                     </div>
-                ) : formContent}
+                ) : loading ? (
+                    <div className="flex flex-col gap-4 p-6">
+                        <Skeleton className="w-full h-[250px] rounded-lg" />
+                    </div>
+                ) : (
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6">
+                            <FormField
+                                control={form.control}
+                                name="reportType"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
+                                            Report Type
+                                        </FormLabel>
+                                        <Select 
+                                            onValueChange={field.onChange} 
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a report type" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="today">Today</SelectItem>
+                                                <SelectItem value="this_week">This Week</SelectItem>
+                                                <SelectItem value="this_month">This Month</SelectItem>
+                                                <SelectItem value="custom">Custom Range</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </FormItem>
+                                )}
+                            />
+
+                            {reportType === 'custom' && (
+                                <FormField
+                                    control={form.control}
+                                    name="dateRange"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
+                                                Date Range
+                                            </FormLabel>
+                                            <DateRangePicker 
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+                            )}
+
+                            <div className="flex justify-center mt-8">
+                                <LoadingButton
+                                    type="submit"
+                                    isLoading={loading}
+                                    text="Get Report"
+                                    className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                                        text-white hover:bg-yellow-500 transition-colors duration-300"
+                                />
+                            </div>
+                        </form>
+                    </Form>
+                )}
             </DialogContent>
         </Dialog>
     );

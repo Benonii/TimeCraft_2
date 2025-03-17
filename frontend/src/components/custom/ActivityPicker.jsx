@@ -18,6 +18,9 @@ function ActivityPicker({ userId, onSelect }) {
       return getActivities(userId);
     },
     enabled: !!userId,
+    onError: (error) => {
+      console.error("Error fetching activities:", error);
+    }
   });
 
   return (

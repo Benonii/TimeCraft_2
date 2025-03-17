@@ -177,55 +177,65 @@ function GetTotalTimeOnTask() {
     )
 
     const reportContent = (
-        <div className='flex flex-col ml-5 font-monomaniac border rounded-lg shadow-lg shadow-yellow1 p-4 mb-10'>
-            <h4 className='ml-5'><span className='text-lg'>Task:</span> {report?.taskName}</h4>
-            <h3 className='ml-5 text-xl'><span className='text-2xl'>Total time on task:</span> <span className='text-yellow1'>{report?.ttot} hours</span></h3>
+        <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
+            bg-white dark:bg-gray-800 p-6 mb-6 
+            shadow-[0_4px_10px_0_rgba(0,0,0,0.1),0_0_10px_2px_rgba(250,204,21,0.3)]
+            dark:shadow-[0_4px_10px_0_rgba(0,0,0,0.25),0_0_10px_2px_rgba(250,204,21,0.2)]'
+        >
+            <h4 className='text-gray-700 dark:text-gray-300 mb-2'>
+                <span className='text-lg font-semibold'>Task:</span> {report?.taskName}
+            </h4>
+            <h3 className='text-gray-700 dark:text-gray-300 mb-4'>
+                <span className='text-xl font-semibold'>Total time on task: </span> 
+                <span className='text-yellow1'>{report?.ttot} hours</span>
+            </h3>
 
             <Button
-              variant='outline'
-              className='w-20 h-10 mt-2 text-lg font-madimi text-black hover:text-white  hover:bg-yellow1 dark:text-gray-300 dark:border-gray-400'
-              onClick={() => {
-                setSuccess(false)
-                setLoading(false)
-              }}
+                variant='outline'
+                className='mt-4 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
+                    dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
+                    transition-colors duration-300'
+                onClick={() => {
+                    setSuccess(false)
+                    setLoading(false)
+                }}
             >
-              Back
+                Back
             </Button>
-      </div>
+        </div>
     )
-  return (
-    <div>
-      <Dialog>
-        <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-300'
-        >
-          Get report
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Total Time on Task</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
-                Get total (productive) time on one task. Needs User Id if not signed in.
-            </DialogDescription>
-          </DialogHeader>
-          {success ? (
-            reportContent
-            ) : loading ? (
-                <div className='flex flex-col gap-2 items-justify'>
-                  <Skeleton className="w-[400px] h-[200px] rounded-lg ml-10 mb-10" />
-                </div>
-              ) : (
-                formContent
-            ) 
-          }
-          {error && (
-            <ErrorAlert content={message} />
-          )}
-          
-        </DialogContent>
-      </Dialog>
-    </div>
-  )
+
+    return (
+        <div>
+            <Dialog>
+                <DialogTrigger 
+                    className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
+                        font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
+                        transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
+                >
+                    Get report
+                </DialogTrigger>
+                <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
+                    <DialogHeader>
+                        <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+                            Total Time on Task
+                        </DialogTitle>
+                        <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
+                            Get total productive time on one task
+                        </DialogDescription>
+                    </DialogHeader>
+
+                    {error && <ErrorAlert content={message} />}
+                    
+                    {success ? reportContent : loading ? (
+                        <div className="flex flex-col gap-4 p-6">
+                            <Skeleton className="w-full h-[250px] rounded-lg" />
+                        </div>
+                    ) : formContent}
+                </DialogContent>
+            </Dialog>
+        </div>
+    )
 }
 
 export default GetTotalTimeOnTask;

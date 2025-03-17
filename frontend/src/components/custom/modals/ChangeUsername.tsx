@@ -47,19 +47,17 @@ function ChangeUsername() {
     })();
 
     const handleSuccess = () => {
-        setSuccess(true);
-
-        setTimeout(() => {
-          setSuccess(false)
-        }, 3000);
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false)
+      }, 3000);
     }
 
     const handleError = () => {
-        setError(true);
-    
-        setTimeout(() => {
-          setError(false)
-        }, 3000);
+      setError(true);
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
     }
 
     const form = useForm<z.infer<typeof changeUsernameSchema>>({

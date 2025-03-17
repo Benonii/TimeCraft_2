@@ -123,91 +123,98 @@ export default function CreateLog() {
         }}
       > 
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 hover:bg-yellow-300 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit'
+          className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
+            font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
+            transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
         >
           Make Log
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Make a log</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac'>
-              Create a new log. You need a user ID if you are not signed in.
+            <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+              Make a log
+            </DialogTitle>
+            <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
+              Create a new log
             </DialogDescription>
           </DialogHeader>
-          {success && (
-            <>
-              <SuccessAlert content={message} />
-            </>
-          )}
-          {error && (
-            <ErrorAlert content={message} />
-          )}
+
+          {success && <SuccessAlert content={message} />}
+          {error && <ErrorAlert content={message} />}
+
           <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
-                    <FormField
-                      control={form.control}
-                      name="activityId"
-                      render={({ field }) => (
-                          <FormItem>
-                              <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
-                                 Task name
-                              </FormLabel>
-                              <FormControl aria-disabled={true}>
-                                <ActivityPicker 
-                                  userId={user?.id}
-                                  onSelect={(value: string) => form.setValue('activityId', value)}
-                                />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-600 '/>
-                          </FormItem>
-                      )}
-                    />
-                   
-                    <FormField
-                        control={form.control}
-                        name="timeOnTask"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className='flex imtes-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
-                                    Time on task
-                                    <CustomTooltip content="The productive time spent on task">
-                                      <HelpCircle className='w-4 h-4 mt-2 text-gray-600 dark:text-gray-300'/>
-                                    </CustomTooltip>
-                                </FormLabel>
-                                <FormControl>
-                                  <Input id='task-name' type='number' className='text-lg' {...field} />
-                                </FormControl>
-                                <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="timeWasted"
-                        render={({ field }) => (
-                            <FormItem>
-                                  <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
-                                      Time wasted
-                                      <CustomTooltip content="unproductive time">
-                                        <HelpCircle className='w-4 h-4 mt-2 text-gray-600 dark:text-gray-300'/>
-                                      </CustomTooltip>
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input id='daily-goal' type="number" className='text-lg' {...field} />
-                                  </FormControl>
-                                  <FormMessage className='text-xs text-red-600 '/>
-                              </FormItem>
-                        )}
-                    />
-                    <div className="flex justify-center w-full">
-                      <LoadingButton
-                          type="submit"
-                          isLoading={loading}
-                          text="Log"
-                      />
-                    </div>
-                </form>
-            </Form>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg shadow-yellow1/50">
+                <FormField
+                  control={form.control}
+                  name="activityId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                        Task name
+                      </FormLabel>
+                      <FormControl>
+                        <ActivityPicker 
+                          userId={user?.id}
+                          onSelect={(value: string) => form.setValue('activityId', value)}
+                        />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
+                
+                <div className='grid md:grid-cols-2 gap-6 mt-6'>
+                  <FormField
+                    control={form.control}
+                    name="timeOnTask"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='flex items-center gap-2 font-madimi text-xl text-green-600 dark:text-green-500'>
+                          Time on task
+                          <CustomTooltip content="The productive time spent on task">
+                            <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                          </CustomTooltip>
+                        </FormLabel>
+                        <FormControl>
+                          <Input type='number' className='text-lg' {...field} />
+                        </FormControl>
+                        <FormMessage className='text-xs text-red-600' />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="timeWasted"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className='flex items-center gap-2 font-madimi text-xl text-red-600 dark:text-red-500'>
+                          Time wasted
+                          <CustomTooltip content="Unproductive time">
+                            <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                          </CustomTooltip>
+                        </FormLabel>
+                        <FormControl>
+                          <Input type="number" className='text-lg' {...field} />
+                        </FormControl>
+                        <FormMessage className='text-xs text-red-600' />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-center">
+                <LoadingButton
+                  type="submit"
+                  isLoading={loading}
+                  text="Log"
+                  className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                    text-white hover:bg-yellow-500 transition-colors duration-300"
+                />
+              </div>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

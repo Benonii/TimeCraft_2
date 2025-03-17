@@ -130,25 +130,25 @@ export default function CreateActivity() {
         }}
       > 
         <DialogTrigger 
-          className='ml-2 bg-yellow1 px-4 py-2 md:py-6 rounded-md shadow-lg font-madimi text-white md:text-4xl md:px-7 h-fit hover:bg-yellow-300'
+          className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
+            font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
+            transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
         >
           Create Activity
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Create an Activity</DialogTitle>
-            <DialogDescription className='ml-10 text-lg font-monomaniac dark:text-gray-400'>
-              Create a new Activity. You need a unique ID if you are not signed in.
+            <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+              Create Activity
+            </DialogTitle>
+            <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
+              Create a new activity to track
             </DialogDescription>
           </DialogHeader>
-          {success && (
-            <>
-              <SuccessAlert content={message} />
-            </>
-          )}
-          {error && (
-            <ErrorAlert content={message} />
-          )}
+
+          {success && <SuccessAlert content={message} />}
+          {error && <ErrorAlert content={message} />}
+
           {id.length > 0 && (
             <div className=''>
               <Label htmlFor="id" className='ml-10 font-monomaniac text-gray-700 h-fit dark:text-gray-300'>Activity Id</Label>
@@ -156,93 +156,81 @@ export default function CreateActivity() {
             </div>
           )}
           <Form {...form}>
-                <form 
-                    onSubmit={form.handleSubmit(onSubmit, (errors) => {
-                        console.log('Form validation errors:', errors)
-                    })} 
-                    className='space-y-8 mx-10 mt-5'
-                >
-                  {!user && (
-                    <FormField
-                      control={form.control}
-                      name="uniqueID"
-                      render={({ field }) => (
-                          <FormItem>
-                            <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>User ID</FormLabel>
-                            <FormControl>
-                                <Input 
-                                  id='user-id'
-                                  placeholder='7d9f39b1-3a64-4dd8-b9f1-a0d28b1abc98'
-                                  className='text-lg' {...field}
-                                  value={field.value ?? undefined} />
-                            </FormControl>
-                            <FormMessage className='text-xs text-redd-500' />
-                          </FormItem>
-                      )}
-                    />
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-gray-300/30">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                        Task name
+                        <CustomTooltip content="Name of the activity you want to track">
+                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input className='text-lg' {...field} />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
                   )}
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
-                                  Activity Name
-                              </FormLabel>
-                              <FormControl>
-                                <Input id='task-name' className='text-lg' {...field} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-600 '/>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="description"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
-                                    Description
-                                </FormLabel>
-                                <FormControl>
-                                    <Textarea 
-                                        id='description' 
-                                        placeholder='Optional description' 
-                                        className='text-lg resize-none' 
-                                        {...field} 
-                                    />
-                                </FormControl>
-                                <FormMessage className='text-xs text-red-600' />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="dailyGoal"
-                        render={({ field }) => (
-                            <FormItem>
-                              <FormLabel className='flex items-center gap-1 font font-monomaniac text-xl dark:text-gray-300'>
-                                  Daily goal
-                                  <CustomTooltip content="How many hours per day would you like to spend on this task?">
-                                    <HelpCircle className='w-4 h-4 mt-1 text-gray-600 dark:text-gray-300'/>
-                                  </CustomTooltip>
-                              </FormLabel>
-                              <FormControl>
-                                <Input type="number" id='daily-goal' className='text-lg' {...field} />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-600 '/>
-                            </FormItem>
-                        )}
-                    />
-                    <div className="flex justify-center w-full">
-                      <LoadingButton
-                          type="submit"
-                          isLoading={loading}
-                          text="Create"
-                      />
-                    </div>
-                </form>
-            </Form>
+                />
+
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem className="mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                        Description
+                        <CustomTooltip content="Optional: Add details about this activity">
+                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          className='text-lg'
+                          placeholder="Optional description"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="dailyGoal"
+                  render={({ field }) => (
+                    <FormItem className="mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                        Daily goal
+                        <CustomTooltip content="How many hours you want to spend on this task daily">
+                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="number" className='text-lg' {...field} />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="flex justify-center">
+                <LoadingButton
+                  type="submit"
+                  isLoading={loading}
+                  text="Create"
+                  className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                    text-white hover:bg-yellow-500 transition-colors duration-300"
+                />
+              </div>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>
