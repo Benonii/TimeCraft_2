@@ -7,7 +7,7 @@ class CreateActivityRequest(BaseModel):
     """Validation schema for activity creation"""
     unique_id: str | None = Field(None)
     name: str = Field(..., min_length=1, max_length=128)
-    description: str | None = Field(None, min_length=1, max_length=1024)
+    description: str | None = Field(None, max_length=1024)
     daily_goal: float = Field(..., gt=0)
    
 
