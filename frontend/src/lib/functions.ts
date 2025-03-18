@@ -277,18 +277,14 @@ export const deleteTask = async (data: DeleteTask) => {
     return resJSON;      
 }
 
-export const deleteUser = async (data: DeleteTask) => {
-  // console.log("ID:", data.id)
-  const params = new URLSearchParams();
-  params.append("userId", data.id);
-
-  // console.log("Params", params.toString())
-  const res = await fetch( `${api}/user/delete`, {
+export const deleteUser = async () => {
+  const token = localStorage.getItem('token');
+  const res = await fetch( `${api}/profile`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
-      body: params.toString(),
   })
 
   const resJSON = await res.json();
@@ -314,7 +310,7 @@ export const login = async (formData: LoginFormData) => {
   const resJSON = await response.json();
   if (!response.ok) {
     console.log("Error:", resJSON.message)
-    throw new Error('An error occured. Please try again!');
+    throw new Error(resJSON.message || 'An error occured. Please try again!');
   }
 
 return resJSON;

@@ -9,13 +9,13 @@ function DeleteUserAlert({ handleDelete}) {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="ml-7 hover:underline text-red-600 dark:hover:text-red-500 text-lg">
+        <AlertDialogTrigger className="ml-7 hover:underline text-red-600 dark:hover:text-red-500 text-lg font-madimi">
             Delete account
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle className="dark:text-gray-300 text-font-monomaniac">Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription className="dark:text-gray-400 text-font-monomaniac">
+            <AlertDialogTitle className="dark:text-gray-300 font-sans text-xl">Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription className="dark:text-gray-400 font-monomaniac text-lg">
               This action cannot be undone. This will permanently delete your account
               and remove your data from our servers.
             </AlertDialogDescription>

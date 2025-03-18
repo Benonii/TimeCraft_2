@@ -57,7 +57,7 @@ export default function Settings() {
   }
 
   const mutation = useMutation({
-    mutationFn: (formData: DeleteTask) => deleteUser(formData),
+    mutationFn: () => deleteUser(),
     onSuccess: (data: MessageResponseData) => {
       setMessage(data.message)
       handleSuccess();
@@ -117,7 +117,7 @@ export default function Settings() {
                     <div className="flex flex-col gap-6">
                       <ChangeUsername />
                       <ManageTasks />
-                      <DeleteUserAlert handleDelete={() => {mutation.mutate({id: user.id})}} />
+                      <DeleteUserAlert handleDelete={() => {mutation.mutate()}} />
                     </div>
                   </div>
                 </div>
