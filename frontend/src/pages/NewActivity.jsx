@@ -21,20 +21,12 @@ export default function NewActivity() {
             <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300'>
               New Activity
             </h2>
-
-            {!user && (
-              <p className='text-center font-madimi text-sm text-gray-500 dark:text-gray-400 mb-6'>
-                Note: <Link to='/user/signup' className='text-orange3 hover:text-orange1 transition-colors duration-300'>
-                  Sign up
-                </Link> for the best experience
-              </p>
-            )}
             
             <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4">
               <p className='font-monomaniac text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed px-6'>
                 You can create a new Activity and the app will record time spent on that activity separately.
                 <br /><br />
-                Typically, an activity would be a repeating activity. (Exercise, study, code, read).
+                Typically, an activity would be something you plan to do repeatedly. (Exercise, study, code, read).
                 <br /><br />
                 You can create multiple activities. But make sure they all have different names :)
               </p>

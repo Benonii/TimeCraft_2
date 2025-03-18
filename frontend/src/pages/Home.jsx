@@ -36,7 +36,7 @@ export default function Home() {
             </div>
             
             <div className='flex justify-center mt-8'>
-              <Link to={user ? '/new/activity' : '/new/user'}>
+              <Link to={user ? '/new/activity' : '/user/login'}>
                 <Button variant='default' 
                   className='bg-yellow1 px-8 py-4 rounded-md shadow-lg font-madimi text-white text-2xl md:text-3xl h-fit hover:bg-yellow-500 transition-colors duration-300'>
                   Get started

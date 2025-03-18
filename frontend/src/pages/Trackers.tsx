@@ -8,7 +8,6 @@ import {
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
   } from '../components/shadcn/Form';
-import { Input } from '../components/shadcn/Input';
 import Timer from '../components/custom/Timer';
 import Header from '../components/custom/Header';
 import Navbar from '../components/custom/Navbar';
@@ -61,7 +60,7 @@ function Trackers() {
       }
 
       const newLogSchema = z.object({
-        activityId: user ? z.string().nullable() : z.string().length(8),
+        activityId: z.string().length(8),
         date: z.date(),
         timeOnTask: z.coerce.number().gt(0),
         timeWasted: z.coerce.number().gt(0),
@@ -71,7 +70,7 @@ function Trackers() {
       const form = useForm<z.infer<typeof newLogSchema>>({
         resolver: zodResolver(newLogSchema),
         defaultValues: {
-          activityId: user ? null : "",
+          activityId: "",
           date: new Date(),
           timeOnTask: 0,
           timeWasted: 0,
@@ -82,7 +81,6 @@ function Trackers() {
     const mutation = useMutation({
       mutationFn: (formData: CreateReportFormData) => createReport(formData),
       onSuccess: (response: MessageResponseData) => {
-        // console.log('New Log created successfully', response);
         setMessage(response.message);
         handleSuccess();
       },
@@ -104,7 +102,6 @@ function Trackers() {
         time_on_task: Number(values.timeOnTask),
         time_wasted: Number(values.timeWasted),
     };
-      // console.log('Data:', transformedValues)
       try {
           mutation.mutate(transformedValues);
       } catch(error) {
@@ -112,8 +109,6 @@ function Trackers() {
       }
     }
 
-    // console.log("Productive time:", form.getValues('timeOnTask'))
-    // console.log("Wasted time:", form.getValues('timeWasted'))
     return (
         <div className='flex flex-col items-center mt-20'>
             <Header />
@@ -124,14 +119,6 @@ function Trackers() {
                         <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300'>
                             Timers
                         </h2>
-
-                        {!user && (
-                            <p className='text-center font-madimi text-sm text-gray-500 dark:text-gray-400 mb-6'>
-                                Note: <Link to='/user/signup' className='text-orange3 hover:text-orange1 transition-colors duration-300'>
-                                    Sign up
-                                </Link> for the best experience
-                            </p>
-                        )}
 
                         <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4">
                             <p className='font-monomaniac text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed px-6'>

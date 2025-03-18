@@ -62,7 +62,7 @@ export default function CreateLog() {
     }
   
     const newLogSchema = z.object({
-      activityId: user ? z.string().nullable() : z.string().length(8),
+      activityId: z.string().length(8),
       date: z.date(),
       timeOnTask: z.coerce.number().gt(0),
       timeWasted: z.coerce.number().gt(0),
@@ -72,7 +72,7 @@ export default function CreateLog() {
     const form = useForm<z.infer<typeof newLogSchema>>({
       resolver: zodResolver(newLogSchema),
       defaultValues: {
-        activityId: user ? null : "",
+        activityId: "",
         date: new Date(),
         timeOnTask: 0,
         timeWasted: 0,
@@ -151,7 +151,7 @@ export default function CreateLog() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='font-madimi text-xl text-gray-700 dark:text-gray-300'>
-                        Task name
+                        Activity name
                       </FormLabel>
                       <FormControl>
                         <ActivityPicker 

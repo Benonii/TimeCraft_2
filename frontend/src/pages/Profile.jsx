@@ -128,13 +128,13 @@ function Profile() {
             </div>
 
             <div className="flex flex-col md:flex-row justify-center gap-4 mt-24">
-              <Button 
+              {/* <Button 
                 variant="default"
-                className="bg-yellow1 opacity-100 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg font-madimi text-white text-lg md:text-xl hover:bg-yellow-200 transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
+                className="bg-yellow1 opacity-100 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg font-madimi text-white text-lg md:text-xl hover:bg-orange1 transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
               >
                 <Share2 className="w-4 h-4 md:w-5 md:h-5" />
                 Share Profile
-              </Button>
+              </Button> */}
               <Button 
                 variant="outline"
                 className="px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg font-madimi text-gray-400 border-2 hover:bg-red-500 border-gray-600 dark:hover:bg-red-800 hover:border-none hover:text-white text-lg md:text-xl transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"

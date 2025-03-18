@@ -37,18 +37,6 @@ export default function CreateActivity() {
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ id, setId ] = useState<string>("");
 
-
-    // Get user from local storage
-    const user = (() => {
-      try {
-        const storedUser = localStorage.getItem('user');
-        return storedUser ? JSON.parse(storedUser) : null;
-      } catch (error) {
-        console.error("Failed to parse user data from localStorage:", error);
-        return null;
-      }
-    })();
-
     const handleSuccess = () => {
       setSuccess(true);
       setTimeout(() => {
@@ -63,8 +51,6 @@ export default function CreateActivity() {
         setError(false)
       }, 3000);
     }
-
-  // console.log("User ID:", user.id)
   
     const newActivitySchema = z.object({
       uniqueID: z.string().optional(),
@@ -164,7 +150,7 @@ export default function CreateActivity() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
-                        Task name
+                        Activity name
                         <CustomTooltip content="Name of the activity you want to track">
                           <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
                         </CustomTooltip>

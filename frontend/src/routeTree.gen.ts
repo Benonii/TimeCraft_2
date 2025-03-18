@@ -16,9 +16,6 @@ import { Route as TrackersImport } from './routes/trackers'
 import { Route as SettingsImport } from './routes/settings'
 import { Route as NewActivityImport } from './routes/new/newActivity'
 import { Route as NewLogImport } from './routes/new/newLog'
-import { Route as NewUserImport } from './routes/new/newUser'
-import { Route as TPTImport } from './routes/reports/tpt'
-import { Route as TWTImport } from './routes/reports/twt'
 import { Route as TTOTImport } from './routes/reports/ttot'
 import { Route as ProfileImport } from './routes/user/profile'
 // import { Route as AssignUserImport } from './routes/user/assignUser'
@@ -53,11 +50,6 @@ const NewLogRoute = NewLogImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const NewUserRoute = NewUserImport.update({
-  path: '/new/user',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const TTOTRoute = TTOTImport.update({
   path: '/reports/ttot',
   getParentRoute: () => rootRoute,
@@ -67,11 +59,6 @@ const ProfileRoute = ProfileImport.update({
     path:'/user/profile',
     getParentRoute: () => rootRoute,
 } as any)
-
-// const AssignUserRoute = AssignUserImport.update({
-//   path: '/user/assign',
-//   getParentRoute: () => rootRoute,
-// } as any)
 
 const LoginRoute = LoginImport.update({
   path: '/user/login',
@@ -127,13 +114,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewLogImport
       parentRoute: typeof rootRoute
     }
-    '/new/user': {
-      id: '/new/user'
-      path: '/new/user'
-      fullPath: '/new/user'
-      preLoaderRoute: typeof NewUserImport
-      parentRoute: typeof rootRoute
-    }
     '/reports/ttot': {
       id: '/reports/ttot'
       path: '/reports/ttot'
@@ -148,13 +128,6 @@ declare module '@tanstack/react-router' {
         preLoaderRoute: typeof ProfileRoute
         parentRoute: typeof rootRoute
     }
-    // '/user/assign': {
-    //   id: '/user/assign'
-    //   path: '/user/assign'
-    //   fullPath: '/user/assign'
-    //   preLoaderRoute: typeof AssignUserImport
-    //   parentRoute: typeof rootRoute
-    // }
     '/user/login': {
       id: '/user/login'
       path: '/user/login'
@@ -187,7 +160,6 @@ export interface FileRoutesByFullPath {
   '.settings': typeof SettingsRoute
   '/new/activity': typeof NewActivityRoute
   '/new/log': typeof NewLogRoute
-  '/new/user': typeof NewUserRoute
   '/reports/ttot': typeof TTOTRoute
   '/user/profile': typeof ProfileRoute
   '/user/assign': typeof AssignUserRoute
