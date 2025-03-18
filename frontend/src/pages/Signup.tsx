@@ -5,7 +5,6 @@ import { useRouter, Link } from '@tanstack/react-router';
 import { useForm } from "react-hook-form";
 
 // Components
-import { Button } from '../components/shadcn/Button';
 import { 
     Form, FormControl, FormField,
     FormItem, FormLabel, FormMessage
@@ -30,9 +29,7 @@ function Signup () {
     const [ loading, setLoading ] = useState<boolean>(false);
 
     const handleError = () => {
-
         setError(true);
-    
         setTimeout(() => {
           setError(false)
         }, 5000);
@@ -56,7 +53,6 @@ function Signup () {
     const mutation = useMutation({
         mutationFn: (FormData: SignupFormData) => signup(FormData),
         onSuccess: (response: MessageResponseData) => {
-            // console.log('Signup successful', response);
             router.navigate({ to: '/user/login' })
         },
         onError: (errorResponse: MessageResponseData) => {
@@ -80,7 +76,6 @@ function Signup () {
             weekly_work_hours_goal: Number(values.weekly_work_hours_goal),
             number_of_work_days: Number(values.number_of_work_days),
         };
-        // console.log('Data:', transformedValues)
         try {
             mutation.mutate(transformedValues);
         } catch(error) {
@@ -110,27 +105,7 @@ function Signup () {
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
-                        <FormField
-                            control={form.control}
-                            name="username"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
-                                        Username
-                                    </FormLabel>
-                                    <FormControl>
-                                        <Input 
-                                            placeholder='johndoe'
-                                            className='text-lg'
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage className='text-xs text-red-600' />
-                                </FormItem>
-                            )}
-                        />
-
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 mx-10'>
                         <FormField
                             control={form.control}
                             name="email"
@@ -141,7 +116,7 @@ function Signup () {
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
-                                            placeholder='username@123'
+                                            placeholder='example@email.com'
                                             className='text-lg'
                                             {...field}
                                         />
@@ -153,11 +128,114 @@ function Signup () {
 
                         <FormField
                             control={form.control}
+                            name="full_name"
+                            render={({ field }) => (
+                                <FormItem className="mt-4">
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                        Full Name
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            placeholder='John Doe'
+                                            className='text-lg'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage className='text-xs text-red-600' />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="username"
+                            render={({ field }) => (
+                                <FormItem className="mt-4">
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                        Username
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            placeholder='user1234'
+                                            className='text-lg'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage className='text-xs text-red-600' />
+                                </FormItem>
+                            )}
+                        />
+
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                            <FormField
+                                control={form.control}
+                                name="weekly_work_hours_goal"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                            Weekly hours
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input 
+                                                type='number'
+                                                placeholder='60'
+                                                className='text-lg'
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-600' />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="number_of_work_days"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                            Work days
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Input 
+                                                type='number'
+                                                placeholder='5'
+                                                className='text-lg'
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className='text-xs text-red-600' />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+
+                        <FormField
+                            control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem>
+                                <FormItem className="mt-4">
                                     <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
                                         Password
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            type='password'
+                                            className='text-lg'
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage className='text-xs text-red-600' />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                                <FormItem className="mt-4">
+                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                        Confirm password
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
@@ -176,13 +254,15 @@ function Signup () {
                                 type="submit"
                                 isLoading={loading}
                                 text="Sign up"
+                                className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                                    text-white hover:bg-yellow-500 transition-colors duration-300"
                             />
                         </div>
                     </form>
                 </Form>
 
-                <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>
-                    Already have an account? <Link to='/user/login' className='text-yellow1 hover:underline'>
+                <p className='text-center font-monomaniac text-xl mt-5 mb-10 dark:text-gray-300'>
+                    Already have an account? <Link to='/user/login' className='text-yellow1 hover:underline transition-colors duration-300'>
                         Log in!
                     </Link>
                 </p>
