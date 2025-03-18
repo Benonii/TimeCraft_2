@@ -83,7 +83,7 @@ function Login () {
     return (
         <div className='flex flex-col items-center mt-20'>
             <div className="max-w-[500px] w-[90vw] min-w-[300px] bg-white dark:bg-gray-900 rounded-xl 
-                shadow-lg border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl"
+                shadow-lg dark:shadow-yellow1/60 border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl"
             >
                 <h2 className="font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
                     Log in

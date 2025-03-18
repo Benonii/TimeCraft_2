@@ -50,7 +50,7 @@ export default function StopWatch({ handleChange }) {
 
     return (
         <div className="flex flex-col items-center">
-            <Card className="border p-8 w-60 dark:border-gray-400">
+            <Card className="border p-8 w-60 dark:border-gray-600 dark:bg-gray-900">
                 <CardContent className="text-center">
                     <div className="flex items-center justify-center gap-1 text-gray-500 dark:text-gray-300">
                         <p className="text-2xl text-center font-bold bg-transparent">
@@ -73,7 +73,7 @@ export default function StopWatch({ handleChange }) {
                         <Button
                             type="button"
                             variant="outline"
-                            className="hover:bg-yellow1 hover:text-white font-madimi dark:border-gray-400"
+                            className="hover:bg-yellow1 hover:text-white font-madimi dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-orange1"
                             onClick={() => setIsRunning(!isRunning)}
                         >
                             {isRunning ? 'Stop' : 'Start'}
@@ -81,7 +81,7 @@ export default function StopWatch({ handleChange }) {
                         <Button
                             type="button"
                             variant="outline"
-                            className="font-madimi hover:bg-red-500 hover:text-white dark:border-gray-400"
+                            className="font-madimi hover:bg-red-500 hover:text-white dark:border-gray-600 dark:bg-gray-800 dark:hover:bg-red-600"
                             onClick={handleClear}
                         >
                             Clear

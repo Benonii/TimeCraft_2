@@ -144,7 +144,7 @@ export default function CreateLog() {
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg shadow-yellow1/50">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
                 <FormField
                   control={form.control}
                   name="activityId"

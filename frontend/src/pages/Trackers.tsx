@@ -132,7 +132,7 @@ function Trackers() {
 
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mt-8'>
-                                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg shadow-yellow1/50">
+                                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-yellow1/50">
                                     <FormField
                                         control={form.control}
                                         name="activityId"

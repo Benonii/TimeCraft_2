@@ -141,8 +141,14 @@ function GetReport() {
                 {error && <ErrorAlert content={message} />}
                 
                 {success ? (
-                    <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
-                        bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg shadow-yellow1/70'>
+                    <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg dark:shadow-yellow1/40'>
+                        <h2 className='text-2xl text-gray-800 dark:text-gray-200 mb-4'>
+                            {form.getValues('reportType') === 'custom' ? 'Custom Report' : 
+                             form.getValues('reportType') === 'today' ? 'Daily Report' :
+                             form.getValues('reportType') === 'this_week' ? 'Weekly Report' :
+                             'Monthly Report'}
+                        </h2>
+                        <hr className='my-4 border-2 border-gray-200 dark:border-gray-500' />
                         <h3 className='text-xl text-gray-700 dark:text-gray-300 mb-4'>
                             <span className='font-semibold'>Date Range:</span> {formatDate(data?.data?.start_date || '')} - {formatDate(data?.data?.end_date || '')}
                         </h3>
@@ -177,12 +183,13 @@ function GetReport() {
 
                         <Button
                             variant='outline'
-                            className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-orange3 
+                            className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
                                 dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
                                 transition-colors duration-300'
                             onClick={() => {
                                 setSuccess(false);
                                 setLoading(false);
+                                form.reset();
                             }}
                         >
                             Back
@@ -190,7 +197,13 @@ function GetReport() {
                     </div>
                 ) : loading ? (
                     <div className="flex flex-col gap-4 p-6">
-                        <Skeleton className="w-full h-[250px] rounded-lg" />
+                        <Skeleton className="w-[85%] h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
+                        <hr className="my-4 border-gray-200 dark:border-gray-700 dark:bg-gray-500" />
+                        <Skeleton className="w-[85%] h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
                     </div>
                 ) : (
                     <Form {...form}>

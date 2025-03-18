@@ -175,7 +175,6 @@ export const routeTree = rootRoute
     SettingsRoute,
     NewActivityRoute,
     NewLogRoute,
-    NewUserRoute,
     TTOTRoute,
     ProfileRoute,
     // AssignUserRoute,

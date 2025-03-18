@@ -149,9 +149,7 @@ function GetTotalTimeOnTask() {
 
     const reportContent = (
         <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
-            bg-white dark:bg-gray-800 p-6 mb-6 
-            shadow-[0_4px_10px_0_rgba(0,0,0,0.1),0_0_10px_2px_rgba(250,204,21,0.3)]
-            dark:shadow-[0_4px_10px_0_rgba(0,0,0,0.25),0_0_10px_2px_rgba(250,204,21,0.2)]'
+            bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg dark:shadow-yellow1/40'
         >
             <h4 className='text-gray-700 dark:text-gray-300 mb-2'>
                 <span className='text-lg font-semibold'>Task:</span> {report?.name}
@@ -162,7 +160,7 @@ function GetTotalTimeOnTask() {
                 <div className="space-y-2">
                     <h3 className='text-gray-700 dark:text-gray-300'>
                         <span className='text-xl font-semibold'>Total time logged: </span> 
-                        <span className='text-yellow1'>{report?.total_time_on_task} hours</span>
+                        <span className='text-green-600 dark:text-green-400'>{report?.total_time_on_task.toFixed(2)} hours</span>
                     </h3>
                     
                     <p className='text-gray-600 dark:text-gray-400'>
@@ -181,10 +179,10 @@ function GetTotalTimeOnTask() {
                         </span>
                     </div>
                     <Progress 
-                        value={(report?.total_time_on_task! / report?.weekly_goal!) * 100} 
-                    >
-                      <div className="h-full bg-yellow1 dark:bg-yellow1"></div>
-                    </Progress>
+                        value={Math.min((report?.total_time_on_task! / report?.weekly_goal!) * 100, 100)} 
+                        className="h-2 bg-gray-200 dark:bg-gray-700"
+                        indicatorClassName={ report?.total_time_on_task! >= report?.weekly_goal! ? "bg-green-600 dark:bg-green-400" : "bg-yellow1" }
+                    />
                 </div>
 
                 {/* Creation Info */}

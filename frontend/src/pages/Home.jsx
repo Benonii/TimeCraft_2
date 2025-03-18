@@ -24,11 +24,13 @@ export default function Home() {
             
             <div className=" ml-10 border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4">
               <p className='font-monomaniac text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed'>
-                This app was made to help you keep track of your productive time.
+                This tool was made to help you keep track of your productive time.
                 <br /><br />
-                You can find out exactly how many hours you put into your tasks.
+                You can find out exactly how many hours you put into your activities.
                 <br /><br />
-                You can get back daily, weekly and monthly reports of your time. This app also keeps track of things like
+                And... How much time you are wasting.
+                <br /><br />
+                You can get back daily, weekly and monthly reports of your time. Timecraftalso keeps track of things like
                 "Total Productive Time", "Total Wasted Time", and "Total Time on Task"
                 <br /><br />
                 Did you put in the hours? Let's find out!

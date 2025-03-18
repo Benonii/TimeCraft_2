@@ -135,12 +135,6 @@ export default function CreateActivity() {
           {success && <SuccessAlert content={message} />}
           {error && <ErrorAlert content={message} />}
 
-          {id.length > 0 && (
-            <div className=''>
-              <Label htmlFor="id" className='ml-10 font-monomaniac text-gray-700 h-fit dark:text-gray-300'>Activity Id</Label>
-              <IdDisplay id={id} />
-            </div>
-          )}
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-gray-300/30">
