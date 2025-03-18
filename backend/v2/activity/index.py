@@ -160,7 +160,9 @@ def update_activity(activity_id):
         updated_activity = get_activity_by_id(activity_id)
         
         if not updated_activity:
-            abort(404, description="Activity not found")
+            return jsonify({
+                'message': "Activity not found"
+            }), 404
             
         # Check if name is being updated and conflicts with existing activity
         if hasattr(update_data, 'name') and update_data.name != updated_activity.name:
