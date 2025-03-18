@@ -10,7 +10,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import and_
 
 def get_profile_by_user_id(user_id: str) -> Optional[Profile]:
-    print("INCOMING user_id", user_id)
     """Get a profile by user ID"""
     return storage.session.query(Profile).filter(
         Profile.user_id == user_id,
