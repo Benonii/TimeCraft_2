@@ -232,17 +232,16 @@ export const changeUsername = async (username: string) => {
 }
 
 export const changeTaskName = async (data: ChangeTaskNameFormData) => {
-    const params = new URLSearchParams();
-    params.append('taskId', data.id);
-    params.append('newName', data.newName)
-    
-    console.log("Params:", params.toString());
-    const res = await fetch( `${api}/tasks/update`, {
-        method: 'POST',
+    const token = localStorage.getItem('token');
+    const res = await fetch( `${api}/activity/${data.id}`, {
+        method: 'PATCH',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        body: params.toString(),
+        body: JSON.stringify({
+          name: data.newName
+        }),
     })
   
     const resJSON = await res.json();
@@ -258,17 +257,14 @@ export const changeTaskName = async (data: ChangeTaskNameFormData) => {
 
 // Delete functions
 export const deleteTask = async (data: DeleteTask) => {
-    // console.log("ID:", data.id)
-    const params = new URLSearchParams();
-    params.append("taskId", data.id);
-
-    // console.log("Params", params.toString())
-    const res = await fetch( `${api}/tasks/delete`, {
+    const token = localStorage.getItem('token');
+    const res = await fetch( `${api}/activity/${data.id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
-        body: params.toString(),
+        body: JSON.stringify(data),
     })
   
     const resJSON = await res.json();
