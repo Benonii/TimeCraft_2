@@ -12,8 +12,18 @@ class ProfileUpdateRequest(BaseModel):
     bio: Optional[str] = Field(None, max_length=256)
     location: Optional[str] = Field(None, max_length=128)
     weekly_work_hours_goal: Optional[float] = Field(None, ge=0)
+    total_productive_time: Optional[float] = Field(None, ge=0)
+    total_wasted_time: Optional[float] = Field(None, ge=0)
     number_of_work_days: Optional[int] = Field(None, ge=1, le=7)
     
+    @field_validator('*')
+    @classmethod
+    def validate_not_empty_object(cls, values):
+        """Validate that at least one field is being updated"""
+        if all(v is None for v in cls.model_fields.values()):
+            raise ValueError("At least one field must be provided for update")
+        return values
+
     @field_validator('username')
     def username_must_be_valid(cls, v):
         """Validate username format"""
