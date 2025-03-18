@@ -36,7 +36,7 @@ function Login () {
     
         setTimeout(() => {
           setError(false)
-        }, 3000);
+        }, 5000);
     }
 
     const loginSchema = z.object({
