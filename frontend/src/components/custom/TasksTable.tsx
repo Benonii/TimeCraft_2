@@ -46,6 +46,7 @@ function TasksTable({ userId }) {
     }
     
     const handleSave = (id: string) => {
+      console.log("ID:", id)
       const inputValue = inputRef.current?.value || "";
       inputValue?.length > 0 && changeTaskMutation.mutate({id: id, newName: inputValue})
     }
@@ -66,8 +67,8 @@ function TasksTable({ userId }) {
 
     const delteTaskMutation = useMutation({
         mutationFn: (data: DeleteTask) => deleteTask(data),
+        networkMode: 'offlineFirst',
         onSuccess: (response: MessageResponseData) => {
-            // console.log('Task deleted successfully', response);
             setMessage(response.message);
             handleSuccess();
         },
@@ -76,7 +77,6 @@ function TasksTable({ userId }) {
           setMessage(error.message);
           handleError();
         }
-
     })
 
     const { data, isLoading, isError } = useQuery({
@@ -118,8 +118,8 @@ function TasksTable({ userId }) {
                     <p className='font-monomaniac text-lg text-center dark:text-gray-400'>Error fetching data</p>
                 </TableCell>
             </TableRow>
-          ) : data.tasks.length > 0 ? (
-            data.tasks.map(task => (
+          ) : data?.data?.length > 0 ? (
+            data?.data?.map(task => (
                 <TableRow key={task}>
                     <TableCell className='flex min-w-40 gap-2 items-center text-lg'>
                         <Input
@@ -130,15 +130,15 @@ function TasksTable({ userId }) {
                             ref={inputRef}
                         />
                         {edit ? (
-                            <Save className='w-5 h-5 hover:text-orange1' onClick={() => handleSave(task.id)}/>
+                            <Save className='w-5 h-5 hover:text-orange1' onClick={() => handleSave(task.unique_id)}/>
 
                         ) : (
                             <Pencil className='w-5 h-5 hover:text-orange1' onClick={() => setEdit(prev => !prev)} />
                         )}
                     </TableCell>
                     <TableCell className='max-w-52 text-xs'>{task.id}</TableCell>
-                    <TableCell className='text-green-700 dark:text-green-500 text-lg'>{task.ttot.toFixed(2)} hours</TableCell>
-                    <TableCell onClick={() => {delteTaskMutation.mutate({ id: task.id }) }}>
+                    <TableCell className='text-green-700 dark:text-green-500 text-lg'>{task.total_time_on_task.toFixed(2)} hours</TableCell>
+                    <TableCell onClick={() => {delteTaskMutation.mutate({ id: task.unique_id }) }}>
                         <Trash2 className='w-4 h-4 hover:text-red-700 dark:hover:text-red-500' />
                     </TableCell>
 
@@ -149,7 +149,7 @@ function TasksTable({ userId }) {
                 <TableCell colSpan={3}>
                     <p className='font-monomaniac text-lg text-center dark:text-gray-400'>
                         You have no tasks. &nbsp;
-                        <Link to='/new/task' className='underline hover:text-yellow1'>Create one!</Link>
+                        <Link to='/new/activity' className='underline hover:text-yellow1'>Create one!</Link>
                     </p>
                 </TableCell>
             </TableRow>

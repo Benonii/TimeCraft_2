@@ -28,7 +28,7 @@ function ManageTasks() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300'
+          className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300 font-madimi'
         >
           Manage tasks
         </DialogTrigger>
