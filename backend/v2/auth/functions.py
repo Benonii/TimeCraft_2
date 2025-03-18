@@ -11,9 +11,9 @@ ALGORITHM = environ.get('ALGORITHM')
 
 def get_user_by_email(email: str) -> dict:
     """ Get a user by email """
-    user = storage.session.query(User).filter(User.email == email).first()
+    user = storage.session.query(User).filter(User.email == email, User.deleted == None).first()
     if user:
-        profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
+        profile = storage.session.query(Profile).filter(Profile.user_id == user.id, Profile.deleted == None).first()
 
     if user and profile:
         user_dict = user.to_dict()
@@ -26,13 +26,13 @@ def get_user_by_email(email: str) -> dict:
 
 def get_user_by_username(username: str) -> dict:
     """ Get a user by username """
-    user = storage.session.query(Profile).filter(Profile.username == username).first()
-    if user:
-        profile = storage.session.query(Profile).filter(Profile.user_id == user.id).first()
+    profile = storage.session.query(Profile).filter(Profile.username == username, Profile.deleted == None).first()
+    if profile:
+        user = storage.session.query(User).filter(User.id == profile.user_id, User.deleted == None).first()
     return {
         **user.to_dict(),
         **profile.to_dict()
-    } if user and profile else {}
+    } if profile and user else {}
 
 def get_user_by_id(user_id: str) -> User:
     """ Get a user by id """
