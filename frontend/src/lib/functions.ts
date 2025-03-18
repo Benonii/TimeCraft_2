@@ -334,3 +334,35 @@ export const signup = async (formData: SignupFormData) => {
   return resJSON;
 }
 
+
+export const resetStats = async () => {
+  const token = localStorage.getItem('token');
+  
+  // Get the current user data to preserve other fields
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  
+  // Create a payload that includes all required fields from the ProfileUpdateRequest model
+  const payload = {
+    total_productive_time: 0,
+    total_wasted_time: 0
+  };
+  
+  console.log('Sending payload:', payload);
+  
+  const response = await fetch(`${api}/profile`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const resJSON = await response.json();
+  if (!response.ok) {
+    handle401Error(response);
+    throw new Error(resJSON.message || 'An error occurred');
+  }
+
+  return resJSON;
+}
