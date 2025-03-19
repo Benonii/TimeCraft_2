@@ -18,7 +18,6 @@ import CustomTooltip from '../CustomTooltip';
 import { HelpCircle } from 'lucide-react';
 import SuccessAlert from '../SuccessAlert';
 import ErrorAlert from '../ErrorAlert';
-import IdDisplay from '../IdDisplay';
 import { Label } from '../../shadcn/Label';
 import { createActivity } from '../../../lib/functions';
 import LoadingButton from '../LoadingButton';
