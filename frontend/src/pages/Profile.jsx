@@ -11,8 +11,11 @@ import { Clock, Share2, RotateCcw, Zap } from 'lucide-react';
 import { resetStats } from '../lib/functions';
 import SuccessAlert from '../components/custom/SuccessAlert';
 import ErrorAlert from '../components/custom/ErrorAlert';
+import ChangeUsername from '../components/custom/ChangeUsername';
+import ManageTasks from '../components/custom/ManageTasks';
+import DeleteUserAlert from '../components/custom/DeleteUserAlert';
 
-function Profile() {
+export default function Profile() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState("");
@@ -75,87 +78,58 @@ function Profile() {
   return (
     <div className='flex flex-col items-center mt-20'>
       <Header />
+      {success && (
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-50'>
+          <SuccessAlert content={message} />
+        </div>
+      )}
+      {error && (
+        <div className='fixed top-24 left-1/2 transform -translate-x-1/2 z-50'>
+          <ErrorAlert content={message} />
+        </div>
+      )}
       <div className="flex min-h-full">
-        <div className="flex-1 flex justify-center items-start gap-5 p-6 lg:gap-6">
-          <Navbar className='mt-30' />
-          <div className="max-w-3xl lg:max-w-4xl w-full bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 lg:p-10 transition-all duration-300 hover:shadow-xl">
-            <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 lg:mb-8 dark:text-gray-300'>
-              User Profile
-            </h2>
+        <div className="flex-1 flex justify-center items-start p-4 sm:p-6">
+          <div className="relative max-w-3xl w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl">
+            <div className="flex">
+              {/* Navbar section */}
+              <div className="">
+                <Navbar />
+              </div>
+              
+              {/* Content section */}
+              <div className="flex-1">
+                <h2 className='font-monomaniac text-2xl sm:text-3xl md:text-4xl text-center mb-4 sm:mb-6 dark:text-gray-200'>
+                  Profile
+                </h2>
 
-            {success && <SuccessAlert content={message} />}
-            {error && <ErrorAlert content={message} />}
+                <div className="border-t border-b border-gray-200 dark:border-gray-700 py-4 sm:py-6 my-4">
+                  <div className="space-y-4 sm:space-y-6 px-2 sm:px-8">
+                    <div className="flex flex-col gap-2">
+                      <h3 className='font-madimi text-xl sm:text-2xl text-gray-700 dark:text-gray-400'>
+                        Account Details
+                      </h3>
+                      <p className='font-monomaniac text-base sm:text-lg text-gray-600 dark:text-gray-400'>
+                        <span className="font-semibold">Username:</span> {user?.username}
+                      </p>
+                      <p className='font-monomaniac text-base sm:text-lg text-gray-600 dark:text-gray-400'>
+                        <span className="font-semibold">Email:</span> {user?.email}
+                      </p>
+                    </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6 mb-8 min-h-44 mt-5">
-              {/* Productive Time Card */}
-              <Card className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-green-500" />
-                  <CardTitle className="text-lg md:text-xl font-madimi text-gray-600 dark:text-gray-300">Productive Time</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl mt-5 text-center md:text-3xl font-bold font-mono text-green-500">
-                    {user.total_productive_time?.toFixed(2)}h
+                    <div className="flex flex-col gap-2">
+                      <h3 className='font-madimi text-xl sm:text-2xl text-gray-700 dark:text-gray-400'>
+                        Settings
+                      </h3>
+                      <div className="flex flex-col gap-3">
+                        <ChangeUsername />
+                        <ManageTasks />
+                        <DeleteUserAlert handleDelete={() => {mutation.mutate()}} />
+                      </div>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
-
-              {/* Wasted Time Card */}
-              <Card className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardHeader className="flex flex-row items-center justify-center space-x-4 pb-2">
-                  <Clock className="w-6 h-6 md:w-8 md:h-8 text-red-500" />
-                  <CardTitle className="text-lg md:text-xl font-madimi text-gray-600 dark:text-gray-300">Wasted Time</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="mt-5 text-center text-2xl md:text-3xl font-bold font-mono text-red-500">
-                    {user.total_wasted_time?.toFixed(2)}h
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Efficiency Card */}
-              <Card className="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
-                <CardHeader className="flex flex-row items-center space-x-4 pb-2">
-                  <Zap className="w-6 h-6 md:w-8 md:h-8 text-yellow1" />
-                  <CardTitle className="text-lg md:text-xl font-madimi text-gray-600 dark:text-gray-300">Efficiency</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl mt-5 text-center md:text-3xl font-bold font-mono text-yellow1">
-                    {efficiency}%
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="flex flex-col md:flex-row justify-center gap-4 mt-24">
-              {/* <Button 
-                variant="default"
-                className="bg-yellow1 opacity-100 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg font-madimi text-white text-lg md:text-xl hover:bg-orange1 transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
-              >
-                <Share2 className="w-4 h-4 md:w-5 md:h-5" />
-                Share Profile
-              </Button> */}
-              <Button 
-                variant="outline"
-                className="px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg font-madimi text-gray-400 border-2 hover:bg-red-500 border-gray-600 dark:hover:bg-red-800 hover:border-none hover:text-white text-lg md:text-xl transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
-                onClick={handleResetStats}
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? (
-                  <span className="flex items-center">
-                    <svg className="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Resetting...
-                  </span>
-                ) : (
-                  <>
-                    <RotateCcw className="w-4 h-4 md:w-5 md:h-5" />
-                    Reset Stats
-                  </>
-                )}
-              </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -163,5 +137,3 @@ function Profile() {
     </div>
   );
 }
-
-export default Profile;
