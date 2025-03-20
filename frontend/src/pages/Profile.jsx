@@ -86,8 +86,8 @@ function Profile() {
         </div>
       )}
       <div className="flex min-h-full">
-        <div className="flex-1 flex justify-center items-start p-4 sm:p-6">
-          <div className="relative max-w-3xl w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl">
+        <div className="flex-1 flex justify-center gap-1 items-start p-4 sm:p-6">
+          <div className="relative max-w-3xl w-full bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl">
             <div className="flex">
               {/* Navbar section */}
               <div className="">
