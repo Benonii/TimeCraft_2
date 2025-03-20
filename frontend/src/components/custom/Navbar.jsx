@@ -24,11 +24,11 @@ export default function Navbar() {
 
   return (
     <div className='mt-3'>
-      <div className='ml-10' onClick={() => setIsOpen(prev => !prev)}>
+      <div className='ml-5' onClick={() => setIsOpen(prev => !prev)}>
         {isOpen ? <CloseMenu /> : <OpenMenu />}
       </div>
 
-      <div className={`mt-2 ml-5 overflow-hidden transition-all duration-700 ease-in-out
+      <div className={`mt-2 overflow-hidden transition-all duration-700 ease-in-out
         ${isOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         {isOpen && (
           <Menubar className='rounded-xl bg-white dark:bg-gray-900 shadow-xl border border-gray-200 dark:border-gray-700'>            
@@ -67,14 +67,6 @@ export default function Navbar() {
                 <Plus className='w-8 h-8'/>
               </MenubarTrigger>
               <MenubarContent className='ml-16 mt-[-60px] bg-white dark:bg-gray-800 border dark:border-gray-700 w-40'>
-                {!user && (
-                  <Link to="/new/user">
-                    <MenubarItem className='font-madimi mt-2 ml-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dark:hover:text-orange1'>
-                      New user
-                    </MenubarItem>
-                    <hr className='mx-2 mt-1 border-gray-200 dark:border-gray-700'/>
-                  </Link>
-                )}
                 <Link to="/new/activity">
                   <MenubarItem className='font-madimi mt-2 ml-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dark:hover:text-orange1'>
                     New activity

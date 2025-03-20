@@ -21,6 +21,7 @@ import ErrorAlert from '../ErrorAlert';
 import { Label } from '../../shadcn/Label';
 import { createActivity } from '../../../lib/functions';
 import LoadingButton from '../LoadingButton';
+import { Button } from '../../shadcn/Button';
 
 // Types
 import { NewActivityFormData, NewActivityResponseData, MessageResponseData } from '@/src/lib/types';
@@ -115,9 +116,8 @@ export default function CreateActivity() {
         }}
       > 
         <DialogTrigger 
-          className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
-            font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
-            transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
+          className="bg-yellow1 px-4 sm:px-6 py-2 sm:py-3 rounded-md shadow-lg font-madimi 
+            text-white text-lg sm:text-xl md:text-2xl h-fit hover:bg-yellow-500 transition-colors duration-300"
         >
           Create Activity
         </DialogTrigger>

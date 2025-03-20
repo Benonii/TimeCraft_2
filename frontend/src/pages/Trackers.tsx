@@ -113,93 +113,103 @@ function Trackers() {
         <div className='flex flex-col items-center mt-20'>
             <Header />
             <div className="flex min-h-full">
-                <div className="flex-1 flex justify-center items-start gap-5 p-6">
-                    <Navbar className='mt-30' />
-                    <div className="max-w-4xl w-full bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl">
-                        <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300'>
-                            Timers
-                        </h2>
+                <div className="flex-1 flex justify-center items-start p-4 sm:p-6">
 
-                        <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4">
-                            <p className='font-monomaniac text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed px-6'>
-                                You can use the built in timers below to track productive and wasted time.
-                                <br /><br />
-                                The "worked" timer is a countdown timer. Set it to how long you would like to work.
-                                <br /><br />
-                                The "wasted" timer is a stopwatch. Start it when you've stopped working or you're being unproductive.
-                            </p>
+                    <div className="relative max-w-3xl w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl">
+                        <div className="flex">
+                            {/* Navbar section */}
+                            <div className="">
+                              <Navbar />
+                            </div>
+
+                            {/* Content section */}
+                            <div className="flex-1">
+                                <h2 className='font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300'>
+                                    Timers
+                                </h2>
+
+                                <div className="border-t border-b border-gray-200 dark:border-gray-700 py-6 my-4">
+                                    <p className='font-monomaniac text-gray-600 dark:text-gray-400 text-lg md:text-xl leading-relaxed px-6'>
+                                        You can use the built in timers below to track productive and wasted time.
+                                        <br /><br />
+                                        The "worked" timer is a countdown timer. Set it to how long you would like to work.
+                                        <br /><br />
+                                        The "wasted" timer is a stopwatch. Start it when you've stopped working or you're being unproductive.
+                                    </p>
+                                </div>
+
+                                <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mt-8'>
+                                        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-yellow1/50">
+                                            <FormField
+                                                control={form.control}
+                                                name="activityId"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className='font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                                                            Task name
+                                                        </FormLabel>
+                                                        <FormControl>
+                                                            <ActivityPicker 
+                                                                userId={user?.id}
+                                                                onSelect={(value: string) => form.setValue('activityId', value)}
+                                                            />
+                                                        </FormControl>
+                                                        <FormMessage className='text-xs text-red-600' />
+                                                    </FormItem>
+                                                )}
+                                            />
+
+                                            <div className='grid md:grid-cols-2 gap-10 mt-8'>
+                                                <FormField
+                                                    control={form.control}
+                                                    name="timeOnTask"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='font-madimi text-2xl text-green-600 dark:text-green-500'>
+                                                                Worked:
+                                                            </FormLabel>
+                                                            <FormControl>
+                                                                <Timer handleChange={(value: number) => form.setValue('timeOnTask', value)} />
+                                                            </FormControl>
+                                                            <FormMessage className='text-xs text-red-600' />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="timeWasted"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel className='font-madimi text-2xl text-red-600 dark:text-red-500'>
+                                                                Wasted:
+                                                            </FormLabel>
+                                                            <FormControl>
+                                                                <StopWatch handleChange={(value: number) => form.setValue('timeWasted', value)} />
+                                                            </FormControl>
+                                                            <FormMessage className='text-xs text-red-600' />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {success && <SuccessAlert content={message} />}
+                                        {error && <ErrorAlert content={message} />}
+
+                                        <div className="flex justify-center">
+                                            <LoadingButton
+                                                type="submit"
+                                                isLoading={loading}
+                                                text="Log"
+                                                className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                                                    text-white hover:bg-yellow-500 transition-colors duration-300"
+                                            />
+                                        </div>
+                                    </form>
+                                </Form>
+                            </div>
                         </div>
-
-                        <Form {...form}>
-                            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mt-8'>
-                                <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-yellow1/50">
-                                    <FormField
-                                        control={form.control}
-                                        name="activityId"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className='font-madimi text-xl text-gray-700 dark:text-gray-300'>
-                                                    Task name
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <ActivityPicker 
-                                                        userId={user?.id}
-                                                        onSelect={(value: string) => form.setValue('activityId', value)}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage className='text-xs text-red-600' />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    <div className='grid md:grid-cols-2 gap-10 mt-8'>
-                                        <FormField
-                                            control={form.control}
-                                            name="timeOnTask"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel className='font-madimi text-2xl text-green-600 dark:text-green-500'>
-                                                        Worked:
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Timer handleChange={(value: number) => form.setValue('timeOnTask', value)} />
-                                                    </FormControl>
-                                                    <FormMessage className='text-xs text-red-600' />
-                                                </FormItem>
-                                            )}
-                                        />
-                                        <FormField
-                                            control={form.control}
-                                            name="timeWasted"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel className='font-madimi text-2xl text-red-600 dark:text-red-500'>
-                                                        Wasted:
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <StopWatch handleChange={(value: number) => form.setValue('timeWasted', value)} />
-                                                    </FormControl>
-                                                    <FormMessage className='text-xs text-red-600' />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-                                </div>
-
-                                {success && <SuccessAlert content={message} />}
-                                {error && <ErrorAlert content={message} />}
-
-                                <div className="flex justify-center">
-                                    <LoadingButton
-                                        type="submit"
-                                        isLoading={loading}
-                                        text="Log"
-                                        className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
-                                            text-white hover:bg-yellow-500 transition-colors duration-300"
-                                    />
-                                </div>
-                            </form>
-                        </Form>
                     </div>
                 </div>
             </div>

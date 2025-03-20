@@ -123,11 +123,10 @@ export default function CreateLog() {
         }}
       > 
         <DialogTrigger 
-          className="bg-yellow1 px-5 py-3 md:px-6 md:py-3 rounded-md shadow-lg 
-            font-madimi text-white text-lg md:text-xl hover:bg-yellow-500 
-            transition-colors duration-300 flex items-center gap-2 min-w-[180px] justify-center"
+          className="bg-yellow1 px-4 sm:px-6 py-2 sm:py-3 rounded-md shadow-lg font-madimi 
+            text-white text-lg sm:text-xl md:text-2xl h-fit hover:bg-yellow-500 transition-colors duration-300"
         >
-          Make Log
+          Create Log
         </DialogTrigger>
         <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
