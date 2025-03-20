@@ -14,7 +14,7 @@ import ErrorAlert from '../components/custom/ErrorAlert';
 import LoadingButton from '../components/custom/LoadingButton';
 
 // Types
-import { SignupFormData, MessageResponseData } from '../lib/types';
+import { SignupFormData, LoginResponseData, MessageResponseData } from '../lib/types';
 
 // Others
 import { z } from "zod";
@@ -52,8 +52,10 @@ function Signup () {
 
     const mutation = useMutation({
         mutationFn: (FormData: SignupFormData) => signup(FormData),
-        onSuccess: (response: MessageResponseData) => {
-            router.navigate({ to: '/user/login' })
+        onSuccess: (response: LoginResponseData) => {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            router.navigate({ to: '/' })
         },
         onError: (errorResponse: MessageResponseData) => {
             console.error('Signup failed', errorResponse?.message);
