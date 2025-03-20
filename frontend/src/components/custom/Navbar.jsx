@@ -41,7 +41,7 @@ export default function Navbar() {
                   <>
                     <Link to="/user/profile">
                       <MenubarItem className='font-madimi mt-2 ml-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dar'>
-                        My profile
+                        My stats
                       </MenubarItem>
                     </Link>
                     <hr className='mx-2 mt-1 border-gray-200 dark:border-gray-700'/>
