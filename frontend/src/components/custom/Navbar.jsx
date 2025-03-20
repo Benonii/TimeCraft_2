@@ -40,13 +40,13 @@ export default function Navbar() {
                 {user ? (
                   <>
                     <Link to="/user/profile">
-                      <MenubarItem className='font-madimi mt-2 ml-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dark:hover:text-orange1'>
+                      <MenubarItem className='font-madimi mt-2 ml-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dar'>
                         My profile
                       </MenubarItem>
                     </Link>
                     <hr className='mx-2 mt-1 border-gray-200 dark:border-gray-700'/>
                     <MenubarItem 
-                      className='font-madimi mt-2 mb-2 ml-2 text-gray-400 dark:hover:text-red-400'
+                      className='font-madimi mt-2 mb-2 ml-2 text-gray-400 hover:text-red-400 dark:hover:text-red-400'
                       onClick={handleLogout}
                     >
                       Logout
@@ -54,7 +54,7 @@ export default function Navbar() {
                   </>
                 ) : (
                   <Link to="/user/login">
-                    <MenubarItem className='font-madimi mt-2 ml-2 mb-2 text-gray-700 dark:text-gray-300 hover:text-orange1'>
+                    <MenubarItem className='font-madimi mt-2 ml-2 mb-2 text-gray-700 dark:text-gray-300 hover:text-orange1 dark:hover:text-orange1'>
                       Login/Signup
                     </MenubarItem>
                   </Link>
