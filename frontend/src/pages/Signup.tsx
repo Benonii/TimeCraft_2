@@ -103,15 +103,15 @@ function Signup () {
     return (
         <div className='flex flex-col items-center mt-20'>
             <div className="max-w-[500px] w-[90vw] min-w-[300px] bg-white dark:bg-gray-900 rounded-xl 
-                shadow-lg dark:shadow-yellow1/60 border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl"
+                shadow-lg dark:shadow-yellow1/60 border border-gray-200 dark:border-gray-700 p-6 sm:p-8 transition-all duration-300 hover:shadow-xl"
             >
-                <h2 className="font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
+                <h2 className="font-madimi text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
                     Sign up
                 </h2>
 
-                <hr className='border-gray-200 dark:border-gray-700 mb-8' />
+                <hr className='border-gray-200 dark:border-gray-700 mb-6 sm:mb-8' />
 
-                <h3 className='text-center text-2xl mt-10 mb-5 font-monomaniac dark:text-gray-300'>
+                <h3 className='text-center text-lg sm:text-2xl mt-8 mb-4 sm:mt-10 sm:mb-5 font-monomaniac dark:text-gray-300'>
                     Create your account
                 </h3>
 
@@ -122,19 +122,19 @@ function Signup () {
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 mx-10'>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 sm:space-y-8 mx-4 sm:mx-10'>
                         <FormField
                             control={form.control}
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                         Email
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
                                             placeholder='example@email.com'
-                                            className='text-lg'
+                                            className='text-base sm:text-lg'
                                             {...field}
                                         />
                                     </FormControl>
@@ -147,14 +147,14 @@ function Signup () {
                             control={form.control}
                             name="full_name"
                             render={({ field }) => (
-                                <FormItem className="mt-4">
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                <FormItem>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                         Full Name
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
                                             placeholder='John Doe'
-                                            className='text-lg'
+                                            className='text-base sm:text-lg'
                                             {...field}
                                         />
                                     </FormControl>
@@ -167,14 +167,14 @@ function Signup () {
                             control={form.control}
                             name="username"
                             render={({ field }) => (
-                                <FormItem className="mt-4">
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                <FormItem>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                         Username
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
                                             placeholder='user1234'
-                                            className='text-lg'
+                                            className='text-base sm:text-lg'
                                             {...field}
                                         />
                                     </FormControl>
@@ -183,20 +183,20 @@ function Signup () {
                             )}
                         />
 
-                        <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div className="grid grid-cols-2 gap-4">
                             <FormField
                                 control={form.control}
                                 name="weekly_work_hours_goal"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                        <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                             Weekly hours
                                         </FormLabel>
                                         <FormControl>
                                             <Input 
                                                 type='number'
                                                 placeholder='60'
-                                                className='text-lg'
+                                                className='text-base sm:text-lg'
                                                 {...field}
                                             />
                                         </FormControl>
@@ -209,14 +209,14 @@ function Signup () {
                                 name="number_of_work_days"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                        <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                             Work days
                                         </FormLabel>
                                         <FormControl>
                                             <Input 
                                                 type='number'
                                                 placeholder='5'
-                                                className='text-lg'
+                                                className='text-base sm:text-lg'
                                                 {...field}
                                             />
                                         </FormControl>
@@ -230,14 +230,14 @@ function Signup () {
                             control={form.control}
                             name="password"
                             render={({ field }) => (
-                                <FormItem className="mt-4">
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                <FormItem>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                         Password
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
                                             type='password'
-                                            className='text-lg'
+                                            className='text-base sm:text-lg'
                                             {...field}
                                             onChange={(e) => {
                                                 field.onChange(e);
@@ -246,9 +246,9 @@ function Signup () {
                                         />
                                     </FormControl>
                                     <FormMessage className='text-xs text-red-600' />
-                                    <ul className="mt-2 space-y-1">
+                                    <ul className="mt-2 space-y-1 text-xs sm:text-sm">
                                         {passwordRequirements.map((req, index) => (
-                                            <li key={index} className="flex items-center text-sm">
+                                            <li key={index} className="flex items-center">
                                                 <span className={`mr-2 ${req.test(password) ? 'text-green-500' : 'text-gray-500'}`}>
                                                     {req.test(password) ? '✔' : '✖'}
                                                 </span>
@@ -266,14 +266,14 @@ function Signup () {
                             control={form.control}
                             name="confirmPassword"
                             render={({ field }) => (
-                                <FormItem className="mt-4">
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>
+                                <FormItem>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
                                         Confirm password
                                     </FormLabel>
                                     <FormControl>
                                         <Input 
                                             type='password'
-                                            className='text-lg'
+                                            className='text-base sm:text-lg'
                                             {...field}
                                         />
                                     </FormControl>
@@ -287,14 +287,14 @@ function Signup () {
                                 type="submit"
                                 isLoading={loading}
                                 text="Sign up"
-                                className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                                className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
                                     text-white hover:bg-yellow-500 transition-colors duration-300"
                             />
                         </div>
                     </form>
                 </Form>
 
-                <p className='text-center font-monomaniac text-xl mt-5 mb-10 dark:text-gray-300'>
+                <p className='text-center font-monomaniac text-base sm:text-xl mt-4 sm:mt-5 mb-16 sm:mb-24 dark:text-gray-300'>
                     Already have an account? <Link to='/user/login' className='text-yellow1 hover:underline transition-colors duration-300'>
                         Log in!
                     </Link>

@@ -83,32 +83,39 @@ function Login () {
     return (
         <div className='flex flex-col items-center mt-20'>
             <div className="max-w-[500px] w-[90vw] min-w-[300px] bg-white dark:bg-gray-900 rounded-xl 
-                shadow-lg dark:shadow-yellow1/60 border border-gray-200 dark:border-gray-700 p-8 transition-all duration-300 hover:shadow-xl"
+                shadow-lg dark:shadow-yellow1/60 border border-gray-200 dark:border-gray-700 p-8 sm:p-8 p-6 transition-all duration-300 hover:shadow-xl"
             >
-                <h2 className="font-madimi text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
+                <h2 className="font-madimi text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center mb-6 dark:text-gray-300">
                     Log in
                 </h2>
 
-                <hr className='border-gray-200 dark:border-gray-700 mb-8' />
+                <hr className='border-gray-200 dark:border-gray-700 mb-6 sm:mb-8' />
 
-                <h3 className='text-center text-2xl mt-10 mb-5  font-monomaniac dark:text-gray-300'>
+                <h3 className='text-center text-lg sm:text-2xl mt-8 mb-4 sm:mt-10 sm:mb-5 font-monomaniac dark:text-gray-300'>
                     Welcome back!
                 </h3>
+
                 <div className='flex w-full justify-center items-center'>
-                    {error && (
-                    <ErrorAlert content={message} />
-                    )}
+                    {error && <ErrorAlert content={message} />}
                 </div>
+
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10'>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 sm:space-y-8 mx-4 sm:mx-10'>
                         <FormField
                             control={form.control}
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className='font-monomaniac text-xl dark:text-gray-300'>Email</FormLabel>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
+                                        Email
+                                    </FormLabel>
                                     <FormControl>
-                                        <Input id='username' placeholder='username@123' className='text-lg' {...field} />
+                                        <Input 
+                                            id='username' 
+                                            placeholder='username@123' 
+                                            className='text-base sm:text-lg' 
+                                            {...field} 
+                                        />
                                     </FormControl>
                                     <FormMessage className='text-xs text-redd-500' />
                                 </FormItem>
@@ -119,29 +126,38 @@ function Login () {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                      <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
-                                          Password
-                                      </FormLabel>
-                                      <FormControl>
-                                        <Input id='password' type='password' className='text-lg' {...field} />
-                                      </FormControl>
-                                      <FormMessage className='text-xs text-red-600 '/>
-                                  </FormItem>
+                                    <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
+                                        Password
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            id='password' 
+                                            type='password' 
+                                            className='text-base sm:text-lg' 
+                                            {...field} 
+                                        />
+                                    </FormControl>
+                                    <FormMessage className='text-xs text-red-600' />
+                                </FormItem>
                             )}
                         />
                         <div className="flex justify-center w-full">
-                          <LoadingButton
-                            type="submit"
-                            isLoading={loading}
-                            text="Login"
-                          />
+                            <LoadingButton
+                                type="submit"
+                                isLoading={loading}
+                                text="Login"
+                                className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
+                                    text-white hover:bg-yellow-500 transition-colors duration-300"
+                            />
                         </div>
                     </form>
                 </Form>
-                <p className='text-center font-monomaniac text-xl mt-5 mb-24 dark:text-gray-300'>Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link></p>
+                <p className='text-center font-monomaniac text-base sm:text-xl mt-4 sm:mt-5 mb-16 sm:mb-24 dark:text-gray-300'>
+                    Don't have an account? <Link to='/user/signup' className='text-yellow1 hover:underline'>Sign up!</Link>
+                </p>
             </div>
         </div>
-    )
+    );
 }
 
 export default Login;
