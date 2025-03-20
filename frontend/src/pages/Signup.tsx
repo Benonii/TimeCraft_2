@@ -27,6 +27,7 @@ function Signup () {
     const [ error, setError ] = useState<boolean>(false);
     const [ message, setMessage ] = useState<string>("");
     const [ loading, setLoading ] = useState<boolean>(false);
+    const [ password, setPassword ] = useState<string>("");
 
     const handleError = () => {
         setError(true);
@@ -59,7 +60,7 @@ function Signup () {
         },
         onError: (errorResponse: MessageResponseData) => {
             console.error('Signup failed', errorResponse?.message);
-            setMessage('An error occured. Please try again.');
+            setMessage('An error occurred. Please try again.');
             handleError();
             window.scrollTo({
                 top: 0,
@@ -71,6 +72,20 @@ function Signup () {
     useEffect(() => {
         setLoading(mutation.isPending);
     })
+
+    // Extract password validation rules from the signupSchema
+    const passwordSchema = signupSchema.innerType().shape.password;
+    const passwordRequirements = [
+        { label: "At least 8 characters", test: (pw: string) => pw.length >= 8 },
+        { label: "At least one uppercase letter", test: (pw: string) => /[A-Z]/.test(pw) },
+        { label: "At least one lowercase letter", test: (pw: string) => /[a-z]/.test(pw) },
+        { label: "At least one number", test: (pw: string) => /\d/.test(pw) },
+        { label: "At least one special character", test: (pw: string) => /[!@#$%^&*(),.?":{}|<>]/.test(pw) },
+    ];
+
+    const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value);
+    };
 
     async function onSubmit(values: z.infer<typeof signupSchema>) {
         const transformedValues = {
@@ -224,9 +239,25 @@ function Signup () {
                                             type='password'
                                             className='text-lg'
                                             {...field}
+                                            onChange={(e) => {
+                                                field.onChange(e);
+                                                onPasswordChange(e);
+                                            }}
                                         />
                                     </FormControl>
                                     <FormMessage className='text-xs text-red-600' />
+                                    <ul className="mt-2 space-y-1">
+                                        {passwordRequirements.map((req, index) => (
+                                            <li key={index} className="flex items-center text-sm">
+                                                <span className={`mr-2 ${req.test(password) ? 'text-green-500' : 'text-gray-500'}`}>
+                                                    {req.test(password) ? '✔' : '✖'}
+                                                </span>
+                                                <span className={req.test(password) ? 'text-green-500' : 'text-gray-500'}>
+                                                    {req.label}
+                                                </span>
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </FormItem>
                             )}
                         />
