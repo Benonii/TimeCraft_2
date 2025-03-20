@@ -224,11 +224,11 @@ function GetReport() {
                                                     <SelectValue placeholder="Select a report type" />
                                                 </SelectTrigger>
                                             </FormControl>
-                                            <SelectContent>
-                                                <SelectItem value="today">Today</SelectItem>
-                                                <SelectItem value="this_week">This Week</SelectItem>
-                                                <SelectItem value="this_month">This Month</SelectItem>
-                                                <SelectItem value="custom">Custom Range</SelectItem>
+                                            <SelectContent className='dark:bg-gray-900 dark:text-gray-400'>
+                                                <SelectItem value="today" className='dark:hover:text-gray-300 dark:hover:bg-gray-700'>Today</SelectItem>
+                                                <SelectItem value="this_week" className='dark:hover:text-gray-300 dark:hover:bg-gray-700'>This Week</SelectItem>
+                                                <SelectItem value="this_month" className='dark:hover:text-gray-300 dark:hover:bg-gray-700'>This Month</SelectItem>
+                                                <SelectItem value="custom" className='dark:hover:text-gray-300 dark:hover:bg-gray-700'>Custom Range</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </FormItem>
