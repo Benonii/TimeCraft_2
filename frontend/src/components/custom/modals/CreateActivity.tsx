@@ -123,10 +123,10 @@ export default function CreateActivity() {
         </DialogTrigger>
         <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+            <DialogTitle className="font-madimi text-xl sm:text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
               Create Activity
             </DialogTitle>
-            <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
+            <DialogDescription className="text-center font-madimi text-sm sm:text-base text-gray-600 dark:text-gray-400">
               Create a new activity to track
             </DialogDescription>
           </DialogHeader>
@@ -135,21 +135,21 @@ export default function CreateActivity() {
           {error && <ErrorAlert content={message} />}
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg dark:shadow-gray-300/30">
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg dark:shadow-gray-300/30">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
                         Activity name
                         <CustomTooltip content="Name of the activity you want to track">
-                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
                         </CustomTooltip>
                       </FormLabel>
                       <FormControl>
-                        <Input className='text-lg' {...field} />
+                        <Input className='text-sm sm:text-lg' {...field} />
                       </FormControl>
                       <FormMessage className='text-xs text-red-600' />
                     </FormItem>
@@ -160,16 +160,16 @@ export default function CreateActivity() {
                   control={form.control}
                   name="description"
                   render={({ field }) => (
-                    <FormItem className="mt-6">
-                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
                         Description
                         <CustomTooltip content="Optional: Add details about this activity">
-                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
                         </CustomTooltip>
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          className='text-lg'
+                          className='text-sm sm:text-lg'
                           placeholder="Optional description"
                           {...field} 
                         />
@@ -183,15 +183,15 @@ export default function CreateActivity() {
                   control={form.control}
                   name="dailyGoal"
                   render={({ field }) => (
-                    <FormItem className="mt-6">
-                      <FormLabel className='flex items-center gap-2 font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
                         Daily goal
                         <CustomTooltip content="How many hours you want to spend on this task daily">
-                          <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
                         </CustomTooltip>
                       </FormLabel>
                       <FormControl>
-                        <Input type="number" className='text-lg' {...field} />
+                        <Input type="number" className='text-sm sm:text-lg' {...field} />
                       </FormControl>
                       <FormMessage className='text-xs text-red-600' />
                     </FormItem>
@@ -204,7 +204,7 @@ export default function CreateActivity() {
                   type="submit"
                   isLoading={loading}
                   text="Create"
-                  className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                  className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
                     text-white hover:bg-yellow-500 transition-colors duration-300"
                 />
               </div>

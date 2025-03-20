@@ -105,59 +105,66 @@ function ChangeUsername() {
         }}
       >
         <DialogTrigger 
-          className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300 font-madimi'
+          className='ml-7 hover:underline text-gray-600 text-base sm:text-lg dark:text-gray-400 dark:hover:text-gray-300 font-madimi'
         >
           Change username
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Change username</DialogTitle>
+            <DialogTitle className='font-monomaniac text-xl sm:text-2xl md:text-3xl text-center dark:text-gray-300'>
+              Change username
+            </DialogTitle>
           </DialogHeader>
-            {success && (
-              <>
-                <SuccessAlert content={message} />
-              </>
-            )}
-            {error && (
-              <ErrorAlert content={message} />
-            )}
-            <p className='ml-10 font font-monomaniac'>Current username: {
+          {success && (
+            <>
+              <SuccessAlert content={message} />
+            </>
+          )}
+          {error && (
+            <ErrorAlert content={message} />
+          )}
+          <p className='ml-6 sm:ml-10 font-monomaniac text-sm sm:text-base'>
+            Current username: {
               loading ? (
                 <Skeleton />
               ) : (
-              <span className='font-mono'>{user.username}</span>
+                <span className='font-mono'>{user.username}</span>
               )
-              }
-            </p>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-5 mt-5'>
-                    <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                          <FormItem className='flex items-center gap-2'>
-                              <FormLabel className='font-monomaniac text-lg dark:text-gray-300'>Username: </FormLabel>
-                              <FormControl>
-                                  <Input 
-                                    id='user-id'
-                                    placeholder='username123'
-                                    className='text-lg' {...field}
-                                  />
-                              </FormControl>
-                              <FormMessage className='text-xs text-red-500' />
-                          </FormItem>
-                      )}
-                    />
-                    <div className="flex justify-center w-full">
-                      <LoadingButton
-                        type="submit"
-                        isLoading={loading}
-                        text="Confirm"
+            }
+          </p>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 sm:space-y-8 mx-4 sm:mx-5 mt-4 sm:mt-5'>
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem className='flex items-center gap-2'>
+                    <FormLabel className='font-monomaniac text-base sm:text-lg dark:text-gray-300'>
+                      Username:
+                    </FormLabel>
+                    <FormControl>
+                      <Input 
+                        id='user-id'
+                        placeholder='username123'
+                        className='text-sm sm:text-lg'
+                        {...field}
                       />
-                    </div>
-                </form>
-            </Form>
-          
+                    </FormControl>
+                    <FormMessage className='text-xs text-red-500' />
+                  </FormItem>
+                )}
+              />
+              <div className="flex justify-center w-full">
+                <LoadingButton
+                  type="submit"
+                  isLoading={loading}
+                  text="Confirm"
+                  className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
+                    text-white hover:bg-yellow-500 transition-colors duration-300"
+                />
+              </div>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

@@ -115,102 +115,6 @@ function GetTotalTimeOnTask() {
         }
     };
 
-    const formContent = (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mx-10 mt-5'>
-              <FormField
-                control={form.control}
-                name="taskId"
-                render={({ field }) => (
-                  <FormItem>
-                      <FormLabel className='font font-monomaniac text-xl dark:text-gray-300'>
-                         Task name
-                      </FormLabel>
-                      <FormControl aria-disabled={true}>
-                        <TaskPicker
-                          userId={user?.id}
-                          onSelect={(value: string) => form.setValue('taskId', value)}
-                        />
-                      </FormControl>
-                      <FormMessage className='text-xs text-red-600 '/>
-                  </FormItem>
-                  )}
-              />
-              <div className="flex justify-center w-full">
-                <LoadingButton
-                  type="submit"
-                  isLoading={loading}
-                  text="Get report"
-                />
-              </div>
-            </form>
-        </Form>
-    )
-
-    const reportContent = (
-        <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
-            bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg dark:shadow-yellow1/40'
-        >
-            <h4 className='text-gray-700 dark:text-gray-300 mb-2'>
-                <span className='text-lg font-semibold'>Task:</span> {report?.name}
-            </h4>
-
-            <div className="space-y-6 mt-4">
-                {/* Time Stats */}
-                <div className="space-y-2">
-                    <h3 className='text-gray-700 dark:text-gray-300'>
-                        <span className='text-xl font-semibold'>Total time logged: </span> 
-                        <span className='text-green-600 dark:text-green-400'>{report?.total_time_on_task.toFixed(2)} hours</span>
-                    </h3>
-                    
-                    <p className='text-gray-600 dark:text-gray-400'>
-                        <span className='font-semibold'>Daily goal:</span> {report?.daily_goal} hours
-                    </p>
-                </div>
-
-                {/* Weekly Progress */}
-                <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                        <span className='text-gray-700 dark:text-gray-300 font-semibold'>
-                            Weekly Progress
-                        </span>
-                        <span className='text-gray-600 dark:text-gray-400'>
-                            {report?.total_time_on_task}/{report?.weekly_goal} hours
-                        </span>
-                    </div>
-                    <Progress 
-                        value={Math.min((report?.total_time_on_task! / report?.weekly_goal!) * 100, 100)} 
-                        className="h-2 bg-gray-200 dark:bg-gray-700"
-                        indicatorClassName={ report?.total_time_on_task! >= report?.weekly_goal! ? "bg-green-600 dark:bg-green-400" : "bg-yellow1" }
-                    />
-                </div>
-
-                {/* Creation Info */}
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <p className='text-sm text-gray-600 dark:text-gray-400'>
-                        Created on {formatDateSafely(report?.created_at)}
-                    </p>
-                    <p className='text-sm text-gray-600 dark:text-gray-400'>
-                        Last updated {getTimeDifference(report?.updated_at)}
-                    </p>
-                </div>
-            </div>
-
-            <Button
-                variant='outline'
-                className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
-                    dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
-                    transition-colors duration-300'
-                onClick={() => {
-                    setSuccess(false)
-                    setLoading(false)
-                }}
-            >
-                Back
-            </Button>
-        </div>
-    )
-
     return (
         <div>
             <Dialog>
@@ -222,21 +126,115 @@ function GetTotalTimeOnTask() {
                 </DialogTrigger>
                 <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
                     <DialogHeader>
-                        <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+                        <DialogTitle className="font-madimi text-xl sm:text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
                             Total Time on Task
                         </DialogTitle>
-                        <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
-                            Get total productive time on one task
+                        <DialogDescription className="text-center font-madimi text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                            Get total time spent on a task
                         </DialogDescription>
                     </DialogHeader>
 
                     {error && <ErrorAlert content={message} />}
                     
-                    {success ? reportContent : loading ? (
-                        <div className="flex flex-col gap-4 p-6">
-                            <Skeleton className="w-full h-[250px] rounded-lg" />
+                    {success ? (
+                        <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 
+                            bg-white dark:bg-gray-800 p-4 sm:p-6 mb-4 sm:mb-6 shadow-lg dark:shadow-yellow1/40'
+                        >
+                            <h4 className='text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2'>
+                                <span className='font-semibold'>Task:</span> {report?.name}
+                            </h4>
+
+                            <div className="space-y-4 sm:space-y-6 mt-3 sm:mt-4">
+                                <div className="space-y-2">
+                                    <h3 className='text-sm sm:text-base text-gray-700 dark:text-gray-300'>
+                                        <span className='text-lg sm:text-xl font-semibold'>Total time logged: </span> 
+                                        <span className='text-green-600 dark:text-green-400'>{report?.total_time_on_task.toFixed(2)} hours</span>
+                                    </h3>
+                                    
+                                    <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400'>
+                                        <span className='font-semibold'>Daily goal:</span> {report?.daily_goal} hours
+                                    </p>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-center">
+                                        <span className='text-sm sm:text-base text-gray-700 dark:text-gray-300 font-semibold'>
+                                            Weekly Progress
+                                        </span>
+                                        <span className='text-sm sm:text-base text-gray-600 dark:text-gray-400'>
+                                            {report?.total_time_on_task}/{report?.weekly_goal} hours
+                                        </span>
+                                    </div>
+                                    <Progress 
+                                        value={Math.min((report?.total_time_on_task! / report?.weekly_goal!) * 100, 100)} 
+                                        className="h-2 bg-gray-200 dark:bg-gray-700"
+                                        indicatorClassName={report?.total_time_on_task! >= report?.weekly_goal! ? 
+                                            "bg-green-600 dark:bg-green-400" : "bg-yellow1"}
+                                    />
+                                </div>
+
+                                <div className="pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
+                                        Created on {formatDateSafely(report?.created_at)}
+                                    </p>
+                                    <p className='text-xs sm:text-sm text-gray-600 dark:text-gray-400'>
+                                        Last updated {getTimeDifference(report?.updated_at)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <Button
+                                variant='outline'
+                                className='mt-4 sm:mt-6 px-4 sm:px-5 py-2 sm:py-3 font-madimi text-sm sm:text-base text-gray-700 hover:text-white hover:bg-yellow1 
+                                    dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
+                                    transition-colors duration-300'
+                                onClick={() => {
+                                    setSuccess(false);
+                                    setLoading(false);
+                                    form.reset();
+                                }}
+                            >
+                                Back
+                            </Button>
                         </div>
-                    ) : formContent}
+                    ) : loading ? (
+                        <div className="flex flex-col gap-3 sm:gap-4 p-4 sm:p-6">
+                            <Skeleton className="w-full h-[18px] sm:h-[20px] rounded-lg" />
+                        </div>
+                    ) : (
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
+                                <FormField
+                                    control={form.control}
+                                    name="taskId"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className='font-monomaniac text-base sm:text-xl dark:text-gray-300'>
+                                                Task name
+                                            </FormLabel>
+                                            <FormControl>
+                                                <TaskPicker
+                                                    userId={user?.id}
+                                                    onSelect={(value: string) => form.setValue('taskId', value)}
+                                                />
+                                            </FormControl>
+                                            <FormMessage className='text-xs text-red-600' />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <div className="flex justify-center">
+                                    <LoadingButton
+                                        type="submit"
+                                        isLoading={loading}
+                                        text="Get report"
+                                        className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
+                                            text-white hover:bg-yellow-500 transition-colors duration-300"
+                                    />
+                                </div>
+                            </form>
+                        </Form>
+                    )}
                 </DialogContent>
             </Dialog>
         </div>

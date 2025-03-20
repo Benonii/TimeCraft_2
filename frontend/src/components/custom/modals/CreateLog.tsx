@@ -130,11 +130,11 @@ export default function CreateLog() {
         </DialogTrigger>
         <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
-              Make a log
+            <DialogTitle className="font-madimi text-xl sm:text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+              Create Log
             </DialogTitle>
-            <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
-              Create a new log
+            <DialogDescription className="text-center font-madimi text-sm sm:text-base text-gray-600 dark:text-gray-400">
+              Log time spent on an activity
             </DialogDescription>
           </DialogHeader>
 
@@ -142,15 +142,18 @@ export default function CreateLog() {
           {error && <ErrorAlert content={message} />}
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6 p-6'>
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+            <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 sm:space-y-6 p-4 sm:p-6'>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg dark:shadow-gray-300/30">
                 <FormField
                   control={form.control}
                   name="activityId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className='font-madimi text-xl text-gray-700 dark:text-gray-300'>
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
                         Activity name
+                        <CustomTooltip content="Select the activity you want to log time for">
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
                       </FormLabel>
                       <FormControl>
                         <ActivityPicker 
@@ -163,52 +166,74 @@ export default function CreateLog() {
                   )}
                 />
                 
-                <div className='grid md:grid-cols-2 gap-6 mt-6'>
-                  <FormField
-                    control={form.control}
-                    name="timeOnTask"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className='flex items-center gap-2 font-madimi text-xl text-green-600 dark:text-green-500'>
-                          Time on task
-                          <CustomTooltip content="The productive time spent on task">
-                            <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
-                          </CustomTooltip>
-                        </FormLabel>
-                        <FormControl>
-                          <Input type='number' className='text-lg' {...field} />
-                        </FormControl>
-                        <FormMessage className='text-xs text-red-600' />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="timeWasted"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className='flex items-center gap-2 font-madimi text-xl text-red-600 dark:text-red-500'>
-                          Time wasted
-                          <CustomTooltip content="Unproductive time">
-                            <HelpCircle className='w-4 h-4 text-gray-600 dark:text-gray-400'/>
-                          </CustomTooltip>
-                        </FormLabel>
-                        <FormControl>
-                          <Input type="number" className='text-lg' {...field} />
-                        </FormControl>
-                        <FormMessage className='text-xs text-red-600' />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="timeOnTask"
+                  render={({ field }) => (
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
+                        Time spent (hours)
+                        <CustomTooltip content="How many hours did you spend on this activity?">
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="number" className='text-sm sm:text-lg' {...field} />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="timeWasted"
+                  render={({ field }) => (
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
+                        Time wasted (hours)
+                        <CustomTooltip content="How many hours were wasted during this activity?">
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input type="number" className='text-sm sm:text-lg' {...field} />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="comment"
+                  render={({ field }) => (
+                    <FormItem className="mt-4 sm:mt-6">
+                      <FormLabel className='flex items-center gap-2 font-madimi text-base sm:text-xl text-gray-700 dark:text-gray-300'>
+                        Comment
+                        <CustomTooltip content="Optional: Add any notes about this time log">
+                          <HelpCircle className='w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400'/>
+                        </CustomTooltip>
+                      </FormLabel>
+                      <FormControl>
+                        <Input 
+                          className='text-sm sm:text-lg'
+                          placeholder="Optional comment"
+                          {...field} 
+                        />
+                      </FormControl>
+                      <FormMessage className='text-xs text-red-600' />
+                    </FormItem>
+                  )}
+                />
               </div>
 
               <div className="flex justify-center">
                 <LoadingButton
                   type="submit"
                   isLoading={loading}
-                  text="Log"
-                  className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                  text="Create"
+                  className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
                     text-white hover:bg-yellow-500 transition-colors duration-300"
                 />
               </div>

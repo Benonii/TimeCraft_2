@@ -86,78 +86,87 @@ function TasksTable({ userId }) {
     });
 
   return (
-    <div>
-        {success && (
-            <>
-              <SuccessAlert content={message} />
-            </>
-        )}
-          {error && (
-            <ErrorAlert content={message} />
-        )}
-      <Table className='font-monomanic '>
-        <TableCaption className='text-gray-300 font-monomaniac'>A list of your tasks.</TableCaption>
-        <TableHeader className='text-lg font-madimi'>
-          <TableRow className=''>
-            <TableHead className="w-[100px] dark:text-gray-300">Task name</TableHead>
-            <TableHead className='dark:text-gray-300'>Id</TableHead>
-            <TableHead className='dark:text-gray-300 min-w-44'>Total time on task</TableHead>
-            {/* <TableHead><RotateCw className='' onClick={handleRefetch}/></TableHead> */}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
-            <TableRow>
-                <TableCell colSpan={3}>
-                    <Skeleton className="ml-5 mt-5 w-[90%] h-[20px] rounded-full" />
-                    <Skeleton className="ml-5 mt-5 w-[90%] h-[20px] rounded-full" />
-                    <Skeleton className="ml-5 mt-5 w-[90%] h-[20px] rounded-full" />
-                </TableCell>
-            </TableRow>
-          ) : isError ? (
-            <TableRow className='w-full border'>
-                <TableCell colSpan={3}>
-                    <p className='font-monomaniac text-lg text-center dark:text-gray-400'>Error fetching data</p>
-                </TableCell>
-            </TableRow>
-          ) : data?.data?.length > 0 ? (
-            data?.data?.map(task => (
-                <TableRow key={task}>
-                    <TableCell className='flex min-w-40 gap-2 items-center text-lg'>
-                        <Input
-                            id="task-name"
-                            defaultValue={task.name}
-                            readOnly={!edit}
-                            className='text-lg'
-                            ref={inputRef}
-                        />
-                        {edit ? (
-                            <Save className='w-5 h-5 hover:text-orange1' onClick={() => handleSave(task.unique_id)}/>
-
-                        ) : (
-                            <Pencil className='w-5 h-5 hover:text-orange1' onClick={() => setEdit(prev => !prev)} />
-                        )}
-                    </TableCell>
-                    <TableCell className='max-w-52 text-xs'>{task.id}</TableCell>
-                    <TableCell className='text-green-700 dark:text-green-500 text-lg'>{task.total_time_on_task.toFixed(2)} hours</TableCell>
-                    <TableCell onClick={() => {delteTaskMutation.mutate({ id: task.unique_id }) }}>
-                        <Trash2 className='w-4 h-4 hover:text-red-700 dark:hover:text-red-500' />
-                    </TableCell>
-
+    <div className="overflow-x-auto">
+        {success && <SuccessAlert content={message} />}
+        {error && <ErrorAlert content={message} />}
+        
+        <Table className='font-monomanic w-full min-w-[500px]'>
+            <TableCaption className='text-sm sm:text-base text-gray-300 font-monomaniac'>
+                A list of your tasks.
+            </TableCaption>
+            <TableHeader className='text-base sm:text-lg font-madimi'>
+                <TableRow>
+                    <TableHead className="w-[100px] dark:text-gray-300">Task name</TableHead>
+                    <TableHead className='dark:text-gray-300 hidden sm:table-cell'>Id</TableHead>
+                    <TableHead className='dark:text-gray-300'>Total time</TableHead>
+                    <TableHead className='w-10'></TableHead>
                 </TableRow>
-            ))
-          ) : (
-            <TableRow>
-                <TableCell colSpan={3}>
-                    <p className='font-monomaniac text-lg text-center dark:text-gray-400'>
-                        You have no tasks. &nbsp;
-                        <Link to='/new/activity' className='underline hover:text-yellow1'>Create one!</Link>
-                    </p>
-                </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-    </Table>
+            </TableHeader>
+            <TableBody>
+                {isLoading ? (
+                    <TableRow>
+                        <TableCell colSpan={4}>
+                            <Skeleton className="ml-2 sm:ml-5 mt-3 sm:mt-5 w-[90%] h-[16px] sm:h-[20px] rounded-full" />
+                            <Skeleton className="ml-2 sm:ml-5 mt-3 sm:mt-5 w-[90%] h-[16px] sm:h-[20px] rounded-full" />
+                            <Skeleton className="ml-2 sm:ml-5 mt-3 sm:mt-5 w-[90%] h-[16px] sm:h-[20px] rounded-full" />
+                        </TableCell>
+                    </TableRow>
+                ) : isError ? (
+                    <TableRow>
+                        <TableCell colSpan={4}>
+                            <p className='font-monomaniac text-base sm:text-lg text-center dark:text-gray-400'>
+                                Error fetching data
+                            </p>
+                        </TableCell>
+                    </TableRow>
+                ) : data?.data?.length > 0 ? (
+                    data?.data?.map(task => (
+                        <TableRow key={task}>
+                            <TableCell className='flex gap-2 items-center'>
+                                <Input
+                                    id="task-name"
+                                    defaultValue={task.name}
+                                    readOnly={!edit}
+                                    className='text-sm sm:text-lg'
+                                    ref={inputRef}
+                                />
+                                {edit ? (
+                                    <Save 
+                                        className='w-4 h-4 sm:w-5 sm:h-5 hover:text-orange1' 
+                                        onClick={() => handleSave(task.unique_id)}
+                                    />
+                                ) : (
+                                    <Pencil 
+                                        className='w-4 h-4 sm:w-5 sm:h-5 hover:text-orange1' 
+                                        onClick={() => setEdit(prev => !prev)} 
+                                    />
+                                )}
+                            </TableCell>
+                            <TableCell className='hidden sm:table-cell text-xs'>
+                                {task.id}
+                            </TableCell>
+                            <TableCell className='text-green-700 dark:text-green-500 text-sm sm:text-lg'>
+                                {task.total_time_on_task.toFixed(2)} h
+                            </TableCell>
+                            <TableCell onClick={() => {delteTaskMutation.mutate({ id: task.unique_id })}}>
+                                <Trash2 className='w-4 h-4 hover:text-red-700 dark:hover:text-red-500' />
+                            </TableCell>
+                        </TableRow>
+                    ))
+                ) : (
+                    <TableRow>
+                        <TableCell colSpan={4}>
+                            <p className='font-monomaniac text-base sm:text-lg text-center dark:text-gray-400'>
+                                You have no tasks. &nbsp;
+                                <Link to='/new/activity' className='underline hover:text-yellow1'>
+                                    Create one!
+                                </Link>
+                            </p>
+                        </TableCell>
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
     </div>
   )
 }

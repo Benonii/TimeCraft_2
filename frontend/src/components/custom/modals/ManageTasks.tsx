@@ -28,18 +28,22 @@ function ManageTasks() {
     <div>
       <Dialog>
         <DialogTrigger 
-          className='ml-7 hover:underline text-gray-600 text-lg dark:text-gray-400 dark:hover:text-gray-300 font-madimi'
+          className='ml-7 hover:underline text-gray-600 text-base sm:text-lg dark:text-gray-400 dark:hover:text-gray-300 font-madimi'
         >
           Manage tasks
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
           <DialogHeader>
-            <DialogTitle className='font-monomaniac text-3xl text-center dark:text-gray-300'>Manage tasks</DialogTitle>
-            <DialogDescription className='font font-monomaniac text-lg dark:text-gray-400'>
-                View, edit and delete your tasks
+            <DialogTitle className='font-monomaniac text-xl sm:text-2xl md:text-3xl text-center dark:text-gray-300'>
+              Manage tasks
+            </DialogTitle>
+            <DialogDescription className='font-monomaniac text-sm sm:text-base md:text-lg text-center dark:text-gray-400'>
+              View, edit and delete your tasks
             </DialogDescription>
           </DialogHeader>
+          <div className="p-2 sm:p-4">
             <TasksTable userId={user.id}/>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

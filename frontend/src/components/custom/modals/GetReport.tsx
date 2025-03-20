@@ -129,10 +129,10 @@ function GetReport() {
             </DialogTrigger>
             <DialogContent className="bg-white dark:bg-gray-900 border dark:border-gray-700">
                 <DialogHeader>
-                    <DialogTitle className="font-madimi text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
+                    <DialogTitle className="font-madimi text-xl sm:text-2xl md:text-3xl text-center text-gray-900 dark:text-gray-300">
                         Get Report
                     </DialogTitle>
-                    <DialogDescription className="text-center font-madimi text-gray-600 dark:text-gray-400">
+                    <DialogDescription className="text-center font-madimi text-sm sm:text-base text-gray-600 dark:text-gray-400">
                         Select a report type or custom date range
                     </DialogDescription>
                 </DialogHeader>
@@ -140,24 +140,24 @@ function GetReport() {
                 {error && <ErrorAlert content={message} />}
                 
                 {success ? (
-                    <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 mb-6 shadow-lg dark:shadow-yellow1/40'>
-                        <h2 className='text-2xl text-gray-800 dark:text-gray-200 mb-4'>
+                    <div className='flex flex-col font-madimi border rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4 sm:p-6 mb-4 sm:mb-6 shadow-lg dark:shadow-yellow1/40'>
+                        <h2 className='text-xl sm:text-2xl text-gray-800 dark:text-gray-200 mb-3 sm:mb-4'>
                             {form.getValues('reportType') === 'custom' ? 'Custom Report' : 
                              form.getValues('reportType') === 'today' ? 'Daily Report' :
                              form.getValues('reportType') === 'this_week' ? 'Weekly Report' :
                              'Monthly Report'}
                         </h2>
-                        <hr className='my-4 border-2 border-gray-200 dark:border-gray-500' />
-                        <h3 className='text-xl text-gray-700 dark:text-gray-300 mb-4'>
+                        <hr className='my-3 sm:my-4 border-2 border-gray-200 dark:border-gray-500' />
+                        <h3 className='text-base sm:text-xl text-gray-700 dark:text-gray-300 mb-3 sm:mb-4'>
                             <span className='font-semibold'>Date Range:</span> {formatDate(data?.data?.start_date || '')} - {formatDate(data?.data?.end_date || '')}
                         </h3>
                         
                         {data?.data?.activities && Object.entries(data.data.activities).map(([taskName, taskData]: [string, any]) => (
-                            <div key={taskName} className="mb-3">
-                                <h4 className='text-gray-700 dark:text-gray-300 mb-1'>
+                            <div key={taskName} className="mb-2 sm:mb-3">
+                                <h4 className='text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-1'>
                                     <span className='font-semibold'>Task:</span> {taskName}
                                 </h4>
-                                <h5 className='pl-4 text-gray-600 dark:text-gray-400'>
+                                <h5 className='pl-3 sm:pl-4 text-sm sm:text-base text-gray-600 dark:text-gray-400'>
                                     Productive time: <span className='text-green-600 dark:text-green-500'>
                                         {taskData.total_time_on_task.toFixed(2)} Hours
                                     </span>
@@ -165,14 +165,14 @@ function GetReport() {
                             </div>
                         ))}
 
-                        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                            <h4 className='text-gray-700 dark:text-gray-400 mb-2'>
+                        <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <h4 className='text-sm sm:text-base text-gray-700 dark:text-gray-400 mb-2'>
                                 <span className='font-semibold'>Total productive time: </span>
                                 <span className='text-green-600 dark:text-green-500'>
                                     {data?.data?.total_productive_time.toFixed(2)} hours
                                 </span>
                             </h4>
-                            <h4 className='text-gray-700 dark:text-gray-400'>
+                            <h4 className='text-sm sm:text-base text-gray-700 dark:text-gray-400'>
                                 <span className='font-semibold'>Total wasted time: </span>
                                 <span className='text-red-600 dark:text-red-500'>
                                     {data?.data?.total_wasted_time.toFixed(2)} hours
@@ -182,7 +182,7 @@ function GetReport() {
 
                         <Button
                             variant='outline'
-                            className='mt-6 px-5 py-3 font-madimi text-gray-700 hover:text-white hover:bg-yellow1 
+                            className='mt-4 sm:mt-6 px-4 sm:px-5 py-2 sm:py-3 font-madimi text-sm sm:text-base text-gray-700 hover:text-white hover:bg-yellow1 
                                 dark:text-gray-400 dark:hover:text-white border-gray-300 dark:border-gray-600
                                 transition-colors duration-300'
                             onClick={() => {
@@ -195,24 +195,24 @@ function GetReport() {
                         </Button>
                     </div>
                 ) : loading ? (
-                    <div className="flex flex-col gap-4 p-6">
-                        <Skeleton className="w-[85%] h-[20px] rounded-lg dark:bg-gray-500" />
-                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
-                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
-                        <hr className="my-4 border-gray-200 dark:border-gray-700 dark:bg-gray-500" />
-                        <Skeleton className="w-[85%] h-[20px] rounded-lg dark:bg-gray-500" />
-                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
-                        <Skeleton className="w-[250px] h-[20px] rounded-lg dark:bg-gray-500" />
+                    <div className="flex flex-col gap-3 sm:gap-4 p-4 sm:p-6">
+                        <Skeleton className="w-[85%] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
+                        <hr className="my-3 sm:my-4 border-gray-200 dark:border-gray-700 dark:bg-gray-500" />
+                        <Skeleton className="w-[85%] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
+                        <Skeleton className="w-[250px] h-[18px] sm:h-[20px] rounded-lg dark:bg-gray-500" />
                     </div>
                 ) : (
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 p-6">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6 p-4 sm:p-6">
                             <FormField
                                 control={form.control}
                                 name="reportType"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
+                                        <FormLabel className="font-monomaniac text-base sm:text-xl dark:text-gray-300">
                                             Report Type
                                         </FormLabel>
                                         <Select 
@@ -220,7 +220,7 @@ function GetReport() {
                                             defaultValue={field.value}
                                         >
                                             <FormControl>
-                                                <SelectTrigger>
+                                                <SelectTrigger className="text-sm sm:text-base">
                                                     <SelectValue placeholder="Select a report type" />
                                                 </SelectTrigger>
                                             </FormControl>
@@ -241,7 +241,7 @@ function GetReport() {
                                     name="dateRange"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="font-monomaniac text-xl dark:text-gray-300">
+                                            <FormLabel className="font-monomaniac text-base sm:text-xl dark:text-gray-300">
                                                 Date Range
                                             </FormLabel>
                                             <DateRangePicker 
@@ -253,12 +253,12 @@ function GetReport() {
                                 />
                             )}
 
-                            <div className="flex justify-center mt-8">
+                            <div className="flex justify-center mt-4 sm:mt-6">
                                 <LoadingButton
                                     type="submit"
                                     isLoading={loading}
                                     text="Get Report"
-                                    className="bg-yellow1 px-5 py-3 rounded-md shadow-lg font-madimi 
+                                    className="bg-yellow1 px-4 sm:px-5 py-2 sm:py-3 text-sm sm:text-base rounded-md shadow-lg font-madimi 
                                         text-white hover:bg-yellow-500 transition-colors duration-300"
                                 />
                             </div>
