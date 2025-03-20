@@ -109,6 +109,9 @@ def signup():
         )
         new_profile.save()
         
+        # Generate a token for the new user
+        token = create_access_token(new_user.email, new_user.id, timedelta(minutes=20))
+        
     except IntegrityError as e:
         storage.rollback()
         return jsonify({ 'message': "Username already exists!" }), 400
@@ -116,7 +119,26 @@ def signup():
         storage.rollback()
         return jsonify({ 'message': str(e) }), 500
 
-    return jsonify({ 'message': 'User signed up successfully!'}), 200
+    return jsonify({
+        'message': 'User signed up successfully!',
+        'data': {
+            'token': token,
+            'user': {
+                'email': new_user.email,
+                'full_name': new_profile.full_name,
+                'id': new_user.id,
+                'unique_id': new_user.unique_id,
+                'total_productive_time': new_profile.total_productive_time,
+                'total_wasted_time': new_profile.total_wasted_time,
+                'weekly_work_hours_goal': new_profile.weekly_work_hours_goal,
+                'number_of_work_days': new_profile.number_of_work_days,
+                'username': new_profile.username,
+                'profile_picture_url': new_profile.profile_picture_url,
+                'bio': new_profile.bio,
+                'location': new_profile.location
+            }
+        }
+    }), 200
 
 
 @auth_router.route('/me', methods=['GET'], strict_slashes=False)
