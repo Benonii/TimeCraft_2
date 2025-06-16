@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: timecraft_db
+    restart: always
+    environment:
+      POSTGRES_USER: timecraft_user
+      POSTGRES_PASSWORD: supersecurepassword
+      POSTGRES_DB: timecraft
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d  # optional seed folder
+
+volumes:
+  pgdata:
