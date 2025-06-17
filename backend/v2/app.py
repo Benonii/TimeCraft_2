@@ -20,7 +20,7 @@ app.register_blueprint(router, url_prefix="/api")
 app.register_blueprint(auth_router)
 
 # Setting up Cross-Origin-Resource-Sharing properly
-CORS(app, resources={r"/api/*": {"origins": "https://timecraft-2.vercel.app"}})
+CORS(app, resources={r"/api/*": {"origins": [ "https://timecraft-2.vercel.app", "https://timecraft.benoni.work"  ]}})
 
 # Closes the Database session when necessary
 @app.teardown_appcontext
